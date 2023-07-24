@@ -1,0 +1,21 @@
+CREATE TABLE "Branch" (
+	"branch_code"	TEXT NOT NULL UNIQUE,
+	"branch_name"	TEXT NOT NULL,
+	"branch_city"	TEXT NOT NULL,
+	"branch_address"	TEXT NOT NULL,
+	"branch_manager"	TEXT,
+	PRIMARY KEY("branch_code")
+);
+CREATE TABLE "Employee" (
+	"Employee_id"	TEXT NOT NULL UNIQUE,
+	"Employee_name"	TEXT NOT NULL,
+	"Employee_designation"	TEXT NOT NULL,
+	"Employee_address"	TEXT NOT NULL,
+	"Employee_branch"	TEXT NOT NULL DEFAULT 'DEL-BRANCH',
+	CONSTRAINT "fkey" FOREIGN KEY("Employee_branch") REFERENCES "Branch"("branch_code") ON UPDATE CASCADE ON DELETE SET DEFAULT,
+	CONSTRAINT "pkey" PRIMARY KEY("Employee_id" AUTOINCREMENT)
+);
+
+INSERT INTO "main"."Employee"
+("Employee_id", "Employee_name", "Employee_password", "Employee_designation", "Employee_address", "Employee_branch")
+VALUES ('MYS00101', 'Shubham Kalihari', 'shannu', 'Manager', 'Hebbal', 'MYS001');

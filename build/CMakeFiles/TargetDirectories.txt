@@ -1,0 +1,4 @@
+C:/Projects/banking-server/build/CMakeFiles/Connection.dir
+C:/Projects/banking-server/build/CMakeFiles/BankingServer.dir
+C:/Projects/banking-server/build/CMakeFiles/edit_cache.dir
+C:/Projects/banking-server/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,3 @@
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\BankingServer.dir/objects.a
+C:\msys64\mingw64\bin\ar.exe qc CMakeFiles\BankingServer.dir/objects.a @CMakeFiles\BankingServer.dir\objects1
+C:\msys64\mingw64\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\BankingServer.dir/objects.a -Wl,--no-whole-archive -o BankingServer.exe -Wl,--out-implib,libBankingServer.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\BankingServer.dir\linkLibs.rsp

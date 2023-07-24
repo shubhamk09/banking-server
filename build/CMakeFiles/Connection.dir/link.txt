@@ -1,0 +1,2 @@
+C:\msys64\mingw64\bin\ar.exe qc libConnection.a CMakeFiles/Connection.dir/Connection.cpp.obj CMakeFiles/Connection.dir/DatabaseOperations.cpp.obj CMakeFiles/Connection.dir/User.cpp.obj CMakeFiles/Connection.dir/Employee.cpp.obj
+C:\msys64\mingw64\bin\ranlib.exe libConnection.a
