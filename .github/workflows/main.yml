@@ -29,3 +29,8 @@ jobs:
           mkdir build
           cd build
           cmake ..
+        
+      - name: Build Project
+        run: |
+          cd build
+          cmake --build .
