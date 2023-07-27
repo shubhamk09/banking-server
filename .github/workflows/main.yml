@@ -21,7 +21,7 @@ jobs:
       - name: Install Cmake
         run: |
           echo 'Insatlling CMake'
-          pacman -S mingw-w64-ucrt-x86_64-cmake 
+          pacman -S --noconfirm mingw-w64-ucrt-x86_64-cmake 
   
       - name: Configure CMake
         run: |
