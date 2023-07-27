@@ -1,0 +1,41 @@
+name: MSYS2
+on: [push, pull_request, workflow_dispatch]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  msys2-ucrt64:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: git mingw-w64-ucrt-x86_64-gcc
+          
+      - name: Install Cmake
+        run: |
+          echo 'Insatlling CMake'
+          pacman -S --noconfirm mingw-w64-ucrt-x86_64-cmake 
+        
+      - name: Install sqlite3
+        run: |
+          echo 'Install sqlite3'
+          pacman -S --noconfirm mingw-w64-ucrt-x86_64-sqlite3
+  
+      - name: Configure CMake
+        run: |
+          echo 'Running in MSYS2!'
+          mkdir build
+          cd build
+          cmake ..
+        
+      - name: Build Project
+        run: |
+          cd build
+          cmake --build .
