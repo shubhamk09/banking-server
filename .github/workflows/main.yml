@@ -17,7 +17,13 @@ jobs:
           msystem: UCRT64
           update: true
           install: git mingw-w64-ucrt-x86_64-gcc
-      - name: CI-Build
+          
+      - name: Install Cmake
+        run: |
+          echo 'Insatlling CMake'
+          pacman -S mingw-w64-ucrt-x86_64-cmake 
+  
+      - name: Configure CMake
         run: |
           echo 'Running in MSYS2!'
           cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
