@@ -1,6 +1,9 @@
 name: MSYS2
 on: [push, pull_request, workflow_dispatch]
 
+env:
+  BUILD_TYPE: Release
+
 jobs:
   msys2-ucrt64:
     runs-on: windows-latest
@@ -17,4 +20,4 @@ jobs:
       - name: CI-Build
         run: |
           echo 'Running in MSYS2!'
-          g++ --version
+          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
