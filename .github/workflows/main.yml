@@ -26,7 +26,7 @@ jobs:
       - name: Install sqlite3
         run: |
           echo 'Install sqlite3'
-          pacman -S --noconfirm mings-w64-ucrt-x86_64-sqlite3
+          pacman -S --noconfirm mingw-w64-ucrt-x86_64-sqlite3
   
       - name: Configure CMake
         run: |
