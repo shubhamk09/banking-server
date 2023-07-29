@@ -57,7 +57,7 @@ int Banking::DatabaseOperations::callbackName(void* data, int column_count, char
     std::string* returnVal = static_cast<std::string*>(data);
     if (column_count >0 && column_values[0]!=nullptr)
     {
-        *returnVal = column_values[0];
+        *returnVal = std::string(column_values[0]);
     }
     else
     {
