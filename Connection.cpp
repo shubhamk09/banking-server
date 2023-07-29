@@ -1,7 +1,7 @@
 /**
  * @file Connection.cpp
  * @author your name (you@domain.com)
- * @brief 
+ * @brief Create a connection to sqlite3 database
  * @version 0.1
  * @date 2023-07-16
  * 
