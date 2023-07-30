@@ -20,7 +20,7 @@
  * @param address 
  * @param designation 
  */
-Banking::Employee::Employee(int &id, std::string &name, std::string &password, std::string &branch, std::string &address, std::string &designation):
+Banking::Employee::Employee(std::string &id, std::string &name, std::string &password, std::string &branch, std::string &address, std::string &designation):
 Banking::User{id, name, password, branch, address}, designation{designation}
 {
 }
