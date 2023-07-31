@@ -21,18 +21,14 @@ protected:
     connection_shptr connPtr;
 public:
     DatabaseOperations(connection_shptr &connPtr);
-    ~DatabaseOperations() = default;
+    virtual ~DatabaseOperations() = default;
         
     DatabaseOperations(const DatabaseOperations&) = default;
     DatabaseOperations& operator=(const DatabaseOperations&) = default;
     DatabaseOperations(DatabaseOperations&&) = default;
     DatabaseOperations& operator=(DatabaseOperations&&) = default;
 public:
-    std::string getEmployeeNameById(std::string &empId);
-    std::string getEmployeePasswordById(std::string &empId);
-    std::string getEmployeeDesignationById(std::string &empId);
-    std::string getEmployeeAddressById(std::string &empId);
-    std::string getEmployeeBranchById(std::string &empId);
+
     std::string buildSelectionQuery(std::string &colName, std::string &empId, std::string &tableName);
     static int callbackName(void* data, int column_count, char** column_values, char** column_names);
 };

@@ -28,6 +28,7 @@ project(
 set(SOURCES
     Connection.cpp
     DataBaseOperations.cpp
+    EmployeeOperations.cpp
     User.cpp
     Employee.cpp
 )
