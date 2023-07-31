@@ -16,7 +16,7 @@ namespace Banking{
         std::string designation;
 
     public:
-        Employee(int &id, std::string &name, std::string &password, std::string &branch, std::string &address, std::string &designation);
+        Employee(std::string &id, std::string &name, std::string &password, std::string &branch, std::string &address, std::string &designation);
         ~Employee() = default;
         
         Employee(const Employee&) = default;

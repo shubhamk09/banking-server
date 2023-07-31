@@ -13,15 +13,15 @@ namespace Banking{
 class User
 {
 private:
-    int id;
+    std::string id;
     std::string name;
     std::string password;
     std::string branch;
     std::string address;
 
 public:
-    User(int &id, std::string &name, std::string &password, std::string &branch, std::string &address);
-    ~User();
+    User(std::string &id, std::string &name, std::string &password, std::string &branch, std::string &address);
+    virtual ~User() = default;
 
     User(const User&) = default;
     User& operator=(const User&) = default;
@@ -29,10 +29,10 @@ public:
     User& operator=(User&&) = default;
 
 public:
-    virtual int getId();
+    virtual std::string getId();
     virtual void set(int &id);
     virtual std::string getName();
-    void setName(std::string &name);
+    virtual void setName(std::string &name);
     virtual std::string getPassword();
     virtual void setPassword(std::string &password);
     virtual std::string getBranch();

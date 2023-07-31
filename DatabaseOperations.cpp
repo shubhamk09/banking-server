@@ -25,22 +25,83 @@ Banking::DatabaseOperations::DatabaseOperations(connection_shptr &connPtr):connP
  * @param empId 
  * @return std::string 
  */
-
 std::string Banking::DatabaseOperations::getEmployeeNameById(std::string &empId){
-    std::string statement_string = "SELECT Employee_name from Employee WHERE Employee_id = 'MYS00101'";
+    std::string colName = "Employee_name";
+    std::string tableName = "Employee";
+    std::string statement_string = buildSelectionQuery(colName, empId, tableName);
+    return statement_string;
+}
+
+/**
+ * @brief 
+ * 
+ * @param empId 
+ * @return std::string 
+ */
+std::string Banking::DatabaseOperations::getEmployeePasswordById(std::string &empId){
+    std::string colName = "Employee_password";
+    std::string tableName = "Employee";
+    std::string statement_string = buildSelectionQuery(colName, empId, tableName);
+    return statement_string;
+}
+
+/**
+ * @brief 
+ * 
+ * @param empId 
+ * @return std::string 
+ */
+std::string Banking::DatabaseOperations::getEmployeeDesignationById(std::string &empId){
+    std::string colName = "Employee_designation";
+    std::string tableName = "Employee";
+    std::string statement_string = buildSelectionQuery(colName, empId, tableName);
+    return statement_string;
+}
+
+/**
+ * @brief 
+ * 
+ * @param empId 
+ * @return std::string 
+ */
+std::string Banking::DatabaseOperations::getEmployeeAddressById(std::string &empId){
+    std::string colName = "Employee_address";
+    std::string tableName = "Employee";
+    std::string statement_string = buildSelectionQuery(colName, empId, tableName);
+    return statement_string;
+}
+
+/**
+ * @brief 
+ * 
+ * @param empId 
+ * @return std::string 
+ */
+std::string Banking::DatabaseOperations::getEmployeeBranchById(std::string &empId){
+    std::string colName = "Employee_branch";
+    std::string tableName = "Employee";
+    std::string statement_string = buildSelectionQuery(colName, empId, tableName);
+    return statement_string;
+}
+
+/**
+ * @brief 
+ * 
+ * @param colName 
+ * @param empId 
+ * @param tableName 
+ * @return std::string 
+ */
+std::string Banking::DatabaseOperations::buildSelectionQuery(std::string &colName, std::string &empId, std::string &tableName){
+    std::string statement_string = "SELECT "+colName+" from "+tableName+" WHERE "+tableName+"_id = '"+empId+"'";
     char* messaggeError;
     std::string returnVal;
     int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), callbackName, static_cast<void*>(&returnVal), NULL);
     if (exit != SQLITE_OK) 
         {
-        std::cerr << "Error in SELECT statement" << std::endl;
+        std::cerr << "Error while getting Data" << std::endl;
         sqlite3_free(messaggeError);
         }
-    else
-        {
-        std::cout << "Records created Successfully!" << std::endl;
-        }
-
     return returnVal;
 }
 

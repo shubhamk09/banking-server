@@ -19,7 +19,7 @@
  * @param branch 
  * @param address 
  */
-Banking::User::User(int &id, std::string &name, std::string &password, std::string &branch, std::string &address):
+Banking::User::User(std::string &id, std::string &name, std::string &password, std::string &branch, std::string &address):
 id{id}, name{name}, password{password}, branch{branch}, address{address}
 {
 }
@@ -29,9 +29,9 @@ id{id}, name{name}, password{password}, branch{branch}, address{address}
  * 
  * @return int 
  */
-int Banking::User::getId()
+std::string Banking::User::getId()
 {
-return this->id;
+    return this->id;
 }
 
 /**
