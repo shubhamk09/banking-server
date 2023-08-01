@@ -17,7 +17,6 @@ int main(int argc, char** argv)
     try
     {
         Banking::connection_shptr ptr{std::make_shared<Banking::Connection>()};
-        //Banking::DatabaseOperations dbO(ptr);
         std::shared_ptr<Banking::EmployeeOperations> dbO{std::make_shared<Banking::EmployeeOperations>(ptr)};
         std::string empid{"MYS00101"};
         std::string name{dbO->getEmployeeNameById(empid)};

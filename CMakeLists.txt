@@ -18,24 +18,13 @@ project(
 # (But usually don't do this, except maybe for C++ standard)
 
 # Find packages go here.
-
+include(${CMAKE_CURRENT_SOURCE_DIR}/Cmake/LibList.cmake)
 # You should usually split this into folders, but this is a simple example
-
+add_subdirectory(Src)
 # This is a "default" library, and will match the *** variable setting.
 # Other common choices are STATIC, SHARED, and MODULE
 # Including header files here helps IDEs but is not required.
 # Output libname matches target name, with the usual extensions on your system
-set(SOURCES
-    Connection.cpp
-    DataBaseOperations.cpp
-    EmployeeOperations.cpp
-    User.cpp
-    Employee.cpp
-)
-
-add_library(Connection ${SOURCES})
-
-target_include_directories(Connection PUBLIC inc)
 
 # Link each target with other targets or add options, etc.
 
@@ -44,4 +33,4 @@ add_executable(BankingServer driver.cpp)
 
 # Make sure you link your targets with this command. It can also link libraries and
 # even flags, so linking a target that does not exist will not give a configure-time error.
-target_link_libraries(BankingServer PRIVATE Connection libsqlite3)
+target_link_libraries(BankingServer PRIVATE ${USERS_LIB} ${CONNECTION_LIB} ${DATABASE_OPERATIONS_LIB})
