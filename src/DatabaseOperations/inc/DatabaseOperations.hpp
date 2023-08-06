@@ -8,6 +8,9 @@
  * @copyright Copyright (c) 2023
  * 
  */
+#ifndef BANKING_DATABASEOPERATION_HPP
+#define BANKING_DATABASEOPERATION_HPP
+
 #include <sqlite3.h>
 #include <vector>
 #include "Connection.hpp"
@@ -36,3 +39,5 @@ public:
 using dbOperation_shptr = std::shared_ptr<DatabaseOperations>;
     
 } // namespace Banking
+
+#endif //BANKING_DATABASEOPERATION_HPP

@@ -19,3 +19,7 @@ CREATE TABLE "Employee" (
 INSERT INTO "main"."Employee"
 ("Employee_id", "Employee_name", "Employee_password", "Employee_designation", "Employee_address", "Employee_branch")
 VALUES ('MYS00101', 'Shubham Kalihari', 'shannu', 'Manager', 'Hebbal', 'MYS001');
+
+INSERT INTO "main"."Customer"
+("Customer_id", "Customer_name", "Cutomer_password", "Customer_account", "Customer_address", "Customer_branch")
+VALUES ('MYSC00101', 'Nitin Tyagi', 'abc123', 2023030801, 'Hebbal, Mysore', 'MYS001');

@@ -29,6 +29,7 @@ Banking::DatabaseOperations::DatabaseOperations(connection_shptr &connPtr):connP
  */
 std::string Banking::DatabaseOperations::buildSelectionQuery(std::string &colName, std::string &empId, std::string &tableName){
     std::string statement_string = "SELECT "+colName+" from "+tableName+" WHERE "+tableName+"_id = '"+empId+"'";
+    std::cout<<colName<<std::endl;
     char* messaggeError;
     std::string returnVal;
     int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), callbackName, static_cast<void*>(&returnVal), NULL);
@@ -37,6 +38,7 @@ std::string Banking::DatabaseOperations::buildSelectionQuery(std::string &colNam
         std::cerr << "Error while getting Data" << std::endl;
         sqlite3_free(messaggeError);
         }
+    std::cout<<"Data Retrival for "<<colName<<" in table "<<tableName<<" is successfull"<<std::endl;
     return returnVal;
 }
 
