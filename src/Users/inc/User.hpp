@@ -8,7 +8,24 @@
  * @copyright Copyright (c) 2023
  * 
  */
+#ifndef BANKING_USER_HPP
+#define BANKING_USER_HPP
+
 #include <iostream>
+#include <memory>
+#include <regex>
+
+
+// Forward declaration of the Customer class
+// namespace Banking {
+//     class Customer;
+// }
+
+// Forward declaration of the Customer class
+// namespace Banking {
+//     class Employee;
+// }
+
 namespace Banking{
 class User
 {
@@ -39,5 +56,8 @@ public:
     virtual void setBranch(std::string &branch);
     virtual std::string getAddress();
     virtual void setAddress(std::string &address);
+
+    static std::shared_ptr<User> createUser(std::string &id, std::string &name, std::string &password, std::string &address, std::string &branch, std::string &designationOrAccountNumber);
 };
 }
+#endif //BANKING_USER_HPP

@@ -1,6 +1,7 @@
 set(SOURCES
         User.cpp
         Employee.cpp
+        Customer.cpp
 )
 
 add_library(${USERS_LIB} ${SOURCES})

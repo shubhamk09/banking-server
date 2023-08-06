@@ -8,6 +8,9 @@
  * @copyright Copyright (c) 2023
  * 
  */
+#ifndef BANKING_EMPLOYEE_HPP
+#define BANKING_EMPLOYEE_HPP
+
 #include "User.hpp"
 namespace Banking{
     class Employee: public User
@@ -29,4 +32,5 @@ namespace Banking{
         void setDesignation(std::string designation);
     };
 }
+#endif //BANKING_EMPLOYEE_HPP
 

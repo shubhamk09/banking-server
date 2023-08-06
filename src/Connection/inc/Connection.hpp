@@ -8,6 +8,9 @@
  * @copyright Copyright (c) 2023
  * 
  */
+#ifndef BANKING_CONNECTION_HPP
+#define BANKING_CONNECTION_HPP
+
 #include <iostream>
 #include <sqlite3.h>
 #include <fstream>
@@ -39,3 +42,5 @@ using connection_shptr = std::shared_ptr<Connection>;
 
 
 }// namespace Banking ends
+
+#endif //BANKING_CONNECTION_HPP
