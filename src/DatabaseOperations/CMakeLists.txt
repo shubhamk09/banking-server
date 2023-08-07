@@ -3,6 +3,7 @@ set(SOURCES
     EmployeeOperations.cpp
     CustomerOperations.cpp
     BranchOperations.cpp
+    AccountOperations.cpp
 )
 
 add_library(${DATABASE_OPERATIONS_LIB} ${SOURCES})

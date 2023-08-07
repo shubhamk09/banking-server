@@ -24,11 +24,11 @@ public:
     BranchOperations(BranchOperations&&) = default;
     BranchOperations& operator=(BranchOperations&&) = default;
 public:
-    std::string getBranchNameById(std::string &empId);
-    std::string getBranchCityById(std::string &empId);
-    std::string getBranchAddressById(std::string &empId);
-    std::string getBranchManagerById(std::string &empId);
-    bool isActiveBranch(std::string &empId);
+    std::string getBranchNameById(std::string &branchId);
+    std::string getBranchCityById(std::string &branchId);
+    std::string getBranchAddressById(std::string &branchId);
+    std::string getBranchManagerById(std::string &branchId);
+    bool isActiveBranch(std::string &branchId);
     
 };  
 
