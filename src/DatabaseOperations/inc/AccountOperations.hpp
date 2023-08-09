@@ -24,9 +24,9 @@ public:
     AccountOperations(AccountOperations&&) = default;
     AccountOperations& operator=(AccountOperations&&) = default;
 public:
-    std::string getAccountBalanceByNumber(std::string &accNumber);
-    std::string getAccountTransactionsNumber(std::string &accNumber);
-    std::string getAccountBranchByNumber(std::string &accNumber);
+    std::string getAccountBalanceById(std::string &accNumber);
+    std::string getAccountTransactionsById(std::string &accNumber);
+    std::string getAccountBranchById(std::string &accNumber);
     bool isActiveAccount(std::string &accNumber);
     
 };  

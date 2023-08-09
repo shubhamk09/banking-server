@@ -23,19 +23,33 @@ Banking::DatabaseOperations::DatabaseOperations(connection_shptr &connPtr):connP
  * @brief 
  * 
  * @param colName 
- * @param empId 
+ * @param searchVal 
  * @param tableName 
  * @return std::string 
  */
-std::string Banking::DatabaseOperations::buildSelectionQuery(std::string &colName, std::string &empId, std::string &tableName){
-    std::string statement_string = "SELECT "+colName+" from "+tableName+" WHERE "+tableName+"_id = '"+empId+"'";
-    std::cout<<colName<<std::endl;
+std::string Banking::DatabaseOperations::buildSelectionQuery(std::string &colName, std::string &searchVal, std::string &tableName){
+    std::string searchById{tableName+"_id"};
+    return buildSelectionQuery(colName, searchVal, tableName, searchById);
+}
+
+/**
+ * @brief 
+ * 
+ * @param colName 
+ * @param searchVal 
+ * @param tableName 
+ * @param seearchOn 
+ * @return std::string 
+ */
+std::string Banking::DatabaseOperations::buildSelectionQuery(std::string &colName, std::string &searchVal, std::string &tableName, std::string &seearchOn){
+    std::string statement_string = "SELECT "+colName+" from "+tableName+" WHERE "+seearchOn+" = '"+searchVal+"'";
+    std::cout<<"Executing command "<<statement_string<<std::endl;
     char* messaggeError;
     std::string returnVal;
     int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), callbackName, static_cast<void*>(&returnVal), NULL);
     if (exit != SQLITE_OK) 
         {
-        std::cerr << "Error while getting Data" << std::endl;
+        std::cerr << "Error while getting Data for "<<colName<<" in Table "<<tableName<<" for "<<searchVal<< std::endl;
         sqlite3_free(messaggeError);
         }
     std::cout<<"Data Retrival for "<<colName<<" in table "<<tableName<<" is successfull"<<std::endl;

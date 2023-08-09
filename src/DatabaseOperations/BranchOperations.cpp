@@ -26,8 +26,8 @@ Banking::BranchOperations::BranchOperations(connection_shptr &connPtr): Banking:
  * @return std::string 
  */
 std::string Banking::BranchOperations::getBranchNameById(std::string &branchId){
-    std::string colName = "branch_name";
-    std::string tableName = "Branches";
+    std::string colName = "Branch_name";
+    std::string tableName = "Branch";
     std::string statement_string = Banking::DatabaseOperations::buildSelectionQuery(colName, branchId, tableName);
     return statement_string;
 }
@@ -39,8 +39,8 @@ std::string Banking::BranchOperations::getBranchNameById(std::string &branchId){
  * @return std::string 
  */
 std::string Banking::BranchOperations::getBranchCityById(std::string &branchId){
-    std::string colName = "branch_city";
-    std::string tableName = "Branches";
+    std::string colName = "Branch_city";
+    std::string tableName = "Branch";
     std::string statement_string = Banking::DatabaseOperations::buildSelectionQuery(colName, branchId, tableName);
     return statement_string;
 }
@@ -52,8 +52,8 @@ std::string Banking::BranchOperations::getBranchCityById(std::string &branchId){
  * @return std::string 
  */
 std::string Banking::BranchOperations::getBranchAddressById(std::string &branchId){
-    std::string colName = "branch_address";
-    std::string tableName = "Branches";
+    std::string colName = "Branch_address";
+    std::string tableName = "Branch";
     std::string statement_string = Banking::DatabaseOperations::buildSelectionQuery(colName, branchId, tableName);
     return statement_string;
 }
@@ -65,9 +65,10 @@ std::string Banking::BranchOperations::getBranchAddressById(std::string &branchI
  * @return std::string 
  */
 std::string Banking::BranchOperations::getBranchManagerById(std::string &branchId){
-    std::string colName = "branch_manager";
-    std::string tableName = "Branches";
-    std::string statement_string = Banking::DatabaseOperations::buildSelectionQuery(colName, branchId, tableName);
+    std::string colName = "Employee_id";
+    std::string tableName = "EmployeeToBranch";
+    std::string searchOn = "Branch_id";
+    std::string statement_string = Banking::DatabaseOperations::buildSelectionQuery(colName, branchId, tableName, searchOn);
     return statement_string;
 }
 
@@ -79,8 +80,8 @@ std::string Banking::BranchOperations::getBranchManagerById(std::string &branchI
  * @return false 
  */
 bool Banking::BranchOperations::isActiveBranch(std::string &branchId){
-    std::string colName = "branch_active";
-    std::string tableName = "Branches";
+    std::string colName = "Branch_active";
+    std::string tableName = "Branch";
     std::string statement_string = Banking::DatabaseOperations::buildSelectionQuery(colName, branchId, tableName);
     if(statement_string == "ACTIVE"){
         return true;

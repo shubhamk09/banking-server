@@ -32,7 +32,8 @@ public:
     DatabaseOperations& operator=(DatabaseOperations&&) = default;
 public:
 
-    std::string buildSelectionQuery(std::string &colName, std::string &empId, std::string &tableName);
+    std::string buildSelectionQuery(std::string &colName, std::string &searchVal, std::string &tableName);
+    std::string buildSelectionQuery(std::string &colName, std::string &searchVal, std::string &tableName, std::string &seearchOn);
     static int callbackName(void* data, int column_count, char** column_values, char** column_names);
 };
 

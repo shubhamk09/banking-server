@@ -78,8 +78,9 @@ std::string Banking::EmployeeOperations::getEmployeeAddressById(std::string &emp
  * @return std::string 
  */
 std::string Banking::EmployeeOperations::getEmployeeBranchById(std::string &empId){
-    std::string colName = "Employee_branch";
-    std::string tableName = "Employee";
-    std::string statement_string = Banking::DatabaseOperations::buildSelectionQuery(colName, empId, tableName);
+    std::string colName = "Branch_id";
+    std::string tableName = "EmployeeToBranch";
+    std::string searchOn = "Employee_id";
+    std::string statement_string = Banking::DatabaseOperations::buildSelectionQuery(colName, empId, tableName, searchOn);
     return statement_string;
 }

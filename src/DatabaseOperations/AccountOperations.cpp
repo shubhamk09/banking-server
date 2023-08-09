@@ -25,9 +25,9 @@ Banking::AccountOperations::AccountOperations(connection_shptr &connPtr): Bankin
  * @param accountId 
  * @return std::string 
  */
-std::string Banking::AccountOperations::getAccountBalanceByNumber(std::string &accountId){
+std::string Banking::AccountOperations::getAccountBalanceById(std::string &accountId){
     std::string colName = "Account_balance";
-    std::string tableName = "Accounts";
+    std::string tableName = "Account";
     std::string statement_string = Banking::DatabaseOperations::buildSelectionQuery(colName, accountId, tableName);
     return statement_string;
 }
@@ -38,9 +38,9 @@ std::string Banking::AccountOperations::getAccountBalanceByNumber(std::string &a
  * @param accountId 
  * @return std::string 
  */
-std::string Banking::AccountOperations::getAccountTransactionsNumber(std::string &accountId){
+std::string Banking::AccountOperations::getAccountTransactionsById(std::string &accountId){
     std::string colName = "Account_transactions";
-    std::string tableName = "Accounts";
+    std::string tableName = "Account";
     std::string statement_string = Banking::DatabaseOperations::buildSelectionQuery(colName, accountId, tableName);
     return statement_string;
 }
@@ -51,9 +51,9 @@ std::string Banking::AccountOperations::getAccountTransactionsNumber(std::string
  * @param accountId 
  * @return std::string 
  */
-std::string Banking::AccountOperations::getAccountBranchByNumber(std::string &accountId){
+std::string Banking::AccountOperations::getAccountBranchById(std::string &accountId){
     std::string colName = "Account_branch";
-    std::string tableName = "Accounts";
+    std::string tableName = "Account";
     std::string statement_string = Banking::DatabaseOperations::buildSelectionQuery(colName, accountId, tableName);
     return statement_string;
 }
@@ -67,7 +67,7 @@ std::string Banking::AccountOperations::getAccountBranchByNumber(std::string &ac
  */
 bool Banking::AccountOperations::isActiveAccount(std::string &accountId){
     std::string colName = "Account_active";
-    std::string tableName = "Accounts";
+    std::string tableName = "Account";
     std::string statement_string = Banking::DatabaseOperations::buildSelectionQuery(colName, accountId, tableName);
     if(statement_string == "ACTIVE"){
         return true;
