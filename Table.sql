@@ -1,4 +1,4 @@
-CREATE TABLE "Accounts" (
+CREATE TABLE "Account" (
 	"Account_id"	INTEGER NOT NULL UNIQUE,
 	"Account_balance"	INTEGER NOT NULL,
 	"Account_transactions"	BLOB,
@@ -8,18 +8,6 @@ CREATE TABLE "Accounts" (
 	PRIMARY KEY("Account_id")
 );
 
-/*
-CREATE TABLE "Branch" (
-	"Branch_id"	TEXT NOT NULL UNIQUE,
-	"Branch_name"	TEXT NOT NULL,
-	"Branch_city"	TEXT NOT NULL,
-	"Branch_address"	TEXT NOT NULL,
-	"Branch_manager"	TEXT DEFAULT 'NO-MANAGER',
-	"Branch_active"	TEXT NOT NULL DEFAULT 'DEACTIVE',
-	PRIMARY KEY("Branch_id"),
-	FOREIGN KEY("Branch_manager") REFERENCES "Employee"("Employee_id") ON UPDATE CASCADE ON DELETE SET DEFAULT
-);
-*/
 CREATE TABLE "Branch" (
     "Branch_id" TEXT NOT NULL UNIQUE,
     "Branch_name" TEXT NOT NULL,
@@ -37,24 +25,11 @@ CREATE TABLE "Customer" (
 	"Customer_address"	TEXT,
 	"Customer_branch"	TEXT NOT NULL DEFAULT 'DEL-BRANCH',
 	FOREIGN KEY("Customer_branch") REFERENCES "Branch"("Branch_id") ON UPDATE CASCADE,
-	FOREIGN KEY("Customer_account") REFERENCES "Accounts"("Account_id"),
+	FOREIGN KEY("Customer_account") REFERENCES "Account"("Account_id"),
 	CONSTRAINT "pkey" PRIMARY KEY("Customer_id")
 	CHECK (LENGTH("Employee_password") > 0)
 );
 
-/*
-CREATE TABLE "Employee" (
-	"Employee_id"	TEXT NOT NULL UNIQUE,
-	"Employee_name"	TEXT NOT NULL,
-	"Employee_password"	TEXT NOT NULL,
-	"Employee_designation"	TEXT NOT NULL,
-	"Employee_address"	TEXT NOT NULL,
-	"Employee_branch"	TEXT NOT NULL DEFAULT 'DEL-BRANCH',
-	CONSTRAINT "fkey" PRIMARY KEY("Employee_id"),
-	FOREIGN KEY("Employee_branch") REFERENCES "Branch"("Branch_id") ON UPDATE CASCADE
-	CHECK (LENGTH("Employee_password") > 0)
-);
-*/
 CREATE TABLE "Employee" (
     "Employee_id" TEXT NOT NULL UNIQUE,
     "Employee_name" TEXT NOT NULL,
@@ -72,11 +47,3 @@ CREATE TABLE "EmployeeToBranch" (
     FOREIGN KEY ("Employee_id") REFERENCES "Employee" ("Employee_id") ON UPDATE CASCADE,
     FOREIGN KEY ("Branch_id") REFERENCES "Branch" ("Branch_id") ON UPDATE CASCADE
 );
-
-INSERT INTO "main"."Employee"
-("Employee_id", "Employee_name", "Employee_password", "Employee_designation", "Employee_address")
-VALUES ('MYS00101', 'Shubham Kalihari', 'shubham', 'Manager', 'Ammana Mane');
-
-INSERT INTO "main"."Customer"
-("Customer_id", "Customer_name", "Cutomer_password", "Customer_account", "Customer_address", "Customer_branch")
-VALUES ('MYSC00101', 'Nitin Tyagi', 'abc123', 2023030801, 'Hebbal, Mysore', 'MYS001');

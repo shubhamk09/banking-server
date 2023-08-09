@@ -21,7 +21,7 @@ namespace Banking{
 class Connection
 {
 private:
-    const std::string dataBaseName {"C:/Projects/banking-server/src/Connection/Banking_db.db"};
+    const std::string dataBaseName {"C:/Projects/banking-server/Banking.db"};
 
 private:
     Connection(const Connection&) = delete;
