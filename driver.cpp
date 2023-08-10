@@ -14,12 +14,29 @@
 #include "BranchOperations.hpp"
 #include "Employee.hpp"
 #include "Customer.hpp"
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
 int main(int argc, char** argv)
 {
     
     try
     {
+        json jsonString1 = R"({
+            "pi": 3.141,
+            "happy": true,
+            "name": "Niels",
+            "nothing": null,
+            "answer": {
+                "everything": 42
+            },
+            "list": [1, 0, 2],
+            "object": {
+                "currency": "USD",
+                "value": 42.99
+            }
+        })"_json;
+        std::cout<<jsonString1.dump()<<std::endl;
         Banking::connection_shptr ptr{std::make_shared<Banking::Connection>()};
         // Testing Employee
         std::shared_ptr<Banking::EmployeeOperations> dbO{std::make_shared<Banking::EmployeeOperations>(ptr)};
