@@ -32,4 +32,5 @@ namespace Banking{
     };
     std::shared_ptr<spdlog::logger> Logger::s_Logger;
 }
+#define BANKING_LOGGER_INFO(...)    ::Banking::Logger::GetLogger()->info(__VA_ARGS__)
 #endif //BANKING_LOGGER_HPP
