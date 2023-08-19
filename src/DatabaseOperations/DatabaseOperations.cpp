@@ -32,8 +32,8 @@ std::string Banking::DatabaseOperations::buildSelectionQuery(std::string &colNam
     return buildSelectionQuery(colName, searchVal, tableName, searchById);
 }
 
-/**
- * @brief 
+/** 
+ * @brief
  * 
  * @param colName 
  * @param searchVal 
@@ -44,13 +44,52 @@ std::string Banking::DatabaseOperations::buildSelectionQuery(std::string &colNam
 std::string Banking::DatabaseOperations::buildSelectionQuery(std::string &colName, std::string &searchVal, std::string &tableName, std::string &seearchOn){
     std::string statement_string = "SELECT "+colName+" from "+tableName+" WHERE "+seearchOn+" = '"+searchVal+"'";
     BANKING_LOGGER_INFO("Executing command {}", statement_string);
-    char* messaggeError;
+    char* messageError;
     std::string returnVal;
-    int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), callbackName, static_cast<void*>(&returnVal), NULL);
+    int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), callbackName, static_cast<void*>(&returnVal), nullptr);
     if (exit != SQLITE_OK) 
         {
         BANKING_LOGGER_ERROR("Error while getting Data for {} in Table {} for {}", colName, tableName, searchVal);
-        sqlite3_free(messaggeError);
+        sqlite3_free(messageError);
+        }
+    BANKING_LOGGER_INFO("Data Retrival for {} in table {} is successfull", colName, tableName);
+    return returnVal;
+}
+
+/**
+ * @brief 
+ * 
+ * @param colName 
+ * @param searchVal 
+ * @param updateVal 
+ * @param tableName 
+ * @return std::string 
+ */
+std::string Banking::DatabaseOperations::buildUpdateQuery(std::string &colName, std::string &searchVal, std::string &updateVal, std::string &tableName){
+    std::string searchById{tableName+"_id"};
+    return buildUpdateQuery(colName, searchVal, updateVal, tableName, searchById);
+}
+
+/**
+ * @brief 
+ * 
+ * @param colName 
+ * @param searchVal 
+ * @param updateVal 
+ * @param tableName 
+ * @param seearchOn 
+ * @return std::string 
+ */
+std::string Banking::DatabaseOperations::buildUpdateQuery(std::string &colName, std::string &searchVal, std::string &updateVal, std::string &tableName, std::string &seearchOn){
+    std::string statement_string = "UPDATE "+tableName+" SET "+colName+" = "+updateVal+" WHERE "+seearchOn+" = '"+searchVal+"'";
+    BANKING_LOGGER_INFO("Executing command {}", statement_string);
+    char* messageError;
+    std::string returnVal;
+    int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), nullptr, nullptr, nullptr);
+    if (exit != SQLITE_OK) 
+        {
+        BANKING_LOGGER_ERROR("Error while getting Data for {} in Table {} for {}", colName, tableName, searchVal);
+        sqlite3_free(messageError);
         }
     BANKING_LOGGER_INFO("Data Retrival for {} in table {} is successfull", colName, tableName);
     return returnVal;
