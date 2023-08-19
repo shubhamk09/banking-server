@@ -8,6 +8,7 @@
  * @copyright Copyright (c) 2023
  * 
  */
+#include "Logger.hpp"
 #include "Connection.hpp"
 
 /**
@@ -18,11 +19,9 @@ Banking::Connection::Connection()
 {
     int result = sqlite3_open(this->dataBaseName.c_str(), &this->DB);
     if (result != SQLITE_OK) {
-      throw std::runtime_error("Failed to open database.");
+      throw std::runtime_error("Failed to open database");
     }
-
-    std::cout << "Database opened successfully." << std::endl;
-    
+    BANKING_LOGGER_INFO("Database {} opened successfully", this->dataBaseName);  
 }
 /**
  * @brief Destroy the Banking:: Connection:: Connection object
@@ -32,8 +31,9 @@ Banking::Connection::~Connection()
 {
     if (DB != nullptr) {
         sqlite3_close(DB);
-        std::cout << "Database closed successfully." << std::endl;
+        BANKING_LOGGER_INFO("Database {} Closed successfully", this->dataBaseName); 
     }
+    BANKING_LOGGER_WARN("Database was not initialized");
 }
 
 

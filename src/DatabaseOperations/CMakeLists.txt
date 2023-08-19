@@ -10,4 +10,4 @@ add_library(${DATABASE_OPERATIONS_LIB} ${SOURCES})
 
 target_include_directories(${DATABASE_OPERATIONS_LIB} PUBLIC inc)
 
-target_link_libraries(${DATABASE_OPERATIONS_LIB} PUBLIC ${CONNECTION_LIB})
+target_link_libraries(${DATABASE_OPERATIONS_LIB} PUBLIC ${CONNECTION_LIB} ${LOGGER_LIB})

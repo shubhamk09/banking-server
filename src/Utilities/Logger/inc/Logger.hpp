@@ -19,18 +19,16 @@
 namespace Banking{
     class Logger {
     public:
-        static void Init(){
-            spdlog::set_pattern("[%^%L%$] %v");
-            s_Logger = spdlog::basic_logger_mt("file_logger", "logs/basic-log.txt", true);
-            s_Logger->set_level(spdlog::level::debug);
-        }
+        static void Init();
 
-        inline static std::shared_ptr<spdlog::logger>& GetLogger(){return s_Logger;}
+        static std::shared_ptr<spdlog::logger>& GetLogger();
 
     private:
         static std::shared_ptr<spdlog::logger> s_Logger;
     };
-    std::shared_ptr<spdlog::logger> Logger::s_Logger;
+
 }
 #define BANKING_LOGGER_INFO(...)    ::Banking::Logger::GetLogger()->info(__VA_ARGS__)
+#define BANKING_LOGGER_ERROR(...)    ::Banking::Logger::GetLogger()->error(__VA_ARGS__)
+#define BANKING_LOGGER_WARN(...)    ::Banking::Logger::GetLogger()->warn(__VA_ARGS__)
 #endif //BANKING_LOGGER_HPP
