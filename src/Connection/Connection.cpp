@@ -33,7 +33,10 @@ Banking::Connection::~Connection()
         sqlite3_close(DB);
         BANKING_LOGGER_INFO("Database {} Closed successfully", this->dataBaseName); 
     }
-    BANKING_LOGGER_WARN("Database was not initialized");
+    else{
+        BANKING_LOGGER_WARN("Database was not initialized");
+    }
+    
 }
 
 
