@@ -1,3 +1,5 @@
 add_subdirectory(Connection)
 add_subdirectory(DatabaseOperations)
 add_subdirectory(Users)
+add_subdirectory(Ext)
+add_subdirectory(Utilities)

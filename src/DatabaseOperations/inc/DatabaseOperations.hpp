@@ -14,6 +14,7 @@
 #include <sqlite3.h>
 #include <vector>
 #include "Connection.hpp"
+#include "Logger.hpp"
 
 namespace Banking
 {
