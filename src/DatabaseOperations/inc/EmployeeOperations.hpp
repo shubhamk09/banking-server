@@ -29,6 +29,11 @@ public:
     std::string getEmployeeDesignationById(std::string &empId);
     std::string getEmployeeAddressById(std::string &empId);
     std::string getEmployeeBranchById(std::string &empId);
+    void setEmployeeNameById(std::string &empId, std::string& newName);
+    void setEmployeePasswordById(std::string &empId, std::string& newPassword);
+    void setEmployeeDesignationById(std::string &empId, std::string designation);
+    void setEmployeeAddressById(std::string &empId, std::string& newAddress);
+    void setEmployeeBranchById(std::string &empId, std::string &branchId);
     
 };  
 

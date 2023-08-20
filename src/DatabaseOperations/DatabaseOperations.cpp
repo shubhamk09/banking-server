@@ -65,9 +65,9 @@ std::string Banking::DatabaseOperations::buildSelectionQuery(std::string &colNam
  * @param tableName 
  * @return std::string 
  */
-std::string Banking::DatabaseOperations::buildUpdateQuery(std::string &colName, std::string &searchVal, std::string &updateVal, std::string &tableName){
+void Banking::DatabaseOperations::buildUpdateQuery(std::string &colName, std::string &searchVal, std::string &updateVal, std::string &tableName){
     std::string searchById{tableName+"_id"};
-    return buildUpdateQuery(colName, searchVal, updateVal, tableName, searchById);
+    buildUpdateQuery(colName, searchVal, updateVal, tableName, searchById);
 }
 
 /**
@@ -80,19 +80,84 @@ std::string Banking::DatabaseOperations::buildUpdateQuery(std::string &colName, 
  * @param seearchOn 
  * @return std::string 
  */
-std::string Banking::DatabaseOperations::buildUpdateQuery(std::string &colName, std::string &searchVal, std::string &updateVal, std::string &tableName, std::string &seearchOn){
-    std::string statement_string = "UPDATE "+tableName+" SET "+colName+" = "+updateVal+" WHERE "+seearchOn+" = '"+searchVal+"'";
+void Banking::DatabaseOperations::buildUpdateQuery(std::string &colName, std::string &searchVal, std::string &updateVal, std::string &tableName, std::string &seearchOn){
+    std::string statement_string = "UPDATE "+tableName+" SET "+colName+" = '"+updateVal+"' WHERE "+seearchOn+" = '"+searchVal+"'";
     BANKING_LOGGER_INFO("Executing command {}", statement_string);
     char* messageError;
-    std::string returnVal;
     int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), nullptr, nullptr, nullptr);
     if (exit != SQLITE_OK) 
         {
-        BANKING_LOGGER_ERROR("Error while getting Data for {} in Table {} for {}", colName, tableName, searchVal);
+        BANKING_LOGGER_ERROR("Error while setting Data for {} in Table {} for {}", colName, tableName, searchVal);
         sqlite3_free(messageError);
         }
-    BANKING_LOGGER_INFO("Data Retrival for {} in table {} is successfull", colName, tableName);
-    return returnVal;
+    BANKING_LOGGER_INFO("Data updation for {} in table {} is successfull", colName, tableName);
+}
+
+/**
+ * @brief 
+ * 
+ * @param data 
+ */
+void Banking::DatabaseOperations::buildInsertionQery(nlohmann::json &data){
+    // json jsonString1 = R"({
+    //         "table": "Employee",
+    //         "values: ["str1", "str2", "str3"]
+    //     })"_json;
+    std::string tableName = data.at("table");
+    if (data.at("values").is_array())
+    {    
+        int arraySize{static_cast<int>(data.at("values").size())};
+        std::string statement_string = "INSERT INTO '"+tableName+"' VALUES (";
+        for (auto &&value : data.at("values"))
+        {
+            statement_string += "'"+value.dump()+"', ";
+        }
+
+        // Remove last comma
+        std::size_t lastCommaPos{statement_string.rfind(',')};
+        if (lastCommaPos != std::string::npos)
+        {
+            statement_string = statement_string.substr(0, lastCommaPos);
+        }
+        BANKING_LOGGER_INFO("Executing command {}", statement_string);
+        char* messageError;
+        int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), nullptr, nullptr, nullptr);
+        if (exit != SQLITE_OK) 
+            {
+            BANKING_LOGGER_ERROR("Error while inserting Data in Table {} for {}",tableName);
+            sqlite3_free(messageError);
+            }
+        BANKING_LOGGER_INFO("Data Insertion in table {} is successfull", tableName);
+
+    }
+    else
+    {
+        BANKING_LOGGER_ERROR("Values passed is not an array");
+    }
+    
+    
+
+}
+
+/**
+ * @brief 
+ * 
+ * @param searchVal 
+ * @param tableName 
+ * @param seearchOn 
+ * @return std::string 
+ */
+void Banking::DatabaseOperations::buildDeleteQuery(std::string &searchVal, std::string &tableName, std::string &seearchOn){
+    std::string statement_string = "DELETE FROM "+tableName+" WHERE "+seearchOn+" = '"+searchVal+"'";
+    BANKING_LOGGER_INFO("Executing command {}", statement_string);
+    char* messageError;
+    int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), nullptr, nullptr, nullptr);
+    if (exit != SQLITE_OK) 
+        {
+        BANKING_LOGGER_ERROR("Error while deleting Data in Table {} for {}", tableName, searchVal);
+        sqlite3_free(messageError);
+        }
+    BANKING_LOGGER_INFO("Data deletion from table {} is successfull", tableName);
 }
 
 /**
