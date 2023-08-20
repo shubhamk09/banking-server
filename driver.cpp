@@ -38,6 +38,11 @@ int main(int argc, char** argv)
                 "value": 42.99
             }
         })"_json;
+        
+        json jsonString2 = R"({
+            "table": "Employee",
+            "values: ["MYSE00102", "Shubham Kalihar", "Shannu", "accountant", "Ammana Mane"]
+        })"_json;
         std::cout<<jsonString1.dump()<<std::endl;
         // Initializing Logger
         // std::shared_ptr<Banking::Logger> logger = std::make_shared<Banking::Logger>();
@@ -52,6 +57,11 @@ int main(int argc, char** argv)
         std::string designation{dbO->getEmployeeDesignationById(empid)};
         std::string address{dbO->getEmployeeAddressById(empid)};
         std::string branch{dbO->getEmployeeBranchById(empid)};
+        //Changing employee name
+        BANKING_LOGGER_INFO("Testing Changing Employee Name");
+        std::string newName {"Shubha ND"};
+        dbO->setEmployeeNameById(empid, newName);
+        std::cout<<"new name "<<dbO->getEmployeeNameById(empid)<<std::endl;
         // Testing Branch
         BANKING_LOGGER_INFO("Testing Branch");
         std::shared_ptr<Banking::BranchOperations> db1{std::make_shared<Banking::BranchOperations>(ptr)};\
