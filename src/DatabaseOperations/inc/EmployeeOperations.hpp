@@ -9,6 +9,7 @@
  * 
  */
 #include "DatabaseOperations.hpp"
+#include "Employee.hpp"
 
 namespace Banking
 {
@@ -34,6 +35,8 @@ public:
     void setEmployeeDesignationById(std::string &empId, std::string designation);
     void setEmployeeAddressById(std::string &empId, std::string& newAddress);
     void setEmployeeBranchById(std::string &empId, std::string &branchId);
+    void addEmployee(Banking::Employee &&empl);
+    void deleteEmployee(std::string &empId);
     
 };  
 

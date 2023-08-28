@@ -146,3 +146,37 @@ void Banking::EmployeeOperations::setEmployeeBranchById(std::string &empId, std:
     std::string searchOn = "Employee_id";
     Banking::DatabaseOperations::buildUpdateQuery(colName, empId, branchId, tableName, searchOn);
 }
+
+/**
+ * @brief 
+ * 
+ * @param empl 
+ */
+void Banking::EmployeeOperations::addEmployee(Banking::Employee &&empl){
+    nlohmann::json EmployeeData;
+    EmployeeData.emplace("table", "Employee");
+    EmployeeData.emplace("values", nlohmann::json::array());
+    nlohmann::json& employeeValues = EmployeeData["values"];
+    employeeValues.emplace_back(empl.getId());
+    employeeValues.emplace_back(empl.getName());
+    employeeValues.emplace_back(empl.getPassword());
+    employeeValues.emplace_back(empl.getDesignation());
+    employeeValues.emplace_back(empl.getAddress());
+    Banking::DatabaseOperations::buildInsertionQery(EmployeeData);
+    nlohmann::json EmployeeToBranchData;
+    EmployeeToBranchData.emplace("table", "EmployeeToBranch");
+    EmployeeToBranchData.emplace("values", nlohmann::json::array());
+    nlohmann::json& employeeToBranchValues = EmployeeToBranchData["values"];
+    employeeToBranchValues.emplace_back(empl.getId());
+    employeeToBranchValues.emplace_back(empl.getBranch());
+    Banking::DatabaseOperations::buildInsertionQery(EmployeeToBranchData);
+}
+
+void Banking::EmployeeOperations::deleteEmployee(std::string &empId){
+    // std::string searchVal = empId;
+    std::string tableName = "Employee";
+    std::string searchOn = "Employee_id";
+    Banking::DatabaseOperations::buildDeleteQuery(empId, tableName, searchOn);
+    tableName = "EmployeeToBranch";
+    Banking::DatabaseOperations::buildDeleteQuery(empId, tableName, searchOn);
+}
