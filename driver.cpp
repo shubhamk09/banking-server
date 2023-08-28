@@ -39,29 +39,34 @@ int main(int argc, char** argv)
             }
         })"_json;
         
-        json jsonString2 = R"({
-            "table": "Employee",
-            "values: ["MYSE00102", "Shubham Kalihar", "Shannu", "accountant", "Ammana Mane"]
-        })"_json;
+        // json jsonString2 = R"({
+        //     "table": "Employee",
+        //     "values: ["MYSE00102", "Shubham Kalihar", "Shannu", "accountant", "Ammana Mane"]
+        // })"_json;
         std::cout<<jsonString1.dump()<<std::endl;
         // Initializing Logger
         // std::shared_ptr<Banking::Logger> logger = std::make_shared<Banking::Logger>();
+        std::cout<<"1"<<std::endl;
         Banking::Logger::Init();
         Banking::connection_shptr ptr{std::make_shared<Banking::Connection>()};
+        std::cout<<"2"<<std::endl;
         // Testing Employee
         BANKING_LOGGER_INFO("Testing Employee");
         std::shared_ptr<Banking::EmployeeOperations> dbO{std::make_shared<Banking::EmployeeOperations>(ptr)};
+        std::cout<<"3"<<std::endl;
         std::string empid{"MYSE00101"};
         std::string name{dbO->getEmployeeNameById(empid)};
         std::string password{dbO->getEmployeePasswordById(empid)};
         std::string designation{dbO->getEmployeeDesignationById(empid)};
         std::string address{dbO->getEmployeeAddressById(empid)};
         std::string branch{dbO->getEmployeeBranchById(empid)};
+        std::cout<<"4"<<std::endl;
         //Changing employee name
         BANKING_LOGGER_INFO("Testing Changing Employee Name");
         std::string newName {"Shubha ND"};
         dbO->setEmployeeNameById(empid, newName);
         std::cout<<"new name "<<dbO->getEmployeeNameById(empid)<<std::endl;
+        std::cout<<"5"<<std::endl;
         // Testing Branch
         BANKING_LOGGER_INFO("Testing Branch");
         std::shared_ptr<Banking::BranchOperations> db1{std::make_shared<Banking::BranchOperations>(ptr)};\
@@ -95,7 +100,8 @@ int main(int argc, char** argv)
     }
     catch(const std::exception& e)
     {
-        BANKING_LOGGER_ERROR("{}", e.what());
+        //BANKING_LOGGER_ERROR("{}", e.what());
+        std::cout<<e.what()<<std::endl;
     }
     
     
