@@ -77,6 +77,15 @@ INSERT INTO "main"."Employee"
 ("Employee_id", "Employee_name", "Employee_password", "Employee_designation", "Employee_address")
 VALUES ('MYS00101', 'Shubham Kalihari', 'shubham', 'Manager', 'Ammana Mane');
 
+INSERT INTO "main"."Employee"
+("Employee_id", "Employee_name", "Employee_password", "Employee_designation", "Employee_address")
+VALUES ('MYSE00102', 'Shubham Kalihari', 'Shannu', 'accountant', 'Ammana Mane');
+
+json jsonString1 = R"({
+            "table": "Employee",
+            "values: ["MYSE00102", "Shubham Kalihar", "Shannu", "accountant", "Ammana Mane"]
+        })"_json;
+
 INSERT INTO "main"."Customer"
 ("Customer_id", "Customer_name", "Cutomer_password", "Customer_account", "Customer_address", "Customer_branch")
 VALUES ('MYSC00101', 'Nitin Tyagi', 'abc123', 2023030801, 'Hebbal, Mysore', 'MYS001');

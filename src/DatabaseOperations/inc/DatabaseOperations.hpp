@@ -15,6 +15,7 @@
 #include <vector>
 #include "Connection.hpp"
 #include "Logger.hpp"
+#include <nlohmann/json.hpp>
 
 namespace Banking
 {
@@ -35,6 +36,10 @@ public:
 
     std::string buildSelectionQuery(std::string &colName, std::string &searchVal, std::string &tableName);
     std::string buildSelectionQuery(std::string &colName, std::string &searchVal, std::string &tableName, std::string &seearchOn);
+    void buildUpdateQuery(std::string &colName, std::string &searchVal, std::string &updateVal, std::string &tableName);
+    void buildUpdateQuery(std::string &colName, std::string &searchVal, std::string &updateVal, std::string &tableName, std::string &seearchOn);
+    void buildInsertionQery(nlohmann::json &data);
+    void buildDeleteQuery(std::string &searchVal, std::string &tableName, std::string &seearchOn);
     static int callbackName(void* data, int column_count, char** column_values, char** column_names);
 };
 
