@@ -57,9 +57,10 @@ int main(int argc, char** argv)
         std::string designation{dbO->getEmployeeDesignationById(empid)};
         std::string address{dbO->getEmployeeAddressById(empid)};
         std::string branch{dbO->getEmployeeBranchById(empid)};
-        //Changing employee name
-        BANKING_LOGGER_INFO("Testing Changing Employee Name");
+        std::cout<<"Employee Name "<<name<<std::endl;
+
         //Adding employee
+        BANKING_LOGGER_INFO("Testing adding new Employee Name");
         std::string empid2{"MYSE00102"};
         std::string name2{"Shubham Kalihari"};
         std::string password2{"Shannu"};
@@ -68,23 +69,28 @@ int main(int argc, char** argv)
         std::string branch2{"MYS001"};
         Banking::Employee newEmployee {empid2, name2, password2, branch2, address2, designation2};
         dbO->addEmployee(std::move(newEmployee));
+        std::cout<<dbO->getEmployeeNameById(empid2)<<" New employee added"<<std::endl;
+        //Changing employee name
+        BANKING_LOGGER_INFO("Testing Changing Employee Name");
+        std::string newName {"Yukku"};
+        dbO->setEmployeeNameById(empid2, newName);
+        std::cout<<"Updated name for "<<empid2<<" "<<dbO->getEmployeeNameById(empid2)<<std::endl;
+        //Deleting employee
         dbO->deleteEmployee(empid2);
-        // Banking::Employee neEmpl{"MYSE00102", "Shubham Kalihari", "Shannu", "MYS001", "Varsha Enclave", "Cashier"};
-        std::string newName {"Shubha ND"};
-        dbO->setEmployeeNameById(empid, newName);
-        std::cout<<"new name "<<dbO->getEmployeeNameById(empid)<<std::endl;
+
         // Testing Branch
         BANKING_LOGGER_INFO("Testing Branch");
         std::shared_ptr<Banking::BranchOperations> db1{std::make_shared<Banking::BranchOperations>(ptr)};\
-        std::cout<<db1->getBranchNameById(branch)<<std::endl;
-        std::cout<<db1->getBranchCityById(branch)<<std::endl;
-        std::cout<<db1->getBranchAddressById(branch)<<std::endl;
-        std::cout<<db1->getBranchManagerById(branch)<<std::endl;
-        std::cout<<db1->isActiveBranch(branch)<<std::endl;
+        std::cout<<"Branch Name "<<db1->getBranchNameById(branch)<<std::endl;
+        std::cout<<"Branch City "<<db1->getBranchCityById(branch)<<std::endl;
+        std::cout<<"Branch Address "<<db1->getBranchAddressById(branch)<<std::endl;
+        std::cout<<"Branch Manager "<<db1->getBranchManagerById(branch)<<std::endl;
+        std::cout<<"Branch Active "<<db1->isActiveBranch(branch)<<std::endl;
+        
+        std::shared_ptr<Banking::User> newUser {Banking::User::createUser(empid, name, password, address, branch, designation)};
+        std::cout<<"Using user class for employee "<<newUser->getName()<<std::endl;
         // Testing Customer
         BANKING_LOGGER_INFO("Testing Customer");
-        std::shared_ptr<Banking::User> newUser {Banking::User::createUser(empid, name, password, address, branch, designation)};
-        std::cout<<newUser->getName()<<std::endl;
         std::shared_ptr<Banking::CustomerOperations> db2{std::make_shared<Banking::CustomerOperations>(ptr)};
         empid = "MYSC00101";
         name = db2->getCustomerNameById(empid);
@@ -93,14 +99,14 @@ int main(int argc, char** argv)
         address = db2->getCustomerAddressById(empid);
         branch = db2->getCustomerBranchById(empid);
         newUser = Banking::User::createUser(empid, name, password, address, branch, account);
-        std::cout<<newUser->getName()<<std::endl;
+        std::cout<<"Using user class for cutomer "<<newUser->getName()<<std::endl;
         // Testing Accounts
         BANKING_LOGGER_INFO("Testing Accounts");
         std::shared_ptr<Banking::AccountOperations> db3{std::make_shared<Banking::AccountOperations>(ptr)};
-        std::cout<<db3->getAccountBalanceById(account)<<std::endl;
-        std::cout<<db3->getAccountTransactionsById(account)<<std::endl;
-        std::cout<<db3->getAccountBranchById(account)<<std::endl;
-        std::cout<<db3->isActiveAccount(account)<<std::endl;
+        std::cout<<"Acc Balance "<<db3->getAccountBalanceById(account)<<std::endl;
+        std::cout<<"Acc Transaction "<<db3->getAccountTransactionsById(account)<<std::endl;
+        std::cout<<"Acc Branch "<<db3->getAccountBranchById(account)<<std::endl;
+        std::cout<<"Acc Active "<<db3->isActiveAccount(account)<<std::endl;
         
 
     }

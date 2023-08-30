@@ -65,10 +65,9 @@ std::string Banking::BranchOperations::getBranchAddressById(std::string &branchI
  * @return std::string 
  */
 std::string Banking::BranchOperations::getBranchManagerById(std::string &branchId){
-    std::string colName = "Employee_id";
-    std::string tableName = "EmployeeToBranch";
-    std::string searchOn = "Branch_id";
-    std::string statement_string = Banking::DatabaseOperations::buildSelectionQuery(colName, branchId, tableName, searchOn);
+    std::string colName = "Branch_manager";
+    std::string tableName = "Branch";
+    std::string statement_string = Banking::DatabaseOperations::buildSelectionQuery(colName, branchId, tableName);
     return statement_string;
 }
 
