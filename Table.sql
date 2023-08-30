@@ -9,12 +9,14 @@ CREATE TABLE "Account" (
 );
 
 CREATE TABLE "Branch" (
-    "Branch_id" TEXT NOT NULL UNIQUE,
-    "Branch_name" TEXT NOT NULL,
-    "Branch_city" TEXT NOT NULL,
-    "Branch_address" TEXT NOT NULL,
-    "Branch_active" TEXT NOT NULL DEFAULT 'INACTIVE',
-    PRIMARY KEY ("Branch_id")
+	"Branch_id"	TEXT NOT NULL UNIQUE,
+	"Branch_name"	TEXT NOT NULL,
+	"Branch_city"	TEXT NOT NULL,
+	"Branch_address"	TEXT NOT NULL,
+	"Branch_active"	TEXT NOT NULL DEFAULT 'INACTIVE',
+	"Branch_manager"	TEXT,
+	PRIMARY KEY("Branch_id"),
+	FOREIGN KEY("Branch_manager") REFERENCES "Employee"("Employee_id")
 );
 
 CREATE TABLE "Customer" (
