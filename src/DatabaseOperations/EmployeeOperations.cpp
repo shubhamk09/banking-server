@@ -172,8 +172,12 @@ void Banking::EmployeeOperations::addEmployee(Banking::Employee &&empl){
     Banking::DatabaseOperations::buildInsertionQery(EmployeeToBranchData);
 }
 
+/**
+ * @brief 
+ * 
+ * @param empId 
+ */
 void Banking::EmployeeOperations::deleteEmployee(std::string &empId){
-    // std::string searchVal = empId;
     std::string tableName = "Employee";
     std::string searchOn = "Employee_id";
     Banking::DatabaseOperations::buildDeleteQuery(empId, tableName, searchOn);

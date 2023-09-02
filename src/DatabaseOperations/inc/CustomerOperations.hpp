@@ -9,6 +9,7 @@
  * 
  */
 #include "DatabaseOperations.hpp"
+#include "Customer.hpp"
 
 namespace Banking
 {
@@ -24,11 +25,18 @@ public:
     CustomerOperations(CustomerOperations&&) = default;
     CustomerOperations& operator=(CustomerOperations&&) = default;
 public:
-    std::string getCustomerNameById(std::string &empId);
-    std::string getCustomerPasswordById(std::string &empId);
-    std::string getCustomerAccountById(std::string &empId);
-    std::string getCustomerAddressById(std::string &empId);
-    std::string getCustomerBranchById(std::string &empId);
+    std::string getCustomerNameById(std::string &cstId);
+    std::string getCustomerPasswordById(std::string &cstId);
+    std::string getCustomerAccountById(std::string &cstId);
+    std::string getCustomerAddressById(std::string &cstId);
+    std::string getCustomerBranchById(std::string &cstId);
+    void setCustomerNameById(std::string &cstId, std::string& newName);
+    void setCustomerPasswordById(std::string &cstId, std::string& newPassword);
+    void setCustomerAccountById(std::string &cstId, std::string newAccount);
+    void setCustomerAddressById(std::string &cstId, std::string& newAddress);
+    void setCustomerBranchById(std::string &cstId, std::string &branchId);
+    void addCustomer(Banking::Customer &&cust);
+    void deleteCustomer(std::string &cstId);
     
 };  
 
