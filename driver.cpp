@@ -100,6 +100,31 @@ int main(int argc, char** argv)
         branch = db2->getCustomerBranchById(empid);
         newUser = Banking::User::createUser(empid, name, password, address, branch, account);
         std::cout<<"Using user class for cutomer "<<newUser->getName()<<std::endl;
+        //Changing customer name
+        BANKING_LOGGER_INFO("Testing Customer updations");
+        std::string newCust{"Sayani"};
+        db2->setCustomerNameById(empid, newCust);
+        std::cout<<"New Customer name: "<<db2->getCustomerNameById(empid)<<std::endl;
+        // Change back to old one
+        std::string oldCustomer{"Nitin Tyagi"};
+        db2->setCustomerNameById(empid, oldCustomer);
+        std::cout<<"Old Customer name: "<<db2->getCustomerNameById(empid)<<std::endl;
+        // Testing Customer insertions
+        BANKING_LOGGER_INFO("Testing Customer Insertion");
+        std::string newCustId{"MYSC00102"};
+        newCust="Sobin Rajan";
+        std::string newPass{"sayani"};
+        std::string newBranch{"MYS001"};
+        std::string newAdd{"Kerela"};
+        std::string newAccountNo{"20230902MYS00102"};
+
+        Banking::Customer newCustomer{newCustId, newCust, newPass, newBranch, newAdd, newAccountNo};
+        db2->addCustomer(std::move(newCustomer));
+        std::cout<<"New Customer info: "<<db2->getCustomerNameById(newCustId)<<std::endl;
+        // Delete Customer
+        BANKING_LOGGER_INFO("Testing Customer Deletion");
+        db2->deleteCustomer(newCustId);
+
         // Testing Accounts
         BANKING_LOGGER_INFO("Testing Accounts");
         std::shared_ptr<Banking::AccountOperations> db3{std::make_shared<Banking::AccountOperations>(ptr)};
