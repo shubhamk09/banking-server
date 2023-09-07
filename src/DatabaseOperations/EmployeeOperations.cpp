@@ -91,7 +91,7 @@ std::string Banking::EmployeeOperations::getEmployeeBranchById(std::string &empI
  * @param empId 
  * @param newName 
  */
-void Banking::EmployeeOperations::setEmployeeNameById(std::string &empId, std::string& newName){
+void Banking::EmployeeOperations::setEmployeeNameById(std::string &empId, std::string &newName){
     std::string colName = "Employee_name";
     std::string tableName = "Employee";
     Banking::DatabaseOperations::buildUpdateQuery(colName, empId, newName, tableName);
@@ -103,7 +103,7 @@ void Banking::EmployeeOperations::setEmployeeNameById(std::string &empId, std::s
  * @param empId 
  * @param newPassword 
  */
-void Banking::EmployeeOperations::setEmployeePasswordById(std::string &empId, std::string& newPassword){
+void Banking::EmployeeOperations::setEmployeePasswordById(std::string &empId, std::string &newPassword){
     std::string colName = "Employee_password";
     std::string tableName = "Employee";
     Banking::DatabaseOperations::buildUpdateQuery(colName, empId, newPassword, tableName);
@@ -115,7 +115,7 @@ void Banking::EmployeeOperations::setEmployeePasswordById(std::string &empId, st
  * @param empId 
  * @param designation 
  */
-void Banking::EmployeeOperations::setEmployeeDesignationById(std::string &empId, std::string designation){
+void Banking::EmployeeOperations::setEmployeeDesignationById(std::string &empId, std::string &designation){
     std::string colName = "Employee_designation";
     std::string tableName = "Employee";
     Banking::DatabaseOperations::buildUpdateQuery(colName, empId, designation, tableName);
@@ -127,7 +127,7 @@ void Banking::EmployeeOperations::setEmployeeDesignationById(std::string &empId,
  * @param empId 
  * @param newAddress 
  */
-void Banking::EmployeeOperations::setEmployeeAddressById(std::string &empId, std::string& newAddress){
+void Banking::EmployeeOperations::setEmployeeAddressById(std::string &empId, std::string &newAddress){
     std::string colName = "Employee_address";
     std::string tableName = "Employee";
     Banking::DatabaseOperations::buildUpdateQuery(colName, empId, newAddress, tableName);
