@@ -86,6 +86,20 @@ int main(int argc, char** argv)
         std::cout<<"Branch Address "<<db1->getBranchAddressById(branch)<<std::endl;
         std::cout<<"Branch Manager "<<db1->getBranchManagerById(branch)<<std::endl;
         std::cout<<"Branch Active "<<db1->isActiveBranch(branch)<<std::endl;
+
+        //Testing Branch Insertion
+        BANKING_LOGGER_INFO("Testing Branch Insertion");
+        db1->addBranch("RAI001", "Mowa", "Raipur", "Dubey Colony","");
+        std::string newBranch1{"RAI001"};
+        std::cout<<"Name of newly created branch "<<db1->getBranchNameById(newBranch1)<<std::endl;
+        //Testing Branch Insertion
+        BANKING_LOGGER_INFO("Testing Branch Updation");
+        std::string newBranchName{"Shankar Nagar"};
+        db1->setBranchNameById(newBranch1, newBranchName);
+        std::cout<<"Name of newly created branch changed to "<<db1->getBranchNameById(newBranch1)<<std::endl;
+        //Testing Branch Deletion
+        BANKING_LOGGER_INFO("Testing Branch Deletion");
+        db1->deleteBranch(newBranch1);
         
         std::shared_ptr<Banking::User> newUser {Banking::User::createUser(empid, name, password, address, branch, designation)};
         std::cout<<"Using user class for employee "<<newUser->getName()<<std::endl;

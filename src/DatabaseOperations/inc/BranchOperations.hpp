@@ -29,6 +29,12 @@ public:
     std::string getBranchAddressById(std::string &branchId);
     std::string getBranchManagerById(std::string &branchId);
     bool isActiveBranch(std::string &branchId);
+    void setBranchNameById(std::string &branchId, std::string &newName);
+    void setBranchCityById(std::string &branchId, std::string &newCity);
+    void setBranchAddressById(std::string &branchId, std::string &newAdd);
+    void setBranchManagerById(std::string &branchId, std::string &newBranchManagerId);
+    void addBranch(const std::string &branchId, const std::string &newName, const std::string &newCity, const std::string &newAdd, const std::string &newBranchManagerId);
+    void deleteBranch(std::string &branchId);
     
 };  
 

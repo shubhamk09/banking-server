@@ -142,8 +142,6 @@ void Banking::DatabaseOperations::buildInsertionQery(nlohmann::json &data){
         BANKING_LOGGER_ERROR("Values passed is not an array");
     }
     
-    
-
 }
 
 /**
