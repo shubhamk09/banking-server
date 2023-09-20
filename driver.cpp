@@ -38,6 +38,20 @@ int main(int argc, char** argv)
                 "value": 42.99
             }
         })"_json;
+        json jsonString2 = R"({
+            "pi": 3.141,
+            "happy": true,
+            "name": "shubham",
+            "nothing": null,
+            "answer": {
+                "everything": 42
+            },
+            "list": [1, 0, 2],
+            "object": {
+                "currency": "USD",
+                "value": 42.99
+            }
+        })"_json;
         
         // json jsonString2 = R"({
         //     "table": "Employee",
@@ -114,6 +128,7 @@ int main(int argc, char** argv)
         branch = db2->getCustomerBranchById(empid);
         newUser = Banking::User::createUser(empid, name, password, address, branch, account);
         std::cout<<"Using user class for cutomer "<<newUser->getName()<<std::endl;
+
         //Changing customer name
         BANKING_LOGGER_INFO("Testing Customer updations");
         std::string newCust{"Sayani"};
@@ -143,9 +158,25 @@ int main(int argc, char** argv)
         BANKING_LOGGER_INFO("Testing Accounts");
         std::shared_ptr<Banking::AccountOperations> db3{std::make_shared<Banking::AccountOperations>(ptr)};
         std::cout<<"Acc Balance "<<db3->getAccountBalanceById(account)<<std::endl;
-        std::cout<<"Acc Transaction "<<db3->getAccountTransactionsById(account)<<std::endl;
+        std::cout<<"Acc Transaction "<<db3->getAccountTransactionsById(account).dump()<<std::endl;
         std::cout<<"Acc Branch "<<db3->getAccountBranchById(account)<<std::endl;
         std::cout<<"Acc Active "<<db3->isActiveAccount(account)<<std::endl;
+        std::cout<<"Account Testing done"<<std::endl;
+        //Testing adding new accounts
+        BANKING_LOGGER_INFO("Testing Insertion");
+        std::string newAccNum{"20230914MYS00103"};
+        std::string newBal{"2000"};
+        bool activeornot{true};
+        db3->addAccount(newAccNum, newBal, jsonString1, newBranch, activeornot);
+        std::cout<<"Acc Transaction New "<<db3->getAccountTransactionsById(newAccNum).dump()<<std::endl;
+        //Testing accounts updataion
+        BANKING_LOGGER_INFO("Testing Updation");
+        //std::string accNum{"20230902MYS00102"};
+        db3->setAccountTransactionById(newAccNum,jsonString2);
+        std::cout<<"Acc Transaction updated "<<db3->getAccountTransactionsById(newAccountNo).dump()<<std::endl;
+        //Testing accounts deletion
+        BANKING_LOGGER_INFO("Testing Deletion");
+        db3->deleteAccount(newAccNum);
         
 
     }
