@@ -89,6 +89,9 @@ int main(int argc, char** argv)
         std::string newName {"Yukku"};
         dbO->setEmployeeNameById(empid2, newName);
         std::cout<<"Updated name for "<<empid2<<" "<<dbO->getEmployeeNameById(empid2)<<std::endl;
+        //Testing updating the the manager
+        std::string newDes{"Manager"};
+        dbO->setEmployeeDesignationById(empid2, newDes);
         //Deleting employee
         dbO->deleteEmployee(empid2);
 
@@ -173,7 +176,7 @@ int main(int argc, char** argv)
         BANKING_LOGGER_INFO("Testing Updation");
         //std::string accNum{"20230902MYS00102"};
         db3->setAccountTransactionById(newAccNum,jsonString2);
-        std::cout<<"Acc Transaction updated "<<db3->getAccountTransactionsById(newAccountNo).dump()<<std::endl;
+        std::cout<<"Acc Transaction updated "<<db3->getAccountTransactionsById(newAccNum).dump()<<std::endl;
         //Testing accounts deletion
         BANKING_LOGGER_INFO("Testing Deletion");
         db3->deleteAccount(newAccNum);
@@ -182,7 +185,7 @@ int main(int argc, char** argv)
     }
     catch(const std::exception& e)
     {
-        BANKING_LOGGER_ERROR("{}", e.what());
+        BANKING_LOGGER_ERROR("Error is {}", e.what());
     }
     
     

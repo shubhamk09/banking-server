@@ -28,8 +28,8 @@ Banking::AccountOperations::AccountOperations(connection_shptr &connPtr): Bankin
 std::string Banking::AccountOperations::getAccountBalanceById(std::string &accountId){
     std::string colName = "Account_balance";
     std::string tableName = "Account";
-    std::string statement_string = Banking::DatabaseOperations::buildSelectionQuery(colName, accountId, tableName);
-    return statement_string;
+    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery(colName, accountId, tableName)};
+    return columnVals.at(0);
 }
 
 /**
@@ -41,8 +41,8 @@ std::string Banking::AccountOperations::getAccountBalanceById(std::string &accou
 nlohmann::json Banking::AccountOperations::getAccountTransactionsById(std::string &accountId){
     std::string colName = "Account_transactions";
     std::string tableName = "Account";
-    std::string statement_string_hex = Banking::DatabaseOperations::buildSelectionQuery(colName, accountId, tableName);
-
+    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery(colName, accountId, tableName)};
+    std::string statement_string_hex {columnVals.at(0)};
     // Convert the hexadecimal string to binary data
     nlohmann::json transactions{createTransactionJson(statement_string_hex, accountId)};
     
@@ -58,8 +58,8 @@ nlohmann::json Banking::AccountOperations::getAccountTransactionsById(std::strin
 std::string Banking::AccountOperations::getAccountBranchById(std::string &accountId){
     std::string colName = "Account_branch";
     std::string tableName = "Account";
-    std::string statement_string = Banking::DatabaseOperations::buildSelectionQuery(colName, accountId, tableName);
-    return statement_string;
+    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery(colName, accountId, tableName)};
+    return columnVals.at(0);
 }
 
 /**
@@ -72,8 +72,8 @@ std::string Banking::AccountOperations::getAccountBranchById(std::string &accoun
 bool Banking::AccountOperations::isActiveAccount(std::string &accountId){
     std::string colName = "Account_active";
     std::string tableName = "Account";
-    std::string statement_string = Banking::DatabaseOperations::buildSelectionQuery(colName, accountId, tableName);
-    if(statement_string == "ACTIVE"){
+    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery(colName, accountId, tableName)};
+    if(columnVals.at(0) == "ACTIVE"){
         return true;
     }
     return false;
@@ -101,9 +101,7 @@ void Banking::AccountOperations::setAccountBalanceById(std::string &accNumber, i
 void Banking::AccountOperations::setAccountTransactionById(std::string &accNumber, nlohmann::json &newTransaction){
     std::string colName = "Account_transactions";
     std::string tableName = "Account";
-
     std::string hexJsonData = createHexJson(newTransaction);
-
     Banking::DatabaseOperations::buildUpdateQuery(colName, accNumber, hexJsonData, tableName);
 }
 
@@ -215,23 +213,28 @@ std::string Banking::AccountOperations::createHexJson(nlohmann::json &accTransac
  */
 nlohmann::json Banking::AccountOperations::createTransactionJson(std::string &hexJson, std::string &accNumber){
     std::vector<uint8_t> binaryData;
-    for (size_t i = 0; i < hexJson.length(); i += 2) {
+    nlohmann::json transactions = {};
+    if(hexJson!="NULL"){
+        for (size_t i = 0; i < hexJson.length(); i += 2) {
         uint8_t byte = std::stoi(hexJson.substr(i, 2), nullptr, 16);
         binaryData.push_back(byte);
-    }
-    nlohmann::json transactions;
-    if (!binaryData.empty())
-    {
-        try {
-            std::string jsonData(binaryData.begin(), binaryData.end());
-            transactions = nlohmann::json::parse(jsonData);
-        } catch (const std::exception& e) {
-            std::cerr << "JSON parsing error: " << e.what() << std::endl;
+        }
+        if (!binaryData.empty())
+        {
+            try {
+                std::string jsonData(binaryData.begin(), binaryData.end());
+                transactions = nlohmann::json::parse(jsonData);
+            } catch (const std::exception& e) {
+                std::cerr << "JSON parsing error: " << e.what() << std::endl;
+            }
+        }
+        else
+        {
+            BANKING_LOGGER_ERROR("Error transaction not available for {}", accNumber);
         }
     }
-    else
-    {
-        BANKING_LOGGER_ERROR("Error transaction not available for {}", accNumber);
+    else{
+        BANKING_LOGGER_INFO("Transaction not available for {}", accNumber);
     }
     return transactions;
 }
