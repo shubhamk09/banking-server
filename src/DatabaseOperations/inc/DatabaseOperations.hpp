@@ -34,8 +34,8 @@ public:
     DatabaseOperations& operator=(DatabaseOperations&&) = default;
 public:
 
-    std::string buildSelectionQuery(std::string &colName, std::string &searchVal, std::string &tableName);
-    std::string buildSelectionQuery(std::string &colName, std::string &searchVal, std::string &tableName, std::string &seearchOn);
+    std::vector<std::string> buildSelectionQuery(std::string &colName, std::string &searchVal, std::string &tableName);
+    std::vector<std::string> buildSelectionQuery(std::string &colName, std::string &searchVal, std::string &tableName, std::string &seearchOn);
     void buildUpdateQuery(std::string &colName, std::string &searchVal, std::string &updateVal, std::string &tableName);
     void buildUpdateQuery(std::string &colName, std::string &searchVal, std::string &updateVal, std::string &tableName, std::string &seearchOn);
     void buildInsertionQery(nlohmann::json &data);

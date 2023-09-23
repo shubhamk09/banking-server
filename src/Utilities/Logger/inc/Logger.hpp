@@ -29,6 +29,6 @@ namespace Banking{
 
 }
 #define BANKING_LOGGER_INFO(...)    ::Banking::Logger::GetLogger()->info(__VA_ARGS__)
-#define BANKING_LOGGER_ERROR(...)    ::Banking::Logger::GetLogger()->error(__VA_ARGS__)
+#define BANKING_LOGGER_ERROR(...)    ::Banking::Logger::GetLogger()->error("[{}:{} {}] ", __FILE__, __LINE__, __FUNCTION__); ::Banking::Logger::GetLogger()->error(__VA_ARGS__)
 #define BANKING_LOGGER_WARN(...)    ::Banking::Logger::GetLogger()->warn(__VA_ARGS__)
 #endif //BANKING_LOGGER_HPP

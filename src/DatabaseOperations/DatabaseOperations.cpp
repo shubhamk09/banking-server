@@ -27,7 +27,7 @@ Banking::DatabaseOperations::DatabaseOperations(connection_shptr &connPtr):connP
  * @param tableName 
  * @return std::string 
  */
-std::string Banking::DatabaseOperations::buildSelectionQuery(std::string &colName, std::string &searchVal, std::string &tableName){
+std::vector<std::string> Banking::DatabaseOperations::buildSelectionQuery(std::string &colName, std::string &searchVal, std::string &tableName){
     std::string searchById{tableName+"_id"};
     return buildSelectionQuery(colName, searchVal, tableName, searchById);
 }
@@ -41,12 +41,14 @@ std::string Banking::DatabaseOperations::buildSelectionQuery(std::string &colNam
  * @param seearchOn 
  * @return std::string 
  */
-std::string Banking::DatabaseOperations::buildSelectionQuery(std::string &colName, std::string &searchVal, std::string &tableName, std::string &seearchOn){
+std::vector<std::string> Banking::DatabaseOperations::buildSelectionQuery(std::string &colName, std::string &searchVal, std::string &tableName, std::string &seearchOn){
     std::string statement_string = "SELECT "+colName+" from "+tableName+" WHERE "+seearchOn+" = '"+searchVal+"'";
     BANKING_LOGGER_INFO("Executing command {}", statement_string);
     char* messageError;
     std::string returnVal;
-    int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), callbackName, static_cast<void*>(&returnVal), &messageError);
+    std::vector<std::string> container;
+    // int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), callbackName, static_cast<void*>(&returnVal), &messageError);
+    int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), callbackName, &container, &messageError);
     if (exit != SQLITE_OK) 
     {
         BANKING_LOGGER_ERROR("Error while getting Data for {} in Table {} for {}", colName, tableName, searchVal);
@@ -56,7 +58,7 @@ std::string Banking::DatabaseOperations::buildSelectionQuery(std::string &colNam
     {
         BANKING_LOGGER_INFO("Data Retrival for {} in table {} is successfull", colName, tableName);
     }
-    return returnVal;
+    return container;
 }
 
 /**
@@ -178,14 +180,14 @@ void Banking::DatabaseOperations::buildDeleteQuery(std::string &searchVal, std::
  * @return int 
  */
 int Banking::DatabaseOperations::callbackName(void* data, int column_count, char** column_values, char** column_names){
-    std::string* returnVal = static_cast<std::string*>(data);
+    auto &container = *static_cast<std::vector<std::string>*>(data);
     if (column_count >0 && column_values[0]!=nullptr)
     {
-        *returnVal = std::string(column_values[0]);
+        container.push_back(column_values[0]);
     }
     else
     {
-        *returnVal = "";
+        container.push_back("NULL");
     }
     
     return 0;

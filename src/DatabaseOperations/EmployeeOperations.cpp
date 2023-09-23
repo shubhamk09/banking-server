@@ -28,8 +28,8 @@ Banking::EmployeeOperations::EmployeeOperations(connection_shptr &connPtr): Bank
 std::string Banking::EmployeeOperations::getEmployeeNameById(std::string &empId){
     std::string colName = "Employee_name";
     std::string tableName = "Employee";
-    std::string statement_string = Banking::DatabaseOperations::buildSelectionQuery(colName, empId, tableName);
-    return statement_string;
+    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery(colName, empId, tableName)};
+    return columnVals.at(0);
 }
 
 /**
@@ -41,8 +41,8 @@ std::string Banking::EmployeeOperations::getEmployeeNameById(std::string &empId)
 std::string Banking::EmployeeOperations::getEmployeePasswordById(std::string &empId){
     std::string colName = "Employee_password";
     std::string tableName = "Employee";
-    std::string statement_string = Banking::DatabaseOperations::buildSelectionQuery(colName, empId, tableName);
-    return statement_string;
+    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery(colName, empId, tableName)};
+    return columnVals.at(0);
 }
 
 /**
@@ -54,8 +54,8 @@ std::string Banking::EmployeeOperations::getEmployeePasswordById(std::string &em
 std::string Banking::EmployeeOperations::getEmployeeDesignationById(std::string &empId){
     std::string colName = "Employee_designation";
     std::string tableName = "Employee";
-    std::string statement_string = Banking::DatabaseOperations::buildSelectionQuery(colName, empId, tableName);
-    return statement_string;
+    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery(colName, empId, tableName)};
+    return columnVals.at(0);
 }
 
 /**
@@ -67,8 +67,8 @@ std::string Banking::EmployeeOperations::getEmployeeDesignationById(std::string 
 std::string Banking::EmployeeOperations::getEmployeeAddressById(std::string &empId){
     std::string colName = "Employee_address";
     std::string tableName = "Employee";
-    std::string statement_string = Banking::DatabaseOperations::buildSelectionQuery(colName, empId, tableName);
-    return statement_string;
+    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery(colName, empId, tableName)};
+    return columnVals.at(0);
 }
 
 /**
@@ -81,8 +81,8 @@ std::string Banking::EmployeeOperations::getEmployeeBranchById(std::string &empI
     std::string colName = "Branch_id";
     std::string tableName = "EmployeeToBranch";
     std::string searchOn = "Employee_id";
-    std::string statement_string = Banking::DatabaseOperations::buildSelectionQuery(colName, empId, tableName, searchOn);
-    return statement_string;
+    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery(colName, empId, tableName, searchOn)};
+    return columnVals.at(0);
 }
 
 /**
@@ -118,6 +118,27 @@ void Banking::EmployeeOperations::setEmployeePasswordById(std::string &empId, st
 void Banking::EmployeeOperations::setEmployeeDesignationById(std::string &empId, std::string &designation){
     std::string colName = "Employee_designation";
     std::string tableName = "Employee";
+    
+    if (designation == "Manager")
+    {
+            std::string checkColName = "Employee_id";
+            std::string checkTableName = "EmployeeToBranch";
+            std::string checkSearchOn = "Branch_id";
+            std::string searchOnBranchValue{getEmployeeBranchById(empId)};
+            std::vector<std::string> employeeInBranch{Banking::DatabaseOperations::buildSelectionQuery(checkColName, searchOnBranchValue, checkTableName, checkSearchOn)};
+            for (auto employee: employeeInBranch){
+                std::cout<<employee<<std::endl;
+                if (getEmployeeDesignationById(employee)=="Manager")
+                {
+                    BANKING_LOGGER_ERROR("Cannort assign Manager to {}",empId);
+                    return;
+                }
+            }
+            
+            
+            
+    }
+    
     Banking::DatabaseOperations::buildUpdateQuery(colName, empId, designation, tableName);
 }
 
