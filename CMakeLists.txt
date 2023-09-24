@@ -4,8 +4,8 @@
 # you pick up the best policies.
 cmake_minimum_required(VERSION 3.1...3.26)
 
-# Set C++ standard to C++ 11
-set(CMAKE_CXX_STANDARD 11)
+# Set C++ standard to C++ 17
+set(CMAKE_CXX_STANDARD 17)
 
 # This is your project statement. You should always list languages;
 # Listing the version is nice here since it sets lots of useful variables
@@ -20,7 +20,7 @@ project(
 # Find packages go here.
 include(${CMAKE_CURRENT_SOURCE_DIR}/Cmake/LibList.cmake)
 # You should usually split this into folders, but this is a simple example
-add_subdirectory(Src)
+add_subdirectory(src)
 # This is a "default" library, and will match the *** variable setting.
 # Other common choices are STATIC, SHARED, and MODULE
 # Including header files here helps IDEs but is not required.
