@@ -25,10 +25,8 @@ Banking::CustomerOperations::CustomerOperations(connection_shptr &connPtr): Bank
  * @param cstId 
  * @return std::string 
  */
-std::string Banking::CustomerOperations::getCustomerNameById(std::string &cstId){
-    std::string colName = "Customer_name";
-    std::string tableName = "Customer";
-    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery(colName, cstId, tableName)};
+std::string Banking::CustomerOperations::getCustomerNameById(const std::string &cstId){
+    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery("Customer_name", cstId, "Customer")};
     return columnVals.at(0);
 }
 
@@ -38,10 +36,8 @@ std::string Banking::CustomerOperations::getCustomerNameById(std::string &cstId)
  * @param cstId 
  * @return std::string 
  */
-std::string Banking::CustomerOperations::getCustomerPasswordById(std::string &cstId){
-    std::string colName = "Customer_password";
-    std::string tableName = "Customer";
-    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery(colName, cstId, tableName)};
+std::string Banking::CustomerOperations::getCustomerPasswordById(const std::string &cstId){
+    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery("Customer_password", cstId, "Customer")};
     return columnVals.at(0);
 }
 
@@ -51,10 +47,8 @@ std::string Banking::CustomerOperations::getCustomerPasswordById(std::string &cs
  * @param cstId 
  * @return std::string 
  */
-std::string Banking::CustomerOperations::getCustomerAccountById(std::string &cstId){
-    std::string colName = "Customer_account";
-    std::string tableName = "Customer";
-    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery(colName, cstId, tableName)};
+std::string Banking::CustomerOperations::getCustomerAccountById(const std::string &cstId){
+    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery("Customer_account", cstId, "Customer")};
     return columnVals.at(0);
 }
 
@@ -64,10 +58,8 @@ std::string Banking::CustomerOperations::getCustomerAccountById(std::string &cst
  * @param cstId 
  * @return std::string 
  */
-std::string Banking::CustomerOperations::getCustomerAddressById(std::string &cstId){
-    std::string colName = "Customer_address";
-    std::string tableName = "Customer";
-    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery(colName, cstId, tableName)};
+std::string Banking::CustomerOperations::getCustomerAddressById(const std::string &cstId){
+    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery("Customer_address", cstId, "Customer")};
     return columnVals.at(0);
 }
 
@@ -77,10 +69,8 @@ std::string Banking::CustomerOperations::getCustomerAddressById(std::string &cst
  * @param cstId 
  * @return std::string 
  */
-std::string Banking::CustomerOperations::getCustomerBranchById(std::string &cstId){
-    std::string colName = "Customer_branch";
-    std::string tableName = "Customer";
-    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery(colName, cstId, tableName)};
+std::string Banking::CustomerOperations::getCustomerBranchById(const std::string &cstId){
+    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery("Customer_branch", cstId, "Customer")};
     return columnVals.at(0);
 }
 
@@ -90,10 +80,8 @@ std::string Banking::CustomerOperations::getCustomerBranchById(std::string &cstI
  * @param cstId 
  * @param newName 
  */
-void Banking::CustomerOperations::setCustomerNameById(std::string &cstId, std::string& newName){
-    std::string colName = "Customer_name";
-    std::string tableName = "Customer";
-    Banking::DatabaseOperations::buildUpdateQuery(colName, cstId, newName, tableName);
+void Banking::CustomerOperations::setCustomerNameById(const std::string &cstId, const std::string& newName){
+    Banking::DatabaseOperations::buildUpdateQuery("Customer_name", cstId, newName, "Customer");
 }
 
 /**
@@ -102,10 +90,8 @@ void Banking::CustomerOperations::setCustomerNameById(std::string &cstId, std::s
  * @param cstId 
  * @param newPassword 
  */
-void Banking::CustomerOperations::setCustomerPasswordById(std::string &cstId, std::string& newPassword){
-    std::string colName = "Customer_password";
-    std::string tableName = "Customer";
-    Banking::DatabaseOperations::buildUpdateQuery(colName, cstId, newPassword, tableName);
+void Banking::CustomerOperations::setCustomerPasswordById(const std::string &cstId, const std::string& newPassword){
+    Banking::DatabaseOperations::buildUpdateQuery("Customer_password", cstId, newPassword, "Customer");
 }
 
 /**
@@ -114,11 +100,9 @@ void Banking::CustomerOperations::setCustomerPasswordById(std::string &cstId, st
  * @param cstId 
  * @param designation 
  */
-void Banking::CustomerOperations::setCustomerAccountById(std::string &cstId, std::string newAccount){
+void Banking::CustomerOperations::setCustomerAccountById(const std::string &cstId, const std::string newAccount){
     // Todo: check if the Account is available in the Account table or not
-    std::string colName = "Customer_account";
-    std::string tableName = "Customer";
-    Banking::DatabaseOperations::buildUpdateQuery(colName, cstId, newAccount, tableName);
+    Banking::DatabaseOperations::buildUpdateQuery("Customer_account", cstId, newAccount, "Customer");
 }
 
 /**
@@ -127,10 +111,8 @@ void Banking::CustomerOperations::setCustomerAccountById(std::string &cstId, std
  * @param cstId 
  * @param newAddress 
  */
-void Banking::CustomerOperations::setCustomerAddressById(std::string &cstId, std::string& newAddress){
-    std::string colName = "Customer_address";
-    std::string tableName = "Customer";
-    Banking::DatabaseOperations::buildUpdateQuery(colName, cstId, newAddress, tableName);
+void Banking::CustomerOperations::setCustomerAddressById(const std::string &cstId, const std::string& newAddress){
+    Banking::DatabaseOperations::buildUpdateQuery("Customer_address", cstId, newAddress, "Customer");
 }
 
 /**
@@ -139,11 +121,9 @@ void Banking::CustomerOperations::setCustomerAddressById(std::string &cstId, std
  * @param cstId 
  * @param branchId 
  */
-void Banking::CustomerOperations::setCustomerBranchById(std::string &cstId, std::string &branchId){
+void Banking::CustomerOperations::setCustomerBranchById(const std::string &cstId, const std::string &branchId){
     //Todo: branch should exist in branch table before updating the branch of the cutomer
-    std::string colName = "Customer_branch";
-    std::string tableName = "Customer";
-    Banking::DatabaseOperations::buildUpdateQuery(colName, cstId, branchId, tableName);
+    Banking::DatabaseOperations::buildUpdateQuery("Customer_branch", cstId, branchId, "Customer");
 }
 
 /**
@@ -171,8 +151,6 @@ void Banking::CustomerOperations::addCustomer(Banking::Customer &&cust){
  * 
  * @param cstId 
  */
-void Banking::CustomerOperations::deleteCustomer(std::string &cstId){
-    std::string tableName = "Customer";
-    std::string searchOn = "Customer_id";
-    Banking::DatabaseOperations::buildDeleteQuery(cstId, tableName, searchOn);
+void Banking::CustomerOperations::deleteCustomer(const std::string &cstId){
+    Banking::DatabaseOperations::buildDeleteQuery(cstId, "Customer", "Customer_id");
 }

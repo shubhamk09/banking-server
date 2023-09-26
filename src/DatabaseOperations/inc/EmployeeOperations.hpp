@@ -25,18 +25,18 @@ public:
     EmployeeOperations(EmployeeOperations&&) = default;
     EmployeeOperations& operator=(EmployeeOperations&&) = default;
 public:
-    std::string getEmployeeNameById(std::string &empId);
-    std::string getEmployeePasswordById(std::string &empId);
-    std::string getEmployeeDesignationById(std::string &empId);
-    std::string getEmployeeAddressById(std::string &empId);
-    std::string getEmployeeBranchById(std::string &empId);
-    void setEmployeeNameById(std::string &empId, std::string &newName);
-    void setEmployeePasswordById(std::string &empId, std::string &newPassword);
-    void setEmployeeDesignationById(std::string &empId, std::string &designation);
-    void setEmployeeAddressById(std::string &empId, std::string &newAddress);
-    void setEmployeeBranchById(std::string &empId, std::string &branchId);
+    std::string getEmployeeNameById(const std::string &empId);
+    std::string getEmployeePasswordById(const std::string &empId);
+    std::string getEmployeeDesignationById(const std::string &empId);
+    std::string getEmployeeAddressById(const std::string &empId);
+    std::string getEmployeeBranchById(const std::string &empId);
+    void setEmployeeNameById(const std::string &empId, const std::string &newName);
+    void setEmployeePasswordById(const std::string &empId, const std::string &newPassword);
+    void setEmployeeDesignationById(const std::string &empId, const std::string &designation);
+    void setEmployeeAddressById(const std::string &empId, const std::string &newAddress);
+    void setEmployeeBranchById(const std::string &empId, const std::string &branchId);
     void addEmployee(Banking::Employee &&empl);
-    void deleteEmployee(std::string &empId);
+    void deleteEmployee(const std::string &empId);
     
 };  
 

@@ -27,19 +27,19 @@ public:
     AccountOperations(AccountOperations&&) = default;
     AccountOperations& operator=(AccountOperations&&) = default;
 public:
-    std::string getAccountBalanceById(std::string &accNumber);
-    nlohmann::json getAccountTransactionsById(std::string &accNumber);
-    std::string getAccountBranchById(std::string &accNumber);
-    bool isActiveAccount(std::string &accNumber);
-    void setAccountBalanceById(std::string &accNumber, int newBalance);
-    void setAccountTransactionById(std::string &accNumber, nlohmann::json &newTransaction);
-    void setAccountStatusById(std::string &accNumber, bool status);
-    void setAccountBranchById(std::string &accNumber, std::string &newBranch);
-    void addAccount(std::string &accNumber, std::string &accBalance, nlohmann::json &accTransaction, 
-                        std::string &accBranch, bool &isActive);
-    void deleteAccount(std::string &accNumber);
+    std::string getAccountBalanceById(const std::string &accNumber);
+    nlohmann::json getAccountTransactionsById(const std::string &accNumber);
+    std::string getAccountBranchById(const std::string &accNumber);
+    bool isActiveAccount(const std::string &accNumber);
+    void setAccountBalanceById(const std::string &accNumber, int newBalance);
+    void setAccountTransactionById(const std::string &accNumber, nlohmann::json &newTransaction);
+    void setAccountStatusById(const std::string &accNumber, bool status);
+    void setAccountBranchById(const std::string &accNumber, const std::string &newBranch);
+    void addAccount(const std::string &accNumber, const std::string &accBalance, nlohmann::json &accTransaction, 
+                        const std::string &accBranch, bool &isActive);
+    void deleteAccount(const std::string &accNumber);
     std::string createHexJson(nlohmann::json &accTransaction);
-    nlohmann::json createTransactionJson(std::string &hexJson, std::string &accNumber);
+    nlohmann::json createTransactionJson(std::string &hexJson, const std::string &accNumber);
     
 };  
 

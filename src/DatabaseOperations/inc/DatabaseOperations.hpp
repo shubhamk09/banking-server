@@ -34,12 +34,12 @@ public:
     DatabaseOperations& operator=(DatabaseOperations&&) = default;
 public:
 
-    std::vector<std::string> buildSelectionQuery(std::string &colName, std::string &searchVal, std::string &tableName);
-    std::vector<std::string> buildSelectionQuery(std::string &colName, std::string &searchVal, std::string &tableName, std::string &seearchOn);
-    void buildUpdateQuery(std::string &colName, std::string &searchVal, std::string &updateVal, std::string &tableName);
-    void buildUpdateQuery(std::string &colName, std::string &searchVal, std::string &updateVal, std::string &tableName, std::string &seearchOn);
-    void buildInsertionQery(nlohmann::json &data);
-    void buildDeleteQuery(std::string &searchVal, std::string &tableName, std::string &seearchOn);
+    std::vector<std::string> buildSelectionQuery(const std::string &colName, const std::string &searchVal, const std::string &tableName);
+    std::vector<std::string> buildSelectionQuery(const std::string &colName, const std::string &searchVal, const std::string &tableName, const std::string &seearchOn);
+    void buildUpdateQuery(const std::string &colName, const std::string &searchVal, const std::string &updateVal, const std::string &tableName);
+    void buildUpdateQuery(const std::string &colName, const std::string &searchVal, const std::string &updateVal, const std::string &tableName, const std::string &seearchOn);
+    void buildInsertionQery(const nlohmann::json &data);
+    void buildDeleteQuery(const std::string &searchVal, const std::string &tableName, const std::string &seearchOn);
     static int callbackName(void* data, int column_count, char** column_values, char** column_names);
 };
 

@@ -24,17 +24,17 @@ public:
     BranchOperations(BranchOperations&&) = default;
     BranchOperations& operator=(BranchOperations&&) = default;
 public:
-    std::string getBranchNameById(std::string &branchId);
-    std::string getBranchCityById(std::string &branchId);
-    std::string getBranchAddressById(std::string &branchId);
-    std::string getBranchManagerById(std::string &branchId);
-    bool isActiveBranch(std::string &branchId);
-    void setBranchNameById(std::string &branchId, std::string &newName);
-    void setBranchCityById(std::string &branchId, std::string &newCity);
-    void setBranchAddressById(std::string &branchId, std::string &newAdd);
-    void setBranchManagerById(std::string &branchId, std::string &newBranchManagerId);
+    std::string getBranchNameById(const std::string &branchId);
+    std::string getBranchCityById(const std::string &branchId);
+    std::string getBranchAddressById(const std::string &branchId);
+    std::string getBranchManagerById(const std::string &branchId);
+    bool isActiveBranch(const std::string &branchId);
+    void setBranchNameById(const std::string &branchId, const std::string &newName);
+    void setBranchCityById(const std::string &branchId, const std::string &newCity);
+    void setBranchAddressById(const std::string &branchId, const std::string &newAdd);
+    void setBranchManagerById(const std::string &branchId, const std::string &newBranchManagerId);
     void addBranch(const std::string &branchId, const std::string &newName, const std::string &newCity, const std::string &newAdd, const std::string &newBranchManagerId);
-    void deleteBranch(std::string &branchId);
+    void deleteBranch(const std::string &branchId);
     
 };  
 

@@ -27,7 +27,7 @@ Banking::DatabaseOperations::DatabaseOperations(connection_shptr &connPtr):connP
  * @param tableName 
  * @return std::string 
  */
-std::vector<std::string> Banking::DatabaseOperations::buildSelectionQuery(std::string &colName, std::string &searchVal, std::string &tableName){
+std::vector<std::string> Banking::DatabaseOperations::buildSelectionQuery(const std::string &colName, const std::string &searchVal, const std::string &tableName){
     std::string searchById{tableName+"_id"};
     return buildSelectionQuery(colName, searchVal, tableName, searchById);
 }
@@ -41,7 +41,7 @@ std::vector<std::string> Banking::DatabaseOperations::buildSelectionQuery(std::s
  * @param seearchOn 
  * @return std::string 
  */
-std::vector<std::string> Banking::DatabaseOperations::buildSelectionQuery(std::string &colName, std::string &searchVal, std::string &tableName, std::string &seearchOn){
+std::vector<std::string> Banking::DatabaseOperations::buildSelectionQuery(const std::string &colName, const std::string &searchVal, const std::string &tableName, const std::string &seearchOn){
     std::string statement_string = "SELECT "+colName+" from "+tableName+" WHERE "+seearchOn+" = '"+searchVal+"'";
     BANKING_LOGGER_INFO("Executing command {}", statement_string);
     char* messageError;
@@ -70,7 +70,7 @@ std::vector<std::string> Banking::DatabaseOperations::buildSelectionQuery(std::s
  * @param tableName 
  * @return std::string 
  */
-void Banking::DatabaseOperations::buildUpdateQuery(std::string &colName, std::string &searchVal, std::string &updateVal, std::string &tableName){
+void Banking::DatabaseOperations::buildUpdateQuery(const std::string &colName, const std::string &searchVal, const std::string &updateVal, const std::string &tableName){
     std::string searchById{tableName+"_id"};
     buildUpdateQuery(colName, searchVal, updateVal, tableName, searchById);
 }
@@ -85,7 +85,7 @@ void Banking::DatabaseOperations::buildUpdateQuery(std::string &colName, std::st
  * @param seearchOn 
  * @return std::string 
  */
-void Banking::DatabaseOperations::buildUpdateQuery(std::string &colName, std::string &searchVal, std::string &updateVal, std::string &tableName, std::string &seearchOn){
+void Banking::DatabaseOperations::buildUpdateQuery(const std::string &colName, const std::string &searchVal, const std::string &updateVal, const std::string &tableName, const std::string &seearchOn){
     std::string statement_string = "UPDATE "+tableName+" SET "+colName+" = '"+updateVal+"' WHERE "+seearchOn+" = '"+searchVal+"'";
     BANKING_LOGGER_INFO("Executing command {}", statement_string);
     char* messageError;
@@ -106,7 +106,7 @@ void Banking::DatabaseOperations::buildUpdateQuery(std::string &colName, std::st
  * 
  * @param data 
  */
-void Banking::DatabaseOperations::buildInsertionQery(nlohmann::json &data){
+void Banking::DatabaseOperations::buildInsertionQery(const nlohmann::json &data){
     // json jsonString1 = R"({
     //         "table": "Employee",
     //         "values": ["str1", "str2", "str3"]
@@ -154,7 +154,7 @@ void Banking::DatabaseOperations::buildInsertionQery(nlohmann::json &data){
  * @param seearchOn 
  * @return std::string 
  */
-void Banking::DatabaseOperations::buildDeleteQuery(std::string &searchVal, std::string &tableName, std::string &seearchOn){
+void Banking::DatabaseOperations::buildDeleteQuery(const std::string &searchVal, const std::string &tableName, const std::string &seearchOn){
     std::string statement_string = "DELETE FROM "+tableName+" WHERE "+seearchOn+" = '"+searchVal+"'";
     BANKING_LOGGER_INFO("Executing command {}", statement_string);
     char* messageError;

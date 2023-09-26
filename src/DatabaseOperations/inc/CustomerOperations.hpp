@@ -25,18 +25,18 @@ public:
     CustomerOperations(CustomerOperations&&) = default;
     CustomerOperations& operator=(CustomerOperations&&) = default;
 public:
-    std::string getCustomerNameById(std::string &cstId);
-    std::string getCustomerPasswordById(std::string &cstId);
-    std::string getCustomerAccountById(std::string &cstId);
-    std::string getCustomerAddressById(std::string &cstId);
-    std::string getCustomerBranchById(std::string &cstId);
-    void setCustomerNameById(std::string &cstId, std::string& newName);
-    void setCustomerPasswordById(std::string &cstId, std::string& newPassword);
-    void setCustomerAccountById(std::string &cstId, std::string newAccount);
-    void setCustomerAddressById(std::string &cstId, std::string& newAddress);
-    void setCustomerBranchById(std::string &cstId, std::string &branchId);
+    std::string getCustomerNameById(const std::string &cstId);
+    std::string getCustomerPasswordById(const std::string &cstId);
+    std::string getCustomerAccountById(const std::string &cstId);
+    std::string getCustomerAddressById(const std::string &cstId);
+    std::string getCustomerBranchById(const std::string &cstId);
+    void setCustomerNameById(const std::string &cstId, const std::string& newName);
+    void setCustomerPasswordById(const std::string &cstId, const std::string& newPassword);
+    void setCustomerAccountById(const std::string &cstId, const std::string newAccount);
+    void setCustomerAddressById(const std::string &cstId, const std::string& newAddress);
+    void setCustomerBranchById(const std::string &cstId, const std::string &branchId);
     void addCustomer(Banking::Customer &&cust);
-    void deleteCustomer(std::string &cstId);
+    void deleteCustomer(const std::string &cstId);
     
 };  
 

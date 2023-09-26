@@ -25,10 +25,8 @@ Banking::AccountOperations::AccountOperations(connection_shptr &connPtr): Bankin
  * @param accountId 
  * @return std::string 
  */
-std::string Banking::AccountOperations::getAccountBalanceById(std::string &accountId){
-    std::string colName = "Account_balance";
-    std::string tableName = "Account";
-    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery(colName, accountId, tableName)};
+std::string Banking::AccountOperations::getAccountBalanceById(const std::string &accountId){
+    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery("Account_balance", accountId, "Account")};
     return columnVals.at(0);
 }
 
@@ -38,10 +36,8 @@ std::string Banking::AccountOperations::getAccountBalanceById(std::string &accou
  * @param accountId 
  * @return std::string 
  */
-nlohmann::json Banking::AccountOperations::getAccountTransactionsById(std::string &accountId){
-    std::string colName = "Account_transactions";
-    std::string tableName = "Account";
-    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery(colName, accountId, tableName)};
+nlohmann::json Banking::AccountOperations::getAccountTransactionsById(const std::string &accountId){
+    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery("Account_transactions", accountId, "Account")};
     std::string statement_string_hex {columnVals.at(0)};
     // Convert the hexadecimal string to binary data
     nlohmann::json transactions{createTransactionJson(statement_string_hex, accountId)};
@@ -55,10 +51,8 @@ nlohmann::json Banking::AccountOperations::getAccountTransactionsById(std::strin
  * @param accountId 
  * @return std::string 
  */
-std::string Banking::AccountOperations::getAccountBranchById(std::string &accountId){
-    std::string colName = "Account_branch";
-    std::string tableName = "Account";
-    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery(colName, accountId, tableName)};
+std::string Banking::AccountOperations::getAccountBranchById(const std::string &accountId){
+    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery("Account_branch", accountId, "Account")};
     return columnVals.at(0);
 }
 
@@ -69,10 +63,8 @@ std::string Banking::AccountOperations::getAccountBranchById(std::string &accoun
  * @return true 
  * @return false 
  */
-bool Banking::AccountOperations::isActiveAccount(std::string &accountId){
-    std::string colName = "Account_active";
-    std::string tableName = "Account";
-    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery(colName, accountId, tableName)};
+bool Banking::AccountOperations::isActiveAccount(const std::string &accountId){
+    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery("Account_active", accountId, "Account")};
     if(columnVals.at(0) == "ACTIVE"){
         return true;
     }
@@ -85,11 +77,9 @@ bool Banking::AccountOperations::isActiveAccount(std::string &accountId){
  * @param accNumber 
  * @param newBalance 
  */
-void Banking::AccountOperations::setAccountBalanceById(std::string &accNumber, int newBalance){
-    std::string colName = "Account_balance";
-    std::string tableName = "Account";
+void Banking::AccountOperations::setAccountBalanceById(const std::string &accNumber, int newBalance){
     std::string strBalance = std::to_string(newBalance);
-    Banking::DatabaseOperations::buildUpdateQuery(colName, accNumber, strBalance, tableName);
+    Banking::DatabaseOperations::buildUpdateQuery("Account_balance", accNumber, strBalance, "Account");
 }
 
 /**
@@ -98,11 +88,9 @@ void Banking::AccountOperations::setAccountBalanceById(std::string &accNumber, i
  * @param accNumber 
  * @param newTransaction 
  */
-void Banking::AccountOperations::setAccountTransactionById(std::string &accNumber, nlohmann::json &newTransaction){
-    std::string colName = "Account_transactions";
-    std::string tableName = "Account";
+void Banking::AccountOperations::setAccountTransactionById(const std::string &accNumber, nlohmann::json &newTransaction){
     std::string hexJsonData = createHexJson(newTransaction);
-    Banking::DatabaseOperations::buildUpdateQuery(colName, accNumber, hexJsonData, tableName);
+    Banking::DatabaseOperations::buildUpdateQuery("Account_transactions", accNumber, hexJsonData, "Account");
 }
 
 /**
@@ -111,10 +99,8 @@ void Banking::AccountOperations::setAccountTransactionById(std::string &accNumbe
  * @param accNumber 
  * @param newBranch 
  */
-void Banking::AccountOperations::setAccountBranchById(std::string &accNumber, std::string &newBranch){
-    std::string colName = "Account_branch";
-    std::string tableName = "Account"; 
-    Banking::DatabaseOperations::buildUpdateQuery(colName, accNumber, newBranch, tableName);
+void Banking::AccountOperations::setAccountBranchById(const std::string &accNumber, const std::string &newBranch){
+    Banking::DatabaseOperations::buildUpdateQuery("Account_branch", accNumber, newBranch, "Account");
 }
 
 /**
@@ -122,9 +108,8 @@ void Banking::AccountOperations::setAccountBranchById(std::string &accNumber, st
  * 
  * @param accNumber 
  */
-void Banking::AccountOperations::setAccountStatusById(std::string &accNumber, bool status){
-    std::string colName = "Account_active";
-    std::string tableName = "Account";
+void Banking::AccountOperations::setAccountStatusById(const std::string &accNumber, bool status){
+
     std::string accStatus;
     if (status)
     {
@@ -135,7 +120,7 @@ void Banking::AccountOperations::setAccountStatusById(std::string &accNumber, bo
         accStatus = "NOTACTIVE";
     }
 
-    Banking::DatabaseOperations::buildUpdateQuery(colName, accNumber, accStatus, tableName);
+    Banking::DatabaseOperations::buildUpdateQuery("Account_active", accNumber, accStatus, "Account");
 }
 
 /**
@@ -147,8 +132,8 @@ void Banking::AccountOperations::setAccountStatusById(std::string &accNumber, bo
  * @param accBranch 
  * @param isActive 
  */
-void  Banking::AccountOperations::addAccount(std::string &accNumber, std::string &accBalance, nlohmann::json &accTransaction, 
-                        std::string &accBranch, bool &isActive){
+void  Banking::AccountOperations::addAccount(const std::string &accNumber, const std::string &accBalance, nlohmann::json &accTransaction, 
+                        const std::string &accBranch, bool &isActive){
     
     std::string accStatus;
     if (isActive)
@@ -180,10 +165,8 @@ void  Banking::AccountOperations::addAccount(std::string &accNumber, std::string
  * 
  * @param accNumber 
  */
-void Banking::AccountOperations::deleteAccount(std::string &accNumber){
-    std::string tableName = "Account";
-    std::string searchOn = "Account_id";
-    Banking::DatabaseOperations::buildDeleteQuery(accNumber, tableName, searchOn);
+void Banking::AccountOperations::deleteAccount(const std::string &accNumber){
+    Banking::DatabaseOperations::buildDeleteQuery(accNumber, "Account", "Account_id");
 }
 
 /**
@@ -211,7 +194,7 @@ std::string Banking::AccountOperations::createHexJson(nlohmann::json &accTransac
  * @param hexJson 
  * @return nlohmann::json 
  */
-nlohmann::json Banking::AccountOperations::createTransactionJson(std::string &hexJson, std::string &accNumber){
+nlohmann::json Banking::AccountOperations::createTransactionJson(std::string &hexJson, const std::string &accNumber){
     std::vector<uint8_t> binaryData;
     nlohmann::json transactions = {};
     if(hexJson!="NULL"){

@@ -25,10 +25,8 @@ Banking::EmployeeOperations::EmployeeOperations(connection_shptr &connPtr): Bank
  * @param empId 
  * @return std::string 
  */
-std::string Banking::EmployeeOperations::getEmployeeNameById(std::string &empId){
-    std::string colName = "Employee_name";
-    std::string tableName = "Employee";
-    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery(colName, empId, tableName)};
+std::string Banking::EmployeeOperations::getEmployeeNameById(const std::string &empId){
+    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery("Employee_name", empId, "Employee")};
     return columnVals.at(0);
 }
 
@@ -38,10 +36,8 @@ std::string Banking::EmployeeOperations::getEmployeeNameById(std::string &empId)
  * @param empId 
  * @return std::string 
  */
-std::string Banking::EmployeeOperations::getEmployeePasswordById(std::string &empId){
-    std::string colName = "Employee_password";
-    std::string tableName = "Employee";
-    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery(colName, empId, tableName)};
+std::string Banking::EmployeeOperations::getEmployeePasswordById(const std::string &empId){
+    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery("Employee_password", empId, "Employee")};
     return columnVals.at(0);
 }
 
@@ -51,10 +47,8 @@ std::string Banking::EmployeeOperations::getEmployeePasswordById(std::string &em
  * @param empId 
  * @return std::string 
  */
-std::string Banking::EmployeeOperations::getEmployeeDesignationById(std::string &empId){
-    std::string colName = "Employee_designation";
-    std::string tableName = "Employee";
-    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery(colName, empId, tableName)};
+std::string Banking::EmployeeOperations::getEmployeeDesignationById(const std::string &empId){
+    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery("Employee_designation", empId, "Employee")};
     return columnVals.at(0);
 }
 
@@ -64,10 +58,8 @@ std::string Banking::EmployeeOperations::getEmployeeDesignationById(std::string 
  * @param empId 
  * @return std::string 
  */
-std::string Banking::EmployeeOperations::getEmployeeAddressById(std::string &empId){
-    std::string colName = "Employee_address";
-    std::string tableName = "Employee";
-    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery(colName, empId, tableName)};
+std::string Banking::EmployeeOperations::getEmployeeAddressById(const std::string &empId){
+    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery("Employee_address", empId, "Employee")};
     return columnVals.at(0);
 }
 
@@ -77,11 +69,8 @@ std::string Banking::EmployeeOperations::getEmployeeAddressById(std::string &emp
  * @param empId 
  * @return std::string 
  */
-std::string Banking::EmployeeOperations::getEmployeeBranchById(std::string &empId){
-    std::string colName = "Branch_id";
-    std::string tableName = "EmployeeToBranch";
-    std::string searchOn = "Employee_id";
-    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery(colName, empId, tableName, searchOn)};
+std::string Banking::EmployeeOperations::getEmployeeBranchById(const std::string &empId){
+    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery("Branch_id", empId, "EmployeeToBranch", "Employee_id")};
     return columnVals.at(0);
 }
 
@@ -91,10 +80,8 @@ std::string Banking::EmployeeOperations::getEmployeeBranchById(std::string &empI
  * @param empId 
  * @param newName 
  */
-void Banking::EmployeeOperations::setEmployeeNameById(std::string &empId, std::string &newName){
-    std::string colName = "Employee_name";
-    std::string tableName = "Employee";
-    Banking::DatabaseOperations::buildUpdateQuery(colName, empId, newName, tableName);
+void Banking::EmployeeOperations::setEmployeeNameById(const std::string &empId, const std::string &newName){
+    Banking::DatabaseOperations::buildUpdateQuery("Employee_name", empId, newName, "Employee");
 }
 
 /**
@@ -103,10 +90,8 @@ void Banking::EmployeeOperations::setEmployeeNameById(std::string &empId, std::s
  * @param empId 
  * @param newPassword 
  */
-void Banking::EmployeeOperations::setEmployeePasswordById(std::string &empId, std::string &newPassword){
-    std::string colName = "Employee_password";
-    std::string tableName = "Employee";
-    Banking::DatabaseOperations::buildUpdateQuery(colName, empId, newPassword, tableName);
+void Banking::EmployeeOperations::setEmployeePasswordById(const std::string &empId, const std::string &newPassword){
+    Banking::DatabaseOperations::buildUpdateQuery("Employee_password", empId, newPassword, "Employee");
 }
 
 /**
@@ -115,10 +100,8 @@ void Banking::EmployeeOperations::setEmployeePasswordById(std::string &empId, st
  * @param empId 
  * @param designation 
  */
-void Banking::EmployeeOperations::setEmployeeDesignationById(std::string &empId, std::string &designation){
-    std::string colName = "Employee_designation";
-    std::string tableName = "Employee";
-    
+void Banking::EmployeeOperations::setEmployeeDesignationById(const std::string &empId, const std::string &designation){
+
     if (designation == "Manager")
     {
             std::string checkColName = "Employee_id";
@@ -139,7 +122,7 @@ void Banking::EmployeeOperations::setEmployeeDesignationById(std::string &empId,
             
     }
     
-    Banking::DatabaseOperations::buildUpdateQuery(colName, empId, designation, tableName);
+    Banking::DatabaseOperations::buildUpdateQuery("Employee_designation", empId, designation, "Employee");
 }
 
 /**
@@ -148,10 +131,8 @@ void Banking::EmployeeOperations::setEmployeeDesignationById(std::string &empId,
  * @param empId 
  * @param newAddress 
  */
-void Banking::EmployeeOperations::setEmployeeAddressById(std::string &empId, std::string &newAddress){
-    std::string colName = "Employee_address";
-    std::string tableName = "Employee";
-    Banking::DatabaseOperations::buildUpdateQuery(colName, empId, newAddress, tableName);
+void Banking::EmployeeOperations::setEmployeeAddressById(const std::string &empId, const std::string &newAddress){
+    Banking::DatabaseOperations::buildUpdateQuery("Employee_address", empId, newAddress, "Employee");
 }
 
 /**
@@ -160,12 +141,9 @@ void Banking::EmployeeOperations::setEmployeeAddressById(std::string &empId, std
  * @param empId 
  * @param branchId 
  */
-void Banking::EmployeeOperations::setEmployeeBranchById(std::string &empId, std::string &branchId){
+void Banking::EmployeeOperations::setEmployeeBranchById(const std::string &empId, const std::string &branchId){
     // TO do: first check the branch id which we want to change is there in the branch table or not
-    std::string colName = "Branch_id";
-    std::string tableName = "EmployeeToBranch";
-    std::string searchOn = "Employee_id";
-    Banking::DatabaseOperations::buildUpdateQuery(colName, empId, branchId, tableName, searchOn);
+    Banking::DatabaseOperations::buildUpdateQuery("Branch_id", empId, branchId, "EmployeeToBranch", "Employee_id");
 }
 
 /**
@@ -198,10 +176,7 @@ void Banking::EmployeeOperations::addEmployee(Banking::Employee &&empl){
  * 
  * @param empId 
  */
-void Banking::EmployeeOperations::deleteEmployee(std::string &empId){
-    std::string tableName = "Employee";
-    std::string searchOn = "Employee_id";
-    Banking::DatabaseOperations::buildDeleteQuery(empId, tableName, searchOn);
-    tableName = "EmployeeToBranch";
-    Banking::DatabaseOperations::buildDeleteQuery(empId, tableName, searchOn);
+void Banking::EmployeeOperations::deleteEmployee(const std::string &empId){
+    Banking::DatabaseOperations::buildDeleteQuery(empId, "Employee", "Employee_id");
+    Banking::DatabaseOperations::buildDeleteQuery(empId, "EmployeeToBranch", "Employee_id");
 }
