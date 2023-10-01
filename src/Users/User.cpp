@@ -22,7 +22,7 @@
  * @param branch 
  * @param address 
  */
-Banking::User::User(std::string &id, std::string &name, std::string &password, std::string &branch, std::string &address):
+Banking::User::User(const std::string &id, const std::string &name, const std::string &password, const std::string &branch, const std::string &address):
 id{id}, name{name}, password{password}, branch{branch}, address{address}
 {
 }
@@ -42,7 +42,7 @@ std::string Banking::User::getId()
  * 
  * @param id 
  */
-void Banking::User::set(int &id)
+void Banking::User::setId(const int &id)
 {
     this->id=id ;
 }
@@ -62,7 +62,7 @@ std::string Banking::User::getName()
  * 
  * @param name 
  */
-void Banking::User::setName(std::string &name)
+void Banking::User::setName(const std::string &name)
 {
     this->name = name;
 }
@@ -82,7 +82,7 @@ std::string Banking::User::getPassword()
  * 
  * @param password 
  */
-void Banking::User::setPassword(std::string &password)
+void Banking::User::setPassword(const std::string &password)
 {
     this->password = password;
 }
@@ -102,7 +102,7 @@ std::string Banking::User::getBranch()
  * 
  * @param branch 
  */
-void Banking::User::setBranch(std::string &branch)
+void Banking::User::setBranch(const std::string &branch)
 {
     this->branch = branch;
 }
@@ -122,7 +122,7 @@ std::string Banking::User::getAddress()
  * 
  * @param address 
  */
-void Banking::User::setAddress(std::string &address)
+void Banking::User::setAddress(const std::string &address)
 {
     this->address = address;
 }
@@ -138,7 +138,7 @@ void Banking::User::setAddress(std::string &address)
  * @param designationOrAccountNumber 
  * @return std::shared_ptr<Banking::User> 
  */
-std::shared_ptr<Banking::User> Banking::User::createUser(std::string &id, std::string &name, std::string &password, std::string &address, std::string &branch, std::string &designationOrAccountNumber){
+std::shared_ptr<Banking::User> Banking::User::createUser(const std::string &id, const std::string &name, const std::string &password, const std::string &address, const std::string &branch, const std::string &designationOrAccountNumber){
     
         if (id[3] =='E')
         {

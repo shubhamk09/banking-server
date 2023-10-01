@@ -19,7 +19,7 @@ namespace Banking{
         std::string designation;
 
     public:
-        Employee(std::string &id, std::string &name, std::string &password, std::string &branch, std::string &address, std::string &designation);
+        Employee(const std::string &id, const std::string &name, const std::string &password, const std::string &branch, const std::string &address, const std::string &designation);
         ~Employee() = default;
         
         Employee(const Employee&) = default;
@@ -29,7 +29,7 @@ namespace Banking{
 
 
         std::string getDesignation();
-        void setDesignation(std::string designation);
+        void setDesignation(const std::string &designation);
     };
 }
 #endif //BANKING_EMPLOYEE_HPP

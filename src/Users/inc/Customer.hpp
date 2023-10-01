@@ -18,7 +18,7 @@ namespace Banking{
         std::string accountNumber;
 
     public:
-        Customer(std::string &id, std::string &name, std::string &password, std::string &branch, std::string &address, std::string &accountNumber);
+        Customer(const std::string &id, const std::string &name, const std::string &password, const std::string &branch, const std::string &address, const std::string &accountNumber);
         ~Customer() = default;
         
         Customer(const Customer&) = default;
@@ -28,7 +28,7 @@ namespace Banking{
 
 
         std::string getAccountNumber();
-        void setAccountNumber(std::string accounNumber);
+        void setAccountNumber(const std::string accounNumber);
     };
 }
 #endif //BANKING_CUSTOMER_HPP

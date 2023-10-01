@@ -21,6 +21,10 @@ project(
 include(${CMAKE_CURRENT_SOURCE_DIR}/Cmake/LibList.cmake)
 # You should usually split this into folders, but this is a simple example
 add_subdirectory(src)
+include(CTest)
+if(BUILD_TESTING)
+  add_subdirectory(Tst)
+endif()
 # This is a "default" library, and will match the *** variable setting.
 # Other common choices are STATIC, SHARED, and MODULE
 # Including header files here helps IDEs but is not required.
