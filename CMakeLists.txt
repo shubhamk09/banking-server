@@ -14,6 +14,10 @@ project(
   VERSION 1.0
   LANGUAGES CXX)
 
+  
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --coverage")
+
 # If you set any CMAKE_ variables, that can go here.
 # (But usually don't do this, except maybe for C++ standard)
 
@@ -21,6 +25,7 @@ project(
 include(${CMAKE_CURRENT_SOURCE_DIR}/Cmake/LibList.cmake)
 # You should usually split this into folders, but this is a simple example
 add_subdirectory(src)
+
 include(CTest)
 if(BUILD_TESTING)
   add_subdirectory(Tst)

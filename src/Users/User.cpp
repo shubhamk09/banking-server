@@ -42,7 +42,7 @@ std::string Banking::User::getId()
  * 
  * @param id 
  */
-void Banking::User::setId(const int &id)
+void Banking::User::setId(const std::string &id)
 {
     this->id=id ;
 }

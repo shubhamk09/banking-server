@@ -47,7 +47,7 @@ public:
 
 public:
     virtual std::string getId();
-    virtual void setId(const int &id);
+    virtual void setId(const std::string &id);
     virtual std::string getName();
     virtual void setName(const std::string &name);
     virtual std::string getPassword();
