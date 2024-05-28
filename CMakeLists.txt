@@ -7,6 +7,8 @@ cmake_minimum_required(VERSION 3.1...3.26)
 # Set C++ standard to C++ 17
 set(CMAKE_CXX_STANDARD 17)
 
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # This is your project statement. You should always list languages;
 # Listing the version is nice here since it sets lots of useful variables
 project(
@@ -17,16 +19,25 @@ project(
   
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --coverage")
+set(CTEST_BINARY_DIRECTORY build)
+
+# Enable coverage flags for GCC and Clang
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    add_compile_options(--coverage)
+    add_link_options(--coverage)
+endif()
 
 # If you set any CMAKE_ variables, that can go here.
 # (But usually don't do this, except maybe for C++ standard)
 
 # Find packages go here.
+# Include packages
+include(CTest)
+include(CTestCoverageCollectGCOV)
 include(${CMAKE_CURRENT_SOURCE_DIR}/Cmake/LibList.cmake)
 # You should usually split this into folders, but this is a simple example
 add_subdirectory(src)
 
-include(CTest)
 if(BUILD_TESTING)
   add_subdirectory(Tst)
 endif()
@@ -36,6 +47,17 @@ endif()
 # Output libname matches target name, with the usual extensions on your system
 
 # Link each target with other targets or add options, etc.
+ctest_coverage_collect_gcov(
+    TARBALL gcov.tar  # Name of the output tar archive
+    [SOURCE ${CTEST_SOURCE_DIRECTORY}]  # Optional: Source directory (defaults to CTEST_SOURCE_DIRECTORY)
+    [BUILD ${CTEST_BINARY_DIRECTORY}]   # Optional: Build directory (defaults to CTEST_BINARY_DIRECTORY)
+    [GCOV_COMMAND ${CTEST_COVERAGE_COMMAND}]  # Optional: Override gcov command
+    [GCOV_OPTIONS -l -p -b]  # Optional: gcov command-line options
+)
+
+if(EXISTS "${CTEST_BINARY_DIRECTORY}/gcov.tar")
+    ctest_submit(CDASH_UPLOAD "${CTEST_BINARY_DIRECTORY}/gcov.tar" CDASH_UPLOAD_TYPE GcovTar)
+endif()
 
 # Adding something we can run - Output name matches target name
 add_executable(BankingServer driver.cpp)
