@@ -66,8 +66,12 @@ endif()
 #         OUTPUT_FILE "${CMAKE_BINARY_DIR}/coverage.info")
 # endif()
 
+message(STATUS "Compiler ID: ${CMAKE_CXX_COMPILER_ID}")
+
 # Add custom target to collect coverage data
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    set(COVERAGE_INFO "${CMAKE_BINARY_DIR}/coverage.info")
+    set(COVERAGE_REPORT_DIR "${CMAKE_BINARY_DIR}/coverage_report")
     add_custom_target(coverage
         COMMAND lcov --capture --directory ${CMAKE_BINARY_DIR} --output-file ${CMAKE_BINARY_DIR}/coverage.info
         COMMAND lcov --remove ${CMAKE_BINARY_DIR}/coverage.info '/usr/*' --output-file ${CMAKE_BINARY_DIR}/coverage.info
@@ -89,3 +93,11 @@ add_executable(BankingServer driver.cpp)
 # Make sure you link your targets with this command. It can also link libraries and
 # even flags, so linking a target that does not exist will not give a configure-time error.
 target_link_libraries(BankingServer PRIVATE ${USERS_LIB} ${CONNECTION_LIB} ${DATABASE_OPERATIONS_LIB} ${LOGGER_LIB} spdlog nlohmann_json::nlohmann_json)
+
+# Run lcov
+# lcov --capture --directory . --output-file coverage.info
+# genhtml coverage.info --output-directory out
+# Exclude a unwanted folder
+# lcov --remove coverage.info '/usr/*' --output-file coverage_filtered.info
+# combined coverage
+# lcov -a coverage1.info -a coverage2.info -o combined_coverage.info
