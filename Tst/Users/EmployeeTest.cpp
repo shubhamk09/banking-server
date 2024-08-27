@@ -10,13 +10,12 @@ public:
 };
 
 void EmployeeTestFixture::SetUp(){
-    std::shared_ptr<Banking::User> newUser {std::make_shared<Banking::Employee>("111", "name", "password", "branch", "address", "manager")};
+    std::shared_ptr<Banking::User> newUser {Banking::User::createUser("MYSE00122", "name", "password", "address", "branch", "manager")};
     newEmployee = std::dynamic_pointer_cast<Banking::Employee>(newUser);
 }
 
-
 TEST_F(EmployeeTestFixture, TestGetId) {
-    ASSERT_EQ(newEmployee->getId(), "111");
+    ASSERT_EQ(newEmployee->getId(), "MYSE00122");
 }
 
 TEST_F(EmployeeTestFixture, TestGetName) {
