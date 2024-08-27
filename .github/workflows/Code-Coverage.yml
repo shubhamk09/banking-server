@@ -6,12 +6,12 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Check out this repository
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v3
 
       - name: Build and test this project
         run: |
-          cmake . -B build
-          cmake --build build --config Debug --target all
+          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+          cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target all
           ctest --test-dir build
 
       - name: Generate a code coverage report
