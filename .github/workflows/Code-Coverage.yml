@@ -12,8 +12,8 @@ jobs:
 
       - name: Build and test this project
         run: |
-          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-          cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target all
+          cmake . -B build
+          cmake --build build --config Debug --target all
           ctest --test-dir build
 
       - name: Generate a code coverage report
