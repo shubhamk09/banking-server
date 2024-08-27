@@ -44,28 +44,6 @@ endif()
 # Including header files here helps IDEs but is not required.
 # Output libname matches target name, with the usual extensions on your system
 
-
-# Add coverage flags if using GCC or Clang
-# if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-#     set(COVERAGE_FLAGS "-fprofile-arcs -ftest-coverage")
-#     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COVERAGE_FLAGS}")
-#     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${COVERAGE_FLAGS}")
-#     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fprofile-arcs -ftest-coverage")
-# endif()
-
-
-# Link each target with other targets or add options, etc.
-
-# Collect coverage data with gcov
-# if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-#     enable_testing()
-#     ctest_coverage_collect_gcov(
-#         TARBALL gcov.tar  # Name of the output tar archive
-#         SOURCE "${CMAKE_SOURCE_DIR}"
-#         BINARY "${CMAKE_BINARY_DIR}"
-#         OUTPUT_FILE "${CMAKE_BINARY_DIR}/coverage.info")
-# endif()
-
 message(STATUS "Compiler ID: ${CMAKE_CXX_COMPILER_ID}")
 
 # Add custom target to collect coverage data

@@ -11,14 +11,6 @@
 #include "Logger.hpp"
 #include "Connection.hpp"
 
-// #ifdef _WIN32
-//     std::string osVariable = "Windows";
-// #elif __unix__
-//     std::string osVariable = "Uinux";
-// #else
-//     std::string osVariable = "Unknown";
-// #endif
-
 /**
  * @brief Construct a new Banking:: Connection:: Connection object
  * 
@@ -33,9 +25,6 @@ Banking::Connection::Connection()
         resultPath = matches.str(1);
     }
     resultPath = resultPath+"banking-server/Banking.db";
-    // if (osVariable=="Unknown"){
-    //     throw std::runtime_error("Unknown OS");
-    // }
 
     int result = sqlite3_open(resultPath.c_str(), &this->DB);
     if (result != SQLITE_OK) {
