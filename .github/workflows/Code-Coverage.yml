@@ -8,7 +8,7 @@ jobs:
       - name: Check out this repository
         uses: actions/checkout@v3
         with:
-          submodules: 'true'
+          submodules: recursive
 
       - name: Build and test this project
         run: |
