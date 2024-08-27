@@ -11,7 +11,7 @@ jobs:
       - name: Build and test this project
         run: |
           cmake . -B build
-          cmake --build build
+          cmake --build build --config Debug --target all
           ctest --test-dir build
 
       - name: Generate a code coverage report
