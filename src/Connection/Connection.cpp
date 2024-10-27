@@ -1,6 +1,6 @@
 /**
  * @file Connection.cpp
- * @author Shbham Kalihari (shubhamkalihari09@gmail.com)
+ * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
  * @brief Create a connection to sqlite3 database
  * @version 0.1
  * @date 2023-07-16

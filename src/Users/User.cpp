@@ -1,6 +1,6 @@
 /**
  * @file User.cpp
- * @author Shbham Kalihari (shubhamkalihari09@gmail.com)
+ * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
  * @brief 
  * @version 0.1
  * @date 2023-07-21
