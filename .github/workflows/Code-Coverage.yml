@@ -16,11 +16,6 @@ jobs:
           cmake --build build --config Debug --target all
           ctest --test-dir build
 
-      - name: Install gcovr
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gcovr
-
       - name: Generate coverage report
         run: |
           gcovr -r . --json-pretty -o coverage.json --exclude src/Ext --exclude Tst/googletest
