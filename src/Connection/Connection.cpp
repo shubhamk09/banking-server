@@ -18,19 +18,28 @@
 Banking::Connection::Connection()
 {
     std::string rootPath{std::filesystem::current_path().string()};
-    std::regex pattern("^(.*?)(?=banking-server)");
+    std::regex pattern("^(.*banking-server)");
     std::smatch matches;
     std::string resultPath;
-    if (std::regex_search(rootPath, matches, pattern)) {
-        resultPath = matches.str(1);
+
+    // Search for the 'banking-server' part in the current path
+    if (std::regex_search(rootPath, matches, pattern) && matches.size() > 0) {
+        // The first match will give the correct path up to 'banking-server'
+        resultPath = matches.str(1) + "/Banking.db";
+    } else {
+        throw std::runtime_error("Failed to find 'banking-server' in path");
     }
-    resultPath = resultPath+"banking-server/Banking.db";
+
+    if (!std::filesystem::exists(resultPath)) {
+        throw std::runtime_error("Database file not found at " + resultPath);
+    }
 
     int result = sqlite3_open(resultPath.c_str(), &this->DB);
     if (result != SQLITE_OK) {
-      throw std::runtime_error("Failed to open database");
+        throw std::runtime_error("Failed to open database at " + resultPath);
+    } else {
+        BANKING_LOGGER_INFO("Database {} opened successfully", resultPath);
     }
-    BANKING_LOGGER_INFO("Database {} opened successfully", resultPath);  
 }
 /**
  * @brief Destroy the Banking:: Connection:: Connection object
