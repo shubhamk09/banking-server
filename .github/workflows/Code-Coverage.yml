@@ -26,5 +26,4 @@ jobs:
             excludes: |
               src/Ext/*
               Tst/googletest
-        continue-on-error: true
             
