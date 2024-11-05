@@ -110,7 +110,6 @@ void Banking::EmployeeOperations::setEmployeeDesignationById(const std::string &
             std::string searchOnBranchValue{getEmployeeBranchById(empId)};
             std::vector<std::string> employeeInBranch{Banking::DatabaseOperations::buildSelectionQuery(checkColName, searchOnBranchValue, checkTableName, checkSearchOn)};
             for (auto employee: employeeInBranch){
-                std::cout<<employee<<std::endl;
                 if (getEmployeeDesignationById(employee)=="Manager")
                 {
                     BANKING_LOGGER_ERROR("Cannort assign Manager to {}",empId);

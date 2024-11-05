@@ -39,3 +39,14 @@ TEST_F(EmployeeOperationTestFixture, GetterTest) {
     ASSERT_EQ(EmployeeOpPtr->getEmployeeAddressById(empid), "Shivmoga");
     ASSERT_EQ(EmployeeOpPtr->getEmployeeBranchById(empid), "MYS001");
 }
+
+TEST_F(EmployeeOperationTestFixture, SetterTest) {
+    ASSERT_NO_THROW(EmployeeOpPtr->setEmployeeNameById(empid, "Yukku"));
+    ASSERT_NO_THROW(EmployeeOpPtr->setEmployeePasswordById(empid, "password_is_something"));
+    ASSERT_NO_THROW(EmployeeOpPtr->setEmployeeAddressById(empid, "Address is something"));
+    ASSERT_NO_THROW(EmployeeOpPtr->setEmployeeBranchById(empid, "MYS002"));
+    ASSERT_NO_THROW(EmployeeOpPtr->setEmployeeDesignationById(empid, "Manager"));
+
+    // Just setting it to previous value, need to remoive this onnce fulle implementatio is done
+    ASSERT_NO_THROW(EmployeeOpPtr->setEmployeeBranchById(empid, "MYS002"));
+}
