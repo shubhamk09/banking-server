@@ -109,6 +109,7 @@ void Banking::EmployeeOperations::setEmployeeDesignationById(const std::string &
             std::string checkSearchOn = "Branch_id";
             std::string searchOnBranchValue{getEmployeeBranchById(empId)};
             std::vector<std::string> employeeInBranch{Banking::DatabaseOperations::buildSelectionQuery(checkColName, searchOnBranchValue, checkTableName, checkSearchOn)};
+            // Todo: If we are assigning a Manager some other role then we should also assign someone else as manager, so that manager will be unique
             for (auto employee: employeeInBranch){
                 if (getEmployeeDesignationById(employee)=="Manager")
                 {
@@ -142,6 +143,7 @@ void Banking::EmployeeOperations::setEmployeeAddressById(const std::string &empI
  */
 void Banking::EmployeeOperations::setEmployeeBranchById(const std::string &empId, const std::string &branchId){
     // TO do: first check the branch id which we want to change is there in the branch table or not
+    // TO do: if the Employee is branch amanger then, we should assign someone else as branch manager before changing the branch id
     Banking::DatabaseOperations::buildUpdateQuery("Branch_id", empId, branchId, "EmployeeToBranch", "Employee_id");
 }
 

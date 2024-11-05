@@ -42,11 +42,17 @@ TEST_F(EmployeeOperationTestFixture, GetterTest) {
 
 TEST_F(EmployeeOperationTestFixture, SetterTest) {
     ASSERT_NO_THROW(EmployeeOpPtr->setEmployeeNameById(empid, "Yukku"));
+    ASSERT_EQ(EmployeeOpPtr->getEmployeeNameById(empid), "Yukku");
     ASSERT_NO_THROW(EmployeeOpPtr->setEmployeePasswordById(empid, "password_is_something"));
+    ASSERT_EQ(EmployeeOpPtr->getEmployeePasswordById(empid), "password_is_something");
     ASSERT_NO_THROW(EmployeeOpPtr->setEmployeeAddressById(empid, "Address is something"));
+        ASSERT_EQ(EmployeeOpPtr->getEmployeeAddressById(empid), "Address is something");
     ASSERT_NO_THROW(EmployeeOpPtr->setEmployeeBranchById(empid, "MYS002"));
+    ASSERT_EQ(EmployeeOpPtr->getEmployeeBranchById(empid), "MYS002");
     ASSERT_NO_THROW(EmployeeOpPtr->setEmployeeDesignationById(empid, "Manager"));
+        ASSERT_EQ(EmployeeOpPtr->getEmployeeDesignationById(empid), "Manager");
+    ASSERT_NO_THROW(EmployeeOpPtr->setEmployeeDesignationById(empid, "Cashier"));
 
-    // Just setting it to previous value, need to remoive this onnce fulle implementatio is done
-    ASSERT_NO_THROW(EmployeeOpPtr->setEmployeeBranchById(empid, "MYS002"));
+    // Just setting it to previous value, need to remove this onnce fulle implementatio is done
+    ASSERT_NO_THROW(EmployeeOpPtr->setEmployeeBranchById(empid, "MYS001"));
 }
