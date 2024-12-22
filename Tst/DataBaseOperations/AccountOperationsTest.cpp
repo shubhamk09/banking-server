@@ -53,3 +53,36 @@ TEST_F(AccountOperationsTestFixture, TestGetAccountBranchById) {
    ASSERT_EQ(accOpt_ptr->getAccountBranchById(newAccNum), "MYS001");
 }
 
+TEST_F(AccountOperationsTestFixture, TestIsActiveAccount) {
+   ASSERT_TRUE(accOpt_ptr->isActiveAccount(newAccNum));
+}
+
+TEST_F(AccountOperationsTestFixture, TestSetAccountBalanceById) {
+   ASSERT_NO_THROW(accOpt_ptr->setAccountBalanceById(newAccNum, 3000));
+}
+
+TEST_F(AccountOperationsTestFixture, TestSetAccountTransactionById) {
+    nlohmann::json transactionString = R"({
+            "pi": 3.141,
+            "happy": true,
+            "name": "Niels",
+            "nothing": null,
+            "answer": {
+                "everything": 42
+            },
+            "list": [1, 0, 2],
+            "object": {
+                "currency": "USD",
+                "value": 42.99
+            }
+        })"_json;
+    ASSERT_NO_THROW(accOpt_ptr->setAccountTransactionById(newAccNum, transactionString));
+}
+
+TEST_F(AccountOperationsTestFixture, TestSetAccountBranchById) {
+   ASSERT_NO_THROW(accOpt_ptr->setAccountBranchById(newAccNum, "MYS001"));
+}
+
+TEST_F(AccountOperationsTestFixture, TestSetAccountStatusById) {
+   ASSERT_NO_THROW(accOpt_ptr->setAccountStatusById(newAccNum, false));
+}
