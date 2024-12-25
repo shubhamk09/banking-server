@@ -1,6 +1,6 @@
 /**
  * @file Customer.cpp
- * @author your name (you@domain.com)
+ * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
  * @brief 
  * @version 0.1
  * @date 2023-07-21
@@ -20,7 +20,7 @@
  * @param address 
  * @param accountNumber 
  */
-Banking::Customer::Customer(std::string &id, std::string &name, std::string &password, std::string &branch, std::string &address, std::string &accountNumber):
+Banking::Customer::Customer(const std::string &id, const std::string &name, const std::string &password, const std::string &branch, const std::string &address, const std::string &accountNumber):
 Banking::User{id, name, password, branch, address}, accountNumber{accountNumber}
 {
 }
@@ -40,7 +40,7 @@ std::string Banking::Customer::getAccountNumber()
  * 
  * @param accountNumber 
  */
-void Banking::Customer::setAccountNumber(std::string accountNumber)
+void Banking::Customer::setAccountNumber(const std::string accountNumber)
 {
     this->accountNumber = accountNumber;
 }

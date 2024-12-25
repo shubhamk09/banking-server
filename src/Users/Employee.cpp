@@ -1,6 +1,6 @@
 /**
  * @file Employee.cpp
- * @author your name (you@domain.com)
+ * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
  * @brief 
  * @version 0.1
  * @date 2023-07-21
@@ -20,7 +20,7 @@
  * @param address 
  * @param designation 
  */
-Banking::Employee::Employee(std::string &id, std::string &name, std::string &password, std::string &branch, std::string &address, std::string &designation):
+Banking::Employee::Employee(const std::string &id, const std::string &name, const std::string &password, const std::string &branch, const std::string &address, const std::string &designation):
 Banking::User{id, name, password, branch, address}, designation{designation}
 {
 }
@@ -40,7 +40,7 @@ std::string Banking::Employee::getDesignation()
  * 
  * @param designation 
  */
-void Banking::Employee::setDesignation(std::string designation)
+void Banking::Employee::setDesignation(const std::string &designation)
 {
     this->designation = designation;
 }

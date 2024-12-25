@@ -1,6 +1,6 @@
 /**
  * @file Logger.cpp
- * @author your name (you@domain.com)
+ * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
  * @brief 
  * @version 0.1
  * @date 2023-08-19
@@ -18,8 +18,11 @@ std::shared_ptr<spdlog::logger> Banking::Logger::s_Logger;
  */
 void Banking::Logger::Init() {
     spdlog::set_pattern("[%^%L%$] %v");
-    s_Logger = spdlog::basic_logger_mt("file_logger", "logs/basic-log.txt", true);
-    s_Logger->set_level(spdlog::level::debug);
+    if (!s_Logger)
+    {
+        s_Logger = spdlog::basic_logger_mt("file_logger", "logs/basic-log.txt", true);
+        s_Logger->set_level(spdlog::level::debug);
+    }
 }
 
 /**

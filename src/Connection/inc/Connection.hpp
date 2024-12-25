@@ -1,6 +1,6 @@
 /**
  * @file Connection.hpp
- * @author your name (you@domain.com)
+ * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
  * @brief 
  * @version 0.1
  * @date 2023-07-16

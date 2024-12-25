@@ -1,0 +1,29 @@
+name: Coverage
+on:
+  push:
+jobs:
+  test-coverage:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Check out this repository
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Build and test this project
+        run: |
+          cmake . -B build
+          cmake --build build --config Debug --target all
+          ctest --test-dir build
+
+      - name: Generate a code coverage report
+        uses: threeal/gcovr-action@v1.0.0
+        with:
+            fail-under-line: 60
+            coveralls-out: coverage.json
+            coveralls-send: true
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            excludes: |
+              src/Ext/*
+              Tst/googletest
+            

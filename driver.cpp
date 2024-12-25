@@ -1,6 +1,6 @@
 /**
  * @file driver.cpp
- * @author your name (you@domain.com)
+ * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
  * @brief 
  * @version 0.1
  * @date 2023-07-21
@@ -130,7 +130,9 @@ int main(int argc, char** argv)
         address = db2->getCustomerAddressById(empid);
         branch = db2->getCustomerBranchById(empid);
         newUser = Banking::User::createUser(empid, name, password, address, branch, account);
-        std::cout<<"Using user class for cutomer "<<newUser->getName()<<std::endl;
+        std::shared_ptr<Banking::Employee> newEmployeee = std::dynamic_pointer_cast<Banking::Employee>(newUser);
+        std::cout<<"Using user class for cutomer "<<newEmployeee->getName()<<std::endl;
+        std::cout<<"Useing user class for customer tesing designation"<<newEmployeee->getDesignation();
 
         //Changing customer name
         BANKING_LOGGER_INFO("Testing Customer updations");
