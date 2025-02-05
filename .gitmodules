@@ -6,3 +6,7 @@
 	path = src/Ext/paho.mqtt.cpp
 	url = https://github.com/eclipse/paho.mqtt.cpp
 	branch = v1.4.1
+[submodule "src/Ext/cppzmq"]
+	path = src/Ext/cppzmq
+	url = https://github.com/zeromq/cppzmq
+	branch = v4.10.0
