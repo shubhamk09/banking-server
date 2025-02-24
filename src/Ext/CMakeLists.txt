@@ -1,3 +1,6 @@
+set(ZMQ_BUILD_TESTS OFF)
+set(ENABLE_CPACK OFF)
+
 add_subdirectory(json-develop)
 add_subdirectory(spdlog-1.x)
 add_subdirectory(sqlite3)
