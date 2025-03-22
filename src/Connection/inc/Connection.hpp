@@ -36,8 +36,6 @@ public:
     ~Connection();
 public:
     sqlite3* DB;
-    void getAllEmployee();
-    std::string getEmploeeByname();
 };
 
 using connection_shptr = std::shared_ptr<Connection>;
