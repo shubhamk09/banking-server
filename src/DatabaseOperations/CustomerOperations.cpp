@@ -15,7 +15,7 @@
  * 
  * @param connPtr 
  */
-Banking::CustomerOperations::CustomerOperations(connection_shptr &connPtr): Banking::DatabaseOperations{connPtr}
+Banking::CustomerOperations::CustomerOperations(connection_shptr &connPtr)
 {
 }
 
@@ -153,4 +153,46 @@ void Banking::CustomerOperations::addCustomer(Banking::Customer &&cust){
  */
 void Banking::CustomerOperations::deleteCustomer(const std::string &cstId){
     Banking::DatabaseOperations::buildDeleteQuery(cstId, "Customer", "Customer_id");
+}
+
+nlohmann::json Banking::CustomerOperations::processMessage(const nlohmann::json& message)
+{
+    std::string operationType = message.at("OperationType");
+    std::string columnName = message.at("ColumnName");
+    nlohmann::json data = message.at("Data");
+
+    if (operationType == "get") {
+        if (columnName == "Customer_name") {
+            return getCustomerNameById(data.at(0));
+        } else if (columnName == "Customer_password") {
+            return getCustomerPasswordById(data.at(0));
+        } else if (columnName == "Customer_account") {
+            return getCustomerAccountById(data.at(0));
+        } else if (columnName == "Customer_address") {
+            return getCustomerAddressById(data.at(0));
+        } else if (columnName == "Customer_branch") {
+            return getCustomerBranchById(data.at(0));
+        }
+    } else if (operationType == "set") {
+        if (columnName == "Customer_name") {
+            setCustomerNameById(data.at(0), data.at(1));
+        } else if (columnName == "Customer_password") {
+            setCustomerPasswordById(data.at(0), data.at(1));
+        } else if (columnName == "Customer_account") {
+            setCustomerAccountById(data.at(0), data.at(1));
+        } else if (columnName == "Customer_address") {
+            setCustomerAddressById(data.at(0), data.at(1));
+        } else if (columnName == "Customer_branch") {
+            setCustomerBranchById(data.at(0), data.at(1));
+        }
+    } else if (operationType == "add") {
+        Banking::Customer cust(data.at(0), data.at(1), data.at(2), data.at(3), data.at(4), data.at(5));
+        addCustomer(std::move(cust));
+    } else if (operationType == "delete") {
+        deleteCustomer(data.at(0));
+    }
+
+    return "Operation was not successful";
+    // Handle other operations or return an error message
+    // TO-DO: return nlohmann::json::object({{"error", "Invalid operation type"}});
 }

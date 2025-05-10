@@ -64,6 +64,18 @@ add_subdirectory(src)
 
 if(BUILD_TESTING)
   add_subdirectory(Tst)
+
+  # Define a list of all test targets
+  # set(TEST_TARGETS
+  # ${ZMQCOMMS_TEST}
+  # ${DATABASE_OPERATIONS_TEST}
+  # ${USERS_TEST}
+  # )
+    # Apply the UNIT_TEST definition to all test targets
+  # foreach(TEST_TARGET ${TEST_TARGETS})
+  #   target_compile_definitions(${TEST_TARGET} PRIVATE UNIT_TEST)
+  # endforeach()
+
 endif()
 # This is a "default" library, and will match the *** variable setting.
 # Other common choices are STATIC, SHARED, and MODULE
@@ -90,11 +102,11 @@ cmake_print_variables(CMAKE_BINARY_DIR)
 cmake_print_variables(CMAKE_SOURCE_DIR)
 
 # Adding something we can run - Output name matches target name
-add_executable(BankingServer driver.cpp)
+# add_executable(BankingServer driver.cpp)
 
 # Make sure you link your targets with this command. It can also link libraries and
 # even flags, so linking a target that does not exist will not give a configure-time error.
-target_link_libraries(BankingServer PRIVATE ${USERS_LIB} ${CONNECTION_LIB} ${DATABASE_OPERATIONS_LIB} ${LOGGER_LIB} spdlog nlohmann_json::nlohmann_json libzmq ${PLATFORM_LIBS})
+# target_link_libraries(BankingServer PRIVATE ${USERS_LIB} ${CONNECTION_LIB} ${DATABASE_OPERATIONS_LIB} ${LOGGER_LIB} spdlog nlohmann_json::nlohmann_json libzmq ${PLATFORM_LIBS})
 
 # Run lcov
 # lcov --capture --directory . --output-file coverage.info

@@ -9,6 +9,7 @@
  * 
  */
 #include "DatabaseOperations.hpp"
+#include "IOperations.hpp"
 
 /**
  * @brief Construct a new Banking:: Database Operations:: Database Operations object
@@ -45,9 +46,8 @@ std::vector<std::string> Banking::DatabaseOperations::buildSelectionQuery(const 
     std::string statement_string = "SELECT "+colName+" from "+tableName+" WHERE "+seearchOn+" = '"+searchVal+"'";
     BANKING_LOGGER_INFO("Executing command {}", statement_string);
     char* messageError;
-    std::string returnVal;
     std::vector<std::string> container;
-    // int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), callbackName, static_cast<void*>(&returnVal), &messageError);
+
     int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), callbackName, &container, &messageError);
     if (exit != SQLITE_OK) 
     {

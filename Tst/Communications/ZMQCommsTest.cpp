@@ -1,36 +1,50 @@
+#include "ZMQReceive.hpp"
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
+#include <zmq.hpp>
+#include "ZMQRequest.hpp"
 #include <thread>
-#include <chrono>
-#include "ZMQComms.hpp"
 
-namespace Banking {
 
+// Test fixture for ZMQReceive
 class ZMQCommsTest : public ::testing::Test {
 protected:
-    ZMQComms* zmqComms;
+    Banking::ZMQContextManager* contextManagerPtr;
+    zmq::socket_t* soocketPtr;
 
     void SetUp() override {
-        zmqComms = ZMQComms::getInstance(); // Get the singleton instance
-        std::this_thread::sleep_for(std::chrono::milliseconds(100)); // Allow time for sockets to connect
+        contextManagerPtr = Banking::ZMQContextManager::getInstance();
     }
 
     void TearDown() override {
-        // Cleanup if necessary
+        if (soocketPtr) {
+            soocketPtr->close();
+            delete soocketPtr;
+        }
     }
 };
 
-// Test for sendMessage and receiveMessage
-TEST_F(ZMQCommsTest, SendMessageAndReceiveMessage) {
+TEST_F(ZMQCommsTest, TestReceiveReplyRequest) {
     // Arrange
-    const std::string topic = "TestTopic";
-    const std::string message = "Hello, ZMQ!";
+    std::string bindAddress = "tcp://127.0.0.1:5555";
+    std::string expectedMessage = "Test Message";
+
+    zmq::message_t mockMessage(expectedMessage.data(), expectedMessage.size());
+    Banking::ZMQReceive zmqReceive(bindAddress);
+    std::string response;
 
     // Act
-    zmqComms->sendMessage(topic, message); // Send the message
-    std::string receivedMessage = zmqComms->receiveMessage(); // Receive the message
+    std::thread requestorThread([&bindAddress, &response]() {
+        Banking::ZMQRequest requestor(bindAddress);
+        std::string requestMessage = "Test Message";
+        response = requestor.request(requestMessage);
+    });
 
+    std::string receivedMessage = zmqReceive.receiveRequest();
+    ASSERT_EQ(receivedMessage, expectedMessage);
+    std::string replyMessage = "Reply Message";
+    zmqReceive.reply(receivedMessage);
+    requestorThread.join();
     // Assert
-    EXPECT_EQ(receivedMessage, message); // Verify the received message matches the sent message
+    ASSERT_EQ(response, expectedMessage);
 }
-
-} // namespace Banking

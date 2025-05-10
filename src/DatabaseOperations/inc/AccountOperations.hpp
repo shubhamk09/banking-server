@@ -12,11 +12,12 @@
 #include <iomanip> // For std::hex, std::uppercase, std::setw, and std::setfill
 
 #include "DatabaseOperations.hpp"
+#include "IOperations.hpp"
 
 namespace Banking
 {
 
-class AccountOperations : public DatabaseOperations
+class AccountOperations : public IOperations
 {
 public:
     AccountOperations(connection_shptr &connPtr);
@@ -40,6 +41,7 @@ public:
     void deleteAccount(const std::string &accNumber);
     std::string createHexJson(nlohmann::json &accTransaction);
     nlohmann::json createTransactionJson(std::string &hexJson, const std::string &accNumber);
+    nlohmann::json processMessage(const nlohmann::json& message) override;
     
 };  
 

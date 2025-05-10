@@ -15,7 +15,7 @@
  * 
  * @param connPtr 
  */
-Banking::BranchOperations::BranchOperations(connection_shptr &connPtr): Banking::DatabaseOperations{connPtr}
+Banking::BranchOperations::BranchOperations(connection_shptr &connPtr)
 {
 }
 
@@ -150,4 +150,43 @@ void Banking::BranchOperations::addBranch(const std::string &branchId, const std
  */
 void Banking::BranchOperations::deleteBranch(const std::string &branchId){
     Banking::DatabaseOperations::buildDeleteQuery(branchId, "Branch", "Branch_id");
+}
+
+nlohmann::json Banking::BranchOperations::processMessage(const nlohmann::json& message)
+{
+    std::string operationType = message.at("OperationType");
+    std::string columnName = message.at("ColumnName");
+    nlohmann::json data = message.at("Data");
+
+    if (operationType == "get") {
+        if (columnName == "Branch_name") {
+            return getBranchNameById(data.at(0));
+        } else if (columnName == "Branch_city") {
+            return getBranchCityById(data.at(0));
+        } else if (columnName == "Branch_address") {
+            return getBranchAddressById(data.at(0));
+        } else if (columnName == "Branch_manager") {
+            return getBranchManagerById(data.at(0));
+        } else if (columnName == "Branch_active") {
+            return isActiveBranch(data.at(0)) ? "ACTIVE" : "NOTACTIVE";
+        }
+    } else if (operationType == "set") {
+        if (columnName == "Branch_name") {
+            setBranchNameById(data.at(0), data.at(1));
+        } else if (columnName == "Branch_city") {
+            setBranchCityById(data.at(0), data.at(1));
+        } else if (columnName == "Branch_address") {
+            setBranchAddressById(data.at(0), data.at(1));
+        } else if (columnName == "Branch_manager") {
+            setBranchManagerById(data.at(0), data.at(1));
+        }
+    } else if (operationType == "add") {
+        addBranch(data.at(0), data.at(1), data.at(2), data.at(3), data.at(4));
+    } else if (operationType == "delete") {
+        deleteBranch(data.at(0));
+    }
+
+    return "Operation was not successful";
+    // Handle other operations or return an error message
+    // TO-DO: return nlohmann::json::object({{"error", "Invalid operation type"}});
 }

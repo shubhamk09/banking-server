@@ -11,6 +11,7 @@
 #include "Logger.hpp"
 #include "Connection.hpp"
 
+
 /**
  * @brief Construct a new Banking:: Connection:: Connection object
  * 
@@ -57,5 +58,78 @@ Banking::Connection::~Connection()
     
 }
 
+json Banking::Connection::executeQuery(const std::string &query)
+{
+    json result;
+    char* messageError;
+    std::vector<std::string> container;
+
+    int exit = sqlite3_exec(DB, query.c_str(), callbackName, &container, &messageError);
+
+    if (exit != SQLITE_OK) 
+    {
+        // Add error message to the result JSON
+        result["status"] = "error";
+        result["message"] = messageError ? std::string(messageError) : "Unknown error";
+        sqlite3_free(messageError); // Free the error message
+    }
+    else
+    {
+        // Add success status and container data to the result JSON
+        result["status"] = "success";
+        result["data"] = container; // Add the container content to the JSON
+        BANKING_LOGGER_INFO("Query executed successfully");
+    }
+
+    return result; // Return the JSON result
+}
 
 
+int Banking::Connection::callbackName(void* data, int column_count, char** column_values, char** column_names){
+    auto &container = *static_cast<std::vector<std::string>*>(data);
+    if (column_count >0 && column_values[0]!=nullptr)
+    {
+        container.push_back(column_values[0]);
+    }
+    else
+    {
+        container.push_back("NULL");
+    }
+    
+    return 0;
+} 
+
+// #ifndef UNIT_TEST
+// int main() {
+//     try {
+//         // Initialize the ZMQComms class
+//         Banking::ZMQComms *zmqComms = Banking::ZMQComms::getInstance();
+
+//         // Initialize the database connection
+//         Banking::Connection connection;
+
+//         while (true) {
+//             try {
+//                 // Receive a query from the client
+//                 std::string query = zmqComms->receiveMessage();
+//                 std::cout << "Received query: " << query << std::endl;
+
+//                 // Execute the query
+//                 json result = connection.executeQuery(query);
+
+//                 // Send the result back to the client
+//                 zmqComms->sendMessage("connection", result.dump());
+//             } catch (const zmq::error_t& e) {
+//                 std::cerr << "ZeroMQ error: " << e.what() << std::endl;
+//             } catch (const std::exception& e) {
+//                 std::cerr << "Error: " << e.what() << std::endl;
+//             }
+//         }
+//     } catch (const std::exception& e) {
+//         std::cerr << "Failed to start microservice: " << e.what() << std::endl;
+//         return 1;
+//     }
+
+//     return 0;
+// }
+// #endif // UNIT_TEST

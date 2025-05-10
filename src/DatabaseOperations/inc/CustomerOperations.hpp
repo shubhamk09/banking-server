@@ -9,12 +9,13 @@
  * 
  */
 #include "DatabaseOperations.hpp"
+#include "IOperations.hpp"
 #include "Customer.hpp"
 
 namespace Banking
 {
 
-class CustomerOperations : public DatabaseOperations
+class CustomerOperations : public IOperations
 {
 public:
     CustomerOperations(connection_shptr &connPtr);
@@ -37,6 +38,7 @@ public:
     void setCustomerBranchById(const std::string &cstId, const std::string &branchId);
     void addCustomer(Banking::Customer &&cust);
     void deleteCustomer(const std::string &cstId);
+    nlohmann::json processMessage(const nlohmann::json& message) override;
     
 };  
 

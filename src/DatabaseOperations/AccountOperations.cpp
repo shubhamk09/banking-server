@@ -8,14 +8,16 @@
  * @copyright Copyright (c) 2023
  * 
  */
+#include <string>
 #include "AccountOperations.hpp"
+#include "DatabaseOperations.hpp"
 
 /**
  * @brief Construct a new Banking:: Database Operations:: Account Operations object
  * 
  * @param connPtr 
  */
-Banking::AccountOperations::AccountOperations(connection_shptr &connPtr): Banking::DatabaseOperations{connPtr}
+Banking::AccountOperations::AccountOperations(connection_shptr &connPtr)
 {
 }
 
@@ -220,4 +222,44 @@ nlohmann::json Banking::AccountOperations::createTransactionJson(std::string &he
         BANKING_LOGGER_INFO("Transaction not available for {}", accNumber);
     }
     return transactions;
+}
+
+nlohmann::json Banking::AccountOperations::processMessage(const nlohmann::json& message)
+{
+    std::string operationType = message.at("OperationType");
+    std::string columnName = message.at("ColumnName");
+    nlohmann::json data = message.at("Data");
+
+    if (operationType == "get") {
+        if (columnName == "Account_balance") {
+            return getAccountBalanceById(data.at(0));
+        } else if (columnName == "Account_transactions") {
+            return getAccountTransactionsById(data.at(0)).dump();
+        } else if (columnName == "Account_branch") {
+            return getAccountBranchById(data.at(0));
+        } else if (columnName == "Account_active") {
+            return isActiveAccount(data.at(0)) ? "ACTIVE" : "NOTACTIVE";
+        }
+    } else if (operationType == "set") {
+        if (columnName == "Account_balance") {
+            setAccountBalanceById(data.at(0), std::stoi(static_cast<std::string>(data.at(1))));
+        } else if (columnName == "Account_transactions") {
+            nlohmann::json transaction = data.at(1);
+            setAccountTransactionById(data.at(0), transaction);
+        } else if (columnName == "Account_branch") {
+            setAccountBranchById(data.at(0), data.at(1));
+        } else if (columnName == "Account_active") {
+            setAccountStatusById(data.at(0), data.at(1) == "ACTIVE");
+        }
+    } else if (operationType == "add") {
+        nlohmann::json transaction = data.at(2);
+        bool isActive = data.at(4) == "ACTIVE";
+        addAccount(data.at(0), data.at(1), transaction, data.at(3), isActive);
+    } else if (operationType == "delete") {
+        deleteAccount(data.at(0));
+    }
+
+    return "Operation was not successful";
+    // Handle other operations or return an error message
+    // TO-DO: return nlohmann::json::object({{"error", "Invalid operation type"}});
 }

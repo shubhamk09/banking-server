@@ -15,7 +15,7 @@
  * 
  * @param connPtr 
  */
-Banking::EmployeeOperations::EmployeeOperations(connection_shptr &connPtr): Banking::DatabaseOperations{connPtr}
+Banking::EmployeeOperations::EmployeeOperations(connection_shptr &connPtr)
 {
 }
 
@@ -180,4 +180,48 @@ void Banking::EmployeeOperations::addEmployee(Banking::Employee &&empl){
 void Banking::EmployeeOperations::deleteEmployee(const std::string &empId){
     Banking::DatabaseOperations::buildDeleteQuery(empId, "Employee", "Employee_id");
     Banking::DatabaseOperations::buildDeleteQuery(empId, "EmployeeToBranch", "Employee_id");
+}
+
+nlohmann::json Banking::EmployeeOperations::processMessage(const nlohmann::json& message)
+{
+    std::string operationType = message.at("OperationType");
+    std::string columnName = message.at("ColumnName");
+    nlohmann::json data = message.at("Data");
+
+    if (operationType == "get") {
+        if (columnName == "Employee_name") {
+            return getEmployeeNameById(data.at(0));
+        } else if (columnName == "Employee_password") {
+            return getEmployeePasswordById(data.at(0));
+        } else if (columnName == "Employee_designation") {
+            return getEmployeeDesignationById(data.at(0));
+        } else if (columnName == "Employee_address") {
+            return getEmployeeAddressById(data.at(0));
+        } else if (columnName == "Branch_id") {
+            return getEmployeeBranchById(data.at(0));
+        }
+    } else if (operationType == "set") {
+        if (columnName == "Employee_name") {
+            setEmployeeNameById(data.at(0), data.at(1));
+        } else if (columnName == "Employee_password") {
+            setEmployeePasswordById(data.at(0), data.at(1));
+        } else if (columnName == "Employee_designation") {
+            setEmployeeDesignationById(data.at(0), data.at(1));
+        } else if (columnName == "Employee_address") {
+            setEmployeeAddressById(data.at(0), data.at(1));
+        } else if (columnName == "Branch_id") {
+            setEmployeeBranchById(data.at(0), data.at(1));
+        }
+    } else if (operationType == "add") {
+        Banking::Employee employee(data.at(0), data.at(1), data.at(2), data.at(3), data.at(4), data.at(5));
+        addEmployee(std::move(employee));
+        return "Employee added successfully";
+    } else if (operationType == "delete") {
+        deleteEmployee(data.at(0));
+        return "Employee deleted successfully";
+    }
+    
+    return "Operation was not successful";
+    // Handle other operations or return an error message
+    // TO-DO: return nlohmann::json::object({{"error", "Invalid operation type"}});
 }

@@ -17,6 +17,8 @@
 #include <fstream>
 #include <regex>
 #include <memory>
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
 extern std::string osVariable;
 
@@ -34,6 +36,8 @@ private:
 public:
     Connection();
     ~Connection();
+    json executeQuery(const std::string& query);
+    static int callbackName(void* data, int column_count, char** column_values, char** column_names);
 public:
     sqlite3* DB;
 };

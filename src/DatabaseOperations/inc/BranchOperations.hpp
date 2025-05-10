@@ -9,11 +9,12 @@
  * 
  */
 #include "DatabaseOperations.hpp"
+#include "IOperations.hpp"
 
 namespace Banking
 {
 
-class BranchOperations : public DatabaseOperations
+class BranchOperations : public IOperations
 {
 public:
     BranchOperations(connection_shptr &connPtr);
@@ -35,6 +36,7 @@ public:
     void setBranchManagerById(const std::string &branchId, const std::string &newBranchManagerId);
     void addBranch(const std::string &branchId, const std::string &newName, const std::string &newCity, const std::string &newAdd, const std::string &newBranchManagerId);
     void deleteBranch(const std::string &branchId);
+    nlohmann::json processMessage(const nlohmann::json& message) override;
     
 };  
 
