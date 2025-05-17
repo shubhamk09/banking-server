@@ -11,7 +11,7 @@ namespace Banking {
     
         // Private constructor for Singleton
         ZMQRequest(const std::string &bindAddress);
-    
+
     public:
         // Delete copy constructor and assignment operator
         ZMQRequest(const ZMQRequest&) = delete;

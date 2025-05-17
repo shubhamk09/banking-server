@@ -10,13 +10,14 @@
  */
 #include "DatabaseOperations.hpp"
 #include "IOperations.hpp"
+#include "ZMQRequest.hpp"
 
 /**
  * @brief Construct a new Banking:: Database Operations:: Database Operations object
  * 
  * @param connPtr 
  */
-Banking::DatabaseOperations::DatabaseOperations(connection_shptr &connPtr):connPtr{connPtr}
+Banking::DatabaseOperations::DatabaseOperations()
 {
 }
 
@@ -48,16 +49,9 @@ std::vector<std::string> Banking::DatabaseOperations::buildSelectionQuery(const 
     char* messageError;
     std::vector<std::string> container;
 
-    int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), callbackName, &container, &messageError);
-    if (exit != SQLITE_OK) 
-    {
-        BANKING_LOGGER_ERROR("Error while getting Data for {} in Table {} for {}", colName, tableName, searchVal);
-        sqlite3_free(messageError);
-    }
-    else
-    {
-        BANKING_LOGGER_INFO("Data Retrival for {} in table {} is successfull", colName, tableName);
-    }
+    // int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), callbackName, &container, &messageError);
+    SendQuery(statement_string, &container);
+
     return container;
 }
 
@@ -89,16 +83,8 @@ void Banking::DatabaseOperations::buildUpdateQuery(const std::string &colName, c
     std::string statement_string = "UPDATE "+tableName+" SET "+colName+" = '"+updateVal+"' WHERE "+seearchOn+" = '"+searchVal+"'";
     BANKING_LOGGER_INFO("Executing command {}", statement_string);
     char* messageError;
-    int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), nullptr, nullptr, &messageError);
-    if (exit != SQLITE_OK) 
-    {
-        BANKING_LOGGER_ERROR("Error while setting Data for {} in Table {} for {}", colName, tableName, searchVal);
-        sqlite3_free(messageError);
-    }
-    else
-    {
-        BANKING_LOGGER_INFO("Data updation for {} in table {} is successfull", colName, tableName);
-    }
+    // int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), nullptr, nullptr, &messageError);
+    SendQuery(statement_string);
 }    
 
 /**
@@ -128,16 +114,8 @@ void Banking::DatabaseOperations::buildInsertionQery(const nlohmann::json &data)
         }
         BANKING_LOGGER_INFO("Executing command {}", statement_string);
         char* messageError;
-        int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), nullptr, nullptr, &messageError);
-        if (exit != SQLITE_OK) 
-        {
-            BANKING_LOGGER_ERROR("Error while inserting Data in Table {}",tableName);
-            sqlite3_free(messageError);
-        }
-        else
-        {
-            BANKING_LOGGER_INFO("Data Insertion in table {} is successfull", tableName);
-        }
+        // int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), nullptr, nullptr, &messageError);
+        SendQuery(statement_string);
     }
     else
     {
@@ -147,27 +125,19 @@ void Banking::DatabaseOperations::buildInsertionQery(const nlohmann::json &data)
 }
 
 /**
- * @brief 
- * 
- * @param searchVal 
- * @param tableName 
- * @param seearchOn 
- * @return std::string 
+ * @brief
+ *
+ * @param searchVal
+ * @param tableName
+ * @param seearchOn
+ * @return std::string
  */
 void Banking::DatabaseOperations::buildDeleteQuery(const std::string &searchVal, const std::string &tableName, const std::string &seearchOn){
     std::string statement_string = "DELETE FROM "+tableName+" WHERE "+seearchOn+" = '"+searchVal+"'";
     BANKING_LOGGER_INFO("Executing command {}", statement_string);
     char* messageError;
-    int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), nullptr, nullptr, &messageError);
-    if (exit != SQLITE_OK) 
-    {
-        BANKING_LOGGER_ERROR("Error while deleting Data in Table {} for {}", tableName, searchVal);
-        sqlite3_free(messageError);
-    }
-    else
-    {
-        BANKING_LOGGER_INFO("Data deletion from table {} is successfull", tableName);
-    }
+    // int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), nullptr, nullptr, &messageError);
+    SendQuery(statement_string);
 }
 
 /**
@@ -191,4 +161,47 @@ int Banking::DatabaseOperations::callbackName(void* data, int column_count, char
     }
     
     return 0;
-} 
+}
+void Banking::DatabaseOperations::SendQuery(const std::string &query, std::vector<std::string>* container)
+{
+    BANKING_LOGGER_INFO("Executing command {}", query);
+    ZMQRequest& requestorSocket = Banking::ZMQRequest::getInstance("tcp://localhost:5555");
+    char* messageError;
+    // int exit = sqlite3_exec(connPtr->DB, query.c_str(), nullptr, nullptr, &messageError);
+    std::istringstream iss(query);
+    std::string operation;
+    iss >> operation;
+
+    std::string reply = requestorSocket.request(query);
+
+    if (operation == "SELECT")
+    {
+        /*
+        Select Operation will return multiple rows
+        So we need to push all the rows in the container
+        and return the reply as "OK" or "Failed"
+        If the reply is empty, then it means no data is found
+        */
+        std::string selectReply = "Failed";
+        std::istringstream iss(reply);
+        std::string line;
+        while (std::getline(iss, line)) {
+            if (!line.empty()) {
+                container->push_back(line);
+                selectReply = "OK";
+            }
+        }
+
+        reply = selectReply;
+    }
+    
+    
+    if (reply == "OK")
+    {
+        BANKING_LOGGER_INFO("{} is successfull", operation);
+    }
+    else
+    {
+        BANKING_LOGGER_ERROR("{} Failed",operation);
+    }
+}
