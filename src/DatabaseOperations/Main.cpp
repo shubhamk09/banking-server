@@ -4,6 +4,7 @@
 #include "EmployeeOperations.hpp"
 #include "AccountOperations.hpp"
 #include "BranchOperations.hpp"
+#include "ZMQReceive.hpp"
 
 int main() {
     using namespace Banking;
@@ -23,16 +24,39 @@ int main() {
     dispatcher.registerOperation("Employee", employeeOps);
     dispatcher.registerOperation("Account", accountOps);
     dispatcher.registerOperation("Branch", branchOps);
-    // Example message
-    nlohmann::json message;
-    message["Operation"] = "Account";
-    message["OperationType"] = "get";
-    message["ColumnName"] = "Account_balance";
-    message["Data"] = nlohmann::json::array({"1234567890"});
+    
+    /* 
+        Example message 
+        nlohmann::json message;
+        message["Operation"] = "Account";
+        message["OperationType"] = "get";
+        message["ColumnName"] = "Account_balance";
+        message["Data"] = nlohmann::json::array({"20230809MYS00101"});
 
-    // Dispatch messages
-    std::string response = dispatcher.dispatch(message["Operation"], message);
-    std::cout << "Response: " << response << std::endl;
+        // Dispatch messages
+        std::string response = dispatcher.dispatch(message["Operation"], message);
+        std::cout << "Response: " << response << std::endl;
+
+    */
+
+
+    auto& zmqReceiver = ZMQReceive::getInstance("tcp://*:5502");
+
+    std::cout << "Server is listening for incoming requests..." << std::endl;
+
+    // Event loop to listen for incoming requests
+    while (true) {
+        // Receive a request from the client
+        std::string request = zmqReceiver.receiveRequest();
+
+        // Here you can process the request and generate a response
+        nlohmann::json requestJson = nlohmann::json::parse(request);
+        std::string operation = requestJson["Operation"];
+        std::string response = dispatcher.dispatch(operation, requestJson);
+
+        // Send the reply back to the client
+        zmqReceiver.reply(response);
+    }
 
     return 0;
 }

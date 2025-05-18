@@ -15,7 +15,7 @@
  * 
  * @param connPtr 
  */
-Banking::CustomerOperations::CustomerOperations(connection_shptr &connPtr)
+Banking::CustomerOperations::CustomerOperations()
 {
 }
 

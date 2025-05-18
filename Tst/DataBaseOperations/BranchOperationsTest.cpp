@@ -17,8 +17,8 @@ public:
 
 void BranchOperationTestFixture::SetUp(){
     Banking::Logger::Init();
-    Banking::connection_shptr ptr{std::make_shared<Banking::Connection>()};
-    BranchOpPtr = std::make_shared<Banking::BranchOperations>(ptr);
+    // Banking::connection_shptr ptr{std::make_shared<Banking::Connection>()};
+    BranchOpPtr = std::make_shared<Banking::BranchOperations>();
     branchId = "MYS002";
     std::string name{"Hebbal Branch"};
     std::string city{"Mysuru"};

@@ -10,8 +10,8 @@ class CustomerOperationsTest : public ::testing::Test {
 protected:
     void SetUp() override {
         Banking::Logger::Init();
-        Banking::connection_shptr ptr{std::make_shared<Banking::Connection>()};
-        customerOps = std::make_unique<CustomerOperations>(ptr);
+        // Banking::connection_shptr ptr{std::make_shared<Banking::Connection>()};
+        customerOps = std::make_unique<CustomerOperations>();
         customerId = "MYSC00102";
         Customer newCustomer(customerId, "John Doe", "password123", "MYS001", "123 Main St", "20230914MYS00104");
         customerOps->addCustomer(std::move(newCustomer));

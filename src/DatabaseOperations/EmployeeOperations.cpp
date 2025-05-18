@@ -15,7 +15,7 @@
  * 
  * @param connPtr 
  */
-Banking::EmployeeOperations::EmployeeOperations(connection_shptr &connPtr)
+Banking::EmployeeOperations::EmployeeOperations()
 {
 }
 

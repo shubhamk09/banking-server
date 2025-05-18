@@ -17,7 +17,7 @@ namespace Banking
 class BranchOperations : public IOperations
 {
 public:
-    BranchOperations(connection_shptr &connPtr);
+    BranchOperations();
     ~BranchOperations() = default;
 
     BranchOperations(const BranchOperations&) = default;

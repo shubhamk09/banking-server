@@ -11,13 +11,14 @@
 #include <string>
 #include "AccountOperations.hpp"
 #include "DatabaseOperations.hpp"
+#include <iostream>
 
 /**
  * @brief Construct a new Banking:: Database Operations:: Account Operations object
  * 
  * @param connPtr 
  */
-Banking::AccountOperations::AccountOperations(connection_shptr &connPtr)
+Banking::AccountOperations::AccountOperations()
 {
 }
 

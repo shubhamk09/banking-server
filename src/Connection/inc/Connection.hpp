@@ -36,7 +36,7 @@ private:
 public:
     Connection();
     ~Connection();
-    json executeQuery(const std::string& query);
+    std::string executeQuery(const std::string& query);
     static int callbackName(void* data, int column_count, char** column_values, char** column_names);
 public:
     sqlite3* DB;

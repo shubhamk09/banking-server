@@ -18,7 +18,7 @@ namespace Banking
 class CustomerOperations : public IOperations
 {
 public:
-    CustomerOperations(connection_shptr &connPtr);
+    CustomerOperations();
     ~CustomerOperations() = default;
 
     CustomerOperations(const CustomerOperations&) = default;

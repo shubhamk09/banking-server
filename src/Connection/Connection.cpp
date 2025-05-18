@@ -18,6 +18,8 @@
  */
 Banking::Connection::Connection()
 {
+    // Initialize logger here!
+    Banking::Logger::Init(); // or whatever your logger init function is
     std::string rootPath{std::filesystem::current_path().string()};
     std::regex pattern("^(.*banking-server)");
     std::smatch matches;
@@ -58,7 +60,7 @@ Banking::Connection::~Connection()
     
 }
 
-json Banking::Connection::executeQuery(const std::string &query)
+std::string Banking::Connection::executeQuery(const std::string &query)
 {
     json result;
     char* messageError;
@@ -80,8 +82,8 @@ json Banking::Connection::executeQuery(const std::string &query)
         result["data"] = container; // Add the container content to the JSON
         BANKING_LOGGER_INFO("Query executed successfully");
     }
-
-    return result; // Return the JSON result
+    std::string resultString = result.dump();
+    return resultString; // Return the result string
 }
 
 

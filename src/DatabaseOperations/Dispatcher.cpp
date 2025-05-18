@@ -19,7 +19,7 @@ void Dispatcher::registerOperation(const std::string& key, std::shared_ptr<IOper
 // Dispatch a message to the appropriate operation
 std::string Dispatcher::dispatch(const std::string& key, const nlohmann::json& message) {
     if (operationsMap.find(key) != operationsMap.end()) {
-        return operationsMap[key]->processMessage(message);
+        return operationsMap[key]->processMessage(message).dump();
     }
     return "Operation not found";
 }

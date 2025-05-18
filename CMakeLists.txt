@@ -58,6 +58,7 @@ endif()
 include(CTest)
 include(CTestCoverageCollectGCOV)
 include(${CMAKE_CURRENT_SOURCE_DIR}/Cmake/LibList.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/Cmake/ExeList.cmake)
 
 # You should usually split this into folders, but this is a simple example
 add_subdirectory(src)
@@ -106,7 +107,7 @@ cmake_print_variables(CMAKE_SOURCE_DIR)
 
 # Make sure you link your targets with this command. It can also link libraries and
 # even flags, so linking a target that does not exist will not give a configure-time error.
-# target_link_libraries(BankingServer PRIVATE ${USERS_LIB} ${CONNECTION_LIB} ${DATABASE_OPERATIONS_LIB} ${LOGGER_LIB} spdlog nlohmann_json::nlohmann_json libzmq ${PLATFORM_LIBS})
+# target_link_libraries(BankingServer PRIVATE ${USERS_LIB} ${CONNECTION_SERVICE} ${DATABASE_OPERATIONS_LIB} ${LOGGER_LIB} spdlog nlohmann_json::nlohmann_json libzmq ${PLATFORM_LIBS})
 
 # Run lcov
 # lcov --capture --directory . --output-file coverage.info

@@ -16,8 +16,8 @@ public:
 
 void EmployeeOperationTestFixture::SetUp(){
     Banking::Logger::Init();
-    Banking::connection_shptr ptr{std::make_shared<Banking::Connection>()};
-    EmployeeOpPtr = std::make_shared<Banking::EmployeeOperations>(ptr);
+    // Banking::connection_shptr ptr{std::make_shared<Banking::Connection>()};
+    EmployeeOpPtr = std::make_shared<Banking::EmployeeOperations>();
     empid = "MYSE00102";
     std::string name{"Shubham Kalihari"};
     std::string password{"Shannu"};

@@ -13,8 +13,8 @@ public:
 };
 
 void AccountOperationsTestFixture::SetUp(){
-    Banking::connection_shptr conn_ptr{std::make_shared<Banking::Connection>()};
-    accOpt_ptr = std::make_shared<Banking::AccountOperations>(conn_ptr);
+    // Banking::connection_shptr conn_ptr{std::make_shared<Banking::Connection>()};
+    accOpt_ptr = std::make_shared<Banking::AccountOperations>();
     nlohmann::json jsonString1 = R"({
             "pi": 3.141,
             "happy": true,

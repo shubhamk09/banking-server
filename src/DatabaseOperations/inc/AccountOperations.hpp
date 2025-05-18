@@ -20,7 +20,7 @@ namespace Banking
 class AccountOperations : public IOperations
 {
 public:
-    AccountOperations(connection_shptr &connPtr);
+    AccountOperations();
     ~AccountOperations() = default;
 
     AccountOperations(const AccountOperations&) = default;

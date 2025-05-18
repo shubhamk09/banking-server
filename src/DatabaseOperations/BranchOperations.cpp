@@ -15,7 +15,7 @@
  * 
  * @param connPtr 
  */
-Banking::BranchOperations::BranchOperations(connection_shptr &connPtr)
+Banking::BranchOperations::BranchOperations()
 {
 }
 
