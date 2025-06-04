@@ -1,7 +1,7 @@
 /**
  * @file ZMQContextManager.hpp
  * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
- * @brief 
+ * @brief Header file for ZMQContextManager class
  * @version 0.1
  * @date 2025-03-03
  * 

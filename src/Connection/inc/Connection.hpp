@@ -1,7 +1,7 @@
 /**
  * @file Connection.hpp
  * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
- * @brief 
+ * @brief Header for Connection classs
  * @version 0.1
  * @date 2023-07-16
  * 

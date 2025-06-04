@@ -1,3 +1,13 @@
+/**
+ * @file Main.cpp
+ * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
+ * @brief Driver for DatabaseOperations services
+ * @version 0.1
+ * @date 2025-04-06
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
 #include "Dispatcher.hpp"
 #include "DatabaseOperations.hpp"
 #include "CustomerOperations.hpp"

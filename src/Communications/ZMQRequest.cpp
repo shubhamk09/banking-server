@@ -1,4 +1,14 @@
-#include "ZMQRequest.hpp"
+
+/**
+ * @file ZMQRequest.cpp
+ * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
+ * @brief This class is reponsible for making ZMQ Request
+ * @version 0.1
+ * @date 2025-04-06
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */#include "ZMQRequest.hpp"
 
 namespace Banking
 {

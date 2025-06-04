@@ -99,39 +99,4 @@ int Banking::Connection::callbackName(void* data, int column_count, char** colum
     }
     
     return 0;
-} 
-
-// #ifndef UNIT_TEST
-// int main() {
-//     try {
-//         // Initialize the ZMQComms class
-//         Banking::ZMQComms *zmqComms = Banking::ZMQComms::getInstance();
-
-//         // Initialize the database connection
-//         Banking::Connection connection;
-
-//         while (true) {
-//             try {
-//                 // Receive a query from the client
-//                 std::string query = zmqComms->receiveMessage();
-//                 std::cout << "Received query: " << query << std::endl;
-
-//                 // Execute the query
-//                 json result = connection.executeQuery(query);
-
-//                 // Send the result back to the client
-//                 zmqComms->sendMessage("connection", result.dump());
-//             } catch (const zmq::error_t& e) {
-//                 std::cerr << "ZeroMQ error: " << e.what() << std::endl;
-//             } catch (const std::exception& e) {
-//                 std::cerr << "Error: " << e.what() << std::endl;
-//             }
-//         }
-//     } catch (const std::exception& e) {
-//         std::cerr << "Failed to start microservice: " << e.what() << std::endl;
-//         return 1;
-//     }
-
-//     return 0;
-// }
-// #endif // UNIT_TEST
+}

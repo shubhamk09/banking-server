@@ -1,3 +1,13 @@
+/**
+ * @file ZMQReceive.cpp
+ * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
+ * @brief Class is responsible for receiving ZMQ request
+ * @version 0.1
+ * @date 2025-04-06
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
 #include "ZMQReceive.hpp"
 #include <thread>
 #include <iostream>

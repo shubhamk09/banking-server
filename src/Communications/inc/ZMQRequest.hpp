@@ -1,3 +1,13 @@
+/**
+ * @file ZMQRequest.hpp
+ * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
+ * @brief Header file for ZMQRequest class
+ * @version 0.1
+ * @date 2025-06-04
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
 #ifndef ZMQREQUEST_HPP
 #define ZMQREQUEST_HPP
 

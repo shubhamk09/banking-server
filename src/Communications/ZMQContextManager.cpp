@@ -1,3 +1,13 @@
+/**
+ * @file ZMQContextManager.cpp
+ * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
+ * @brief This class manages the context of ZMQ
+ * @version 0.1
+ * @date 2025-04-06
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
 #include "ZMQContextManager.hpp"
 #include "Logger.hpp"
 
