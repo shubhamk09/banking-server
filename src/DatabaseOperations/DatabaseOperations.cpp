@@ -48,12 +48,9 @@ std::vector<std::string> Banking::DatabaseOperations::buildSelectionQuery(const 
 std::vector<std::string> Banking::DatabaseOperations::buildSelectionQuery(const std::string &colName, const std::string &searchVal, const std::string &tableName, const std::string &seearchOn){
     std::string statement_string = "SELECT "+colName+" from "+tableName+" WHERE "+seearchOn+" = '"+searchVal+"'";
     BANKING_LOGGER_INFO("Executing command {}", statement_string);
-    //char* messageError;
     std::vector<std::string> container;
-
-    // int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), callbackName, &container, &messageError);
     bool result = SendQuery(statement_string, &container);
-    // result is unused as of now
+    // TO DO: Result is unused as of now
     return container;
 }
 
@@ -84,8 +81,6 @@ bool Banking::DatabaseOperations::buildUpdateQuery(const std::string &colName, c
 bool Banking::DatabaseOperations::buildUpdateQuery(const std::string &colName, const std::string &searchVal, const std::string &updateVal, const std::string &tableName, const std::string &seearchOn){
     std::string statement_string = "UPDATE "+tableName+" SET "+colName+" = '"+updateVal+"' WHERE "+seearchOn+" = '"+searchVal+"'";
     BANKING_LOGGER_INFO("Executing command {}", statement_string);
-    //char* messageError;
-    // int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), nullptr, nullptr, &messageError);
     bool result = SendQuery(statement_string);
 
     return result;
@@ -97,16 +92,10 @@ bool Banking::DatabaseOperations::buildUpdateQuery(const std::string &colName, c
  * @param data 
  */
 bool Banking::DatabaseOperations::buildInsertionQery(const nlohmann::json &data){
-    // json jsonString1 = R"({
-    //         "table": "Employee",
-    //         "values": ["str1", "str2", "str3"]
-    //     })"_json;
-
     bool result{false};
     std::string tableName = data.at("table");
     if (data.at("values").is_array())
     {    
-        // int arraySize{static_cast<int>(data.at("values").size())};
         std::string statement_string = "INSERT INTO '"+tableName+"' VALUES (";
         for (auto &&value : data.at("values"))
         {
@@ -119,8 +108,6 @@ bool Banking::DatabaseOperations::buildInsertionQery(const nlohmann::json &data)
             statement_string = statement_string.substr(0, lastCommaPos)+");";
         }
         BANKING_LOGGER_INFO("Executing command {}", statement_string);
-        //char* messageError;
-        // int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), nullptr, nullptr, &messageError);
         result = SendQuery(statement_string);
     }
     else
@@ -142,41 +129,15 @@ bool Banking::DatabaseOperations::buildInsertionQery(const nlohmann::json &data)
 bool Banking::DatabaseOperations::buildDeleteQuery(const std::string &searchVal, const std::string &tableName, const std::string &seearchOn){
     std::string statement_string = "DELETE FROM "+tableName+" WHERE "+seearchOn+" = '"+searchVal+"'";
     BANKING_LOGGER_INFO("Executing command {}", statement_string);
-    //char* messageError;
-    // int exit = sqlite3_exec(connPtr->DB, statement_string.c_str(), nullptr, nullptr, &messageError);
     bool result = SendQuery(statement_string);
 
     return result;
 }
 
-// /**
-//  * @brief 
-//  * 
-//  * @param data 
-//  * @param column_count 
-//  * @param column_values 
-//  * @param column_names 
-//  * @return int 
-//  */
-// int Banking::DatabaseOperations::callbackName(void* data, int column_count, char** column_values, char** column_names){
-//     auto &container = *static_cast<std::vector<std::string>*>(data);
-//     if (column_count >0 && column_values[0]!=nullptr)
-//     {
-//         container.push_back(column_values[0]);
-//     }
-//     else
-//     {
-//         container.push_back("NULL");
-//     }
-    
-//     return 0;
-// }
 bool Banking::DatabaseOperations::SendQuery(const std::string &query, std::vector<std::string>* container)
 {
     BANKING_LOGGER_INFO("Executing command {}", query);
     ZMQRequest& requestorSocket = Banking::ZMQRequest::getInstance("tcp://localhost:5501");
-    // char* messageError;
-    // int exit = sqlite3_exec(connPtr->DB, query.c_str(), nullptr, nullptr, &messageError);
     std::istringstream iss(query);
     std::string operation;
     iss >> operation;
