@@ -1,3 +1,13 @@
+/**
+ * @file Dispatcher.hpp
+ * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
+ * @brief Message dispatcher for routing operations in banking system
+ * @version 0.1
+ * @date 2025-08-02
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
 #pragma once
 
 #include <unordered_map>

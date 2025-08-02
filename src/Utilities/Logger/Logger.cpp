@@ -1,7 +1,7 @@
 /**
  * @file Logger.cpp
  * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
- * @brief 
+ * @brief Implementation of Logger class for banking system
  * @version 0.1
  * @date 2023-08-19
  * 

@@ -1,3 +1,13 @@
+/**
+ * @file ZMQReqSocket.cpp
+ * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
+ * @brief Implementation of ZMQReqSocket class for banking system communications
+ * @version 0.1
+ * @date 2025-08-02
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
 #include "inc/ZMQReqSocket.hpp"
 #include "Logger.hpp"
 

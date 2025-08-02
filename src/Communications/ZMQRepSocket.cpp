@@ -1,3 +1,13 @@
+/**
+ * @file ZMQRepSocket.cpp
+ * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
+ * @brief Implementation of ZMQRepSocket class for banking system communications
+ * @version 0.1
+ * @date 2025-08-02
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
 #include "inc/ZMQRepSocket.hpp"
 #include "Logger.hpp"
 

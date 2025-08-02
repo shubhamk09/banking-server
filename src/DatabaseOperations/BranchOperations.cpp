@@ -1,7 +1,7 @@
 /**
  * @file BranchOperations.cpp
  * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
- * @brief 
+ * @brief Implementation of BranchOperations class for banking system
  * @version 0.1
  * @date 2023-07-31
  * 
@@ -10,11 +10,6 @@
  */
 #include "BranchOperations.hpp"
 
-/**
- * @brief Construct a new Banking:: Database Operations:: Branch Operations object
- * 
- * @param connPtr 
- */
 Banking::BranchOperations::BranchOperations() 
     : dbOps(std::make_shared<Banking::DatabaseOperations>())
 {
@@ -25,58 +20,27 @@ Banking::BranchOperations::BranchOperations(std::shared_ptr<IDatabaseOperations>
 {
 }
 
-/**
- * @brief 
- * 
- * @param branchId 
- * @return std::string 
- */
 std::string Banking::BranchOperations::getBranchNameById(const std::string &branchId){
     std::vector<std::string> columnVals = dbOps->buildSelectionQuery("Branch_name", branchId, "Branch");
     return columnVals.at(0);
 }
 
-/**
- * @brief 
- * 
- * @param branchId 
- * @return std::string 
- */
 std::string Banking::BranchOperations::getBranchCityById(const std::string &branchId){
     std::vector<std::string> columnVals = dbOps->buildSelectionQuery("Branch_city", branchId, "Branch");
     return columnVals.at(0);
 }
 
-/**
- * @brief 
- * 
- * @param branchId 
- * @return std::string 
- */
 std::string Banking::BranchOperations::getBranchAddressById(const std::string &branchId){
     std::vector<std::string> columnVals = dbOps->buildSelectionQuery("Branch_address", branchId, "Branch");
     return columnVals.at(0);
 }
 
-/**
- * @brief 
- * 
- * @param branchId 
- * @return std::string 
- */
 std::string Banking::BranchOperations::getBranchManagerById(const std::string &branchId){
     //To Do: return branch manager name instead of ID
     std::vector<std::string> columnVals = dbOps->buildSelectionQuery("Branch_manager", branchId, "Branch");
     return columnVals.at(0);
 }
 
-/**
- * @brief 
- * 
- * @param branchId 
- * @return true 
- * @return false 
- */
 bool Banking::BranchOperations::isActiveBranch(const std::string &branchId){
     std::vector<std::string> columnVals = dbOps->buildSelectionQuery("Branch_active", branchId, "Branch");
     if(columnVals.at(0) == "ACTIVE"){
@@ -85,55 +49,22 @@ bool Banking::BranchOperations::isActiveBranch(const std::string &branchId){
     return false;
 }
 
-/**
- * @brief 
- * 
- * @param branchId 
- * @param newName 
- */
 void Banking::BranchOperations::setBranchNameById(const std::string &branchId, const std::string &newName){
     dbOps->buildUpdateQuery("Branch_name", branchId, newName, "Branch");
 }
 
-/**
- * @brief 
- * 
- * @param branchId 
- * @param newCity 
- */
 void Banking::BranchOperations::setBranchCityById(const std::string &branchId, const std::string &newCity){
     dbOps->buildUpdateQuery("Branch_city", branchId, newCity, "Branch");
 }
 
-/**
- * @brief 
- * 
- * @param branchId 
- * @param newAdd 
- */
 void Banking::BranchOperations::setBranchAddressById(const std::string &branchId, const std::string &newAdd){
     dbOps->buildUpdateQuery("Branch_address", branchId, newAdd, "Branch");
 }
 
-/**
- * @brief 
- * 
- * @param branchId 
- * @param newBranchManagerId 
- */
 void Banking::BranchOperations::setBranchManagerById(const std::string &branchId, const std::string &newBranchManagerId){
     dbOps->buildUpdateQuery("Branch_manager", branchId, newBranchManagerId, "Branch");
 }
 
-/**
- * @brief 
- * 
- * @param branchId 
- * @param newName 
- * @param newCity 
- * @param newAdd 
- * @param newBranchManagerId 
- */
 void Banking::BranchOperations::addBranch(const std::string &branchId, const std::string &newName, const std::string &newCity, const std::string &newAdd, const std::string &newBranchManagerId){
     nlohmann::json BranchData;
     BranchData.emplace("table", "Branch");
@@ -148,11 +79,6 @@ void Banking::BranchOperations::addBranch(const std::string &branchId, const std
     dbOps->buildInsertionQery(BranchData);
 }
     
-/**
- * @brief 
- * 
- * @param branchId 
- */
 void Banking::BranchOperations::deleteBranch(const std::string &branchId){
     dbOps->buildDeleteQuery(branchId, "Branch", "Branch_id");
 }
