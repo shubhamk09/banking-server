@@ -48,60 +48,107 @@ TEST_F(CustomerOperationsTest, GetCustomerNameById) {
 
 TEST_F(CustomerOperationsTest, GetCustomerPasswordById) {
     std::string expectedPassword = "password123";
-    // Mock database response or set up the database state
+    
+    std::vector<std::string> mockResult = {expectedPassword};
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Customer_password", customerId, "Customer"))
+        .WillOnce(testing::Return(mockResult));
     ASSERT_EQ(customerOps->getCustomerPasswordById(customerId), expectedPassword);
 }
 
 TEST_F(CustomerOperationsTest, GetCustomerAccountById) {
     std::string expectedAccount = "20230914MYS00104";
-    // Mock database response or set up the database state
+    
+    std::vector<std::string> mockResult = {expectedAccount};
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Customer_account", customerId, "Customer"))
+        .WillOnce(testing::Return(mockResult));
     ASSERT_EQ(customerOps->getCustomerAccountById(customerId), expectedAccount);
 }
 
 TEST_F(CustomerOperationsTest, GetCustomerAddressById) {
     std::string expectedAddress = "123 Main St";
-    // Mock database response or set up the database state
+    
+    std::vector<std::string> mockResult = {expectedAddress};
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Customer_address", customerId, "Customer"))
+        .WillOnce(testing::Return(mockResult));
     ASSERT_EQ(customerOps->getCustomerAddressById(customerId), expectedAddress);
 }
 
 TEST_F(CustomerOperationsTest, GetCustomerBranchById) { 
     std::string expectedBranch = "MYS001";
-    // Mock database response or set up the database state
+    
+    std::vector<std::string> mockResult = {expectedBranch};
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Customer_branch", customerId, "Customer"))
+        .WillOnce(testing::Return(mockResult));
     ASSERT_EQ(customerOps->getCustomerBranchById(customerId), expectedBranch);
 }
 
 TEST_F(CustomerOperationsTest, SetCustomerNameById) {
     std::string newName = "Jane Doe";
+    
+    EXPECT_CALL(*mockDb, buildUpdateQuery("Customer_name", customerId, newName, "Customer"))
+        .WillOnce(testing::Return(true));
     ASSERT_NO_THROW(customerOps->setCustomerNameById(customerId, newName));
+    
     // Verify the name was updated in the database
+    std::vector<std::string> mockResult = {newName};
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Customer_name", customerId, "Customer"))
+        .WillOnce(testing::Return(mockResult));
     ASSERT_EQ(customerOps->getCustomerNameById(customerId), newName);
 }
 
 TEST_F(CustomerOperationsTest, SetCustomerPasswordById) {
     std::string newPassword = "newpassword123";
+    
+    EXPECT_CALL(*mockDb, buildUpdateQuery("Customer_password", customerId, newPassword, "Customer"))
+        .WillOnce(testing::Return(true));
     ASSERT_NO_THROW(customerOps->setCustomerPasswordById(customerId, newPassword));
+    
     // Verify the password was updated in the database
+    std::vector<std::string> mockResult = {newPassword};
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Customer_password", customerId, "Customer"))
+        .WillOnce(testing::Return(mockResult));
     ASSERT_EQ(customerOps->getCustomerPasswordById(customerId), newPassword);
 }
 
 TEST_F(CustomerOperationsTest, SetCustomerAccountById) {
     std::string newAccount = "20230914MYS00105";
+    
+    EXPECT_CALL(*mockDb, buildUpdateQuery("Customer_account", customerId, newAccount, "Customer"))
+        .WillOnce(testing::Return(true));
     ASSERT_NO_THROW(customerOps->setCustomerAccountById(customerId, newAccount));
+    
     // Verify the account was updated in the database
+    std::vector<std::string> mockResult = {newAccount};
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Customer_account", customerId, "Customer"))
+        .WillOnce(testing::Return(mockResult));
     ASSERT_EQ(customerOps->getCustomerAccountById(customerId), newAccount);
 }
 
 TEST_F(CustomerOperationsTest, SetCustomerAddressById) {
     std::string newAddress = "456 Elm St";
+    
+    EXPECT_CALL(*mockDb, buildUpdateQuery("Customer_address", customerId, newAddress, "Customer"))
+        .WillOnce(testing::Return(true));
     ASSERT_NO_THROW(customerOps->setCustomerAddressById(customerId, newAddress));
+    
     // Verify the address was updated in the database
+    std::vector<std::string> mockResult = {newAddress};
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Customer_address", customerId, "Customer"))
+        .WillOnce(testing::Return(mockResult));
     ASSERT_EQ(customerOps->getCustomerAddressById(customerId), newAddress);
 }
 
 TEST_F(CustomerOperationsTest, SetCustomerBranchById) {
     std::string newBranch = "MYS002";
+    
+    EXPECT_CALL(*mockDb, buildUpdateQuery("Customer_branch", customerId, newBranch, "Customer"))
+        .WillOnce(testing::Return(true));
     ASSERT_NO_THROW(customerOps->setCustomerBranchById(customerId, newBranch));
+    
     // Verify the branch was updated in the database
+    std::vector<std::string> mockResult = {newBranch};
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Customer_branch", customerId, "Customer"))
+        .WillOnce(testing::Return(mockResult));
     ASSERT_EQ(customerOps->getCustomerBranchById(customerId), newBranch);
 }
 

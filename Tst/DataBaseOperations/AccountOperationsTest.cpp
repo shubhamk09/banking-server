@@ -4,6 +4,8 @@
 #include <nlohmann/json.hpp>
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include <sstream>
+#include <iomanip>
 
 class AccountOperationsTestFixture: public testing::Test
 {
@@ -12,6 +14,20 @@ protected:
     std::shared_ptr<Banking::AccountOperations> accOpt_ptr;
     std::string newAccNum;
     nlohmann::json jsonString1;
+    
+    // Helper function to create hex encoded JSON like AccountOperations does
+    std::string createHexJson(const nlohmann::json& json) {
+        std::string json_str = json.dump();
+        std::vector<char> json_vector(json_str.begin(), json_str.end());
+        
+        std::ostringstream hexData;
+        hexData << std::hex << std::uppercase;
+        for (char chr : json_vector) {
+            hexData << std::setw(2) << std::setfill('0') << static_cast<int>(static_cast<unsigned char>(chr));
+        }
+        return hexData.str();
+    }
+    
 public:
     void SetUp() override;
     void TearDown() override;
@@ -47,10 +63,10 @@ void AccountOperationsTestFixture::SetUp() {
     accountData["table"] = "Account";
     accountData["values"] = nlohmann::json::array();
     accountData["values"].push_back(newAccNum);
-    accountData["values"].push_back(newBal);
-    accountData["values"].push_back(jsonString1.dump());
+    accountData["values"].push_back(std::stoi(newBal));  // Balance as integer
+    accountData["values"].push_back(createHexJson(jsonString1));  // JSON as hex
     accountData["values"].push_back(newBranch);
-    accountData["values"].push_back(activeornot ? "ACTIVE" : "INACTIVE");
+    accountData["values"].push_back(activeornot ? "ACTIVE" : "NOTACTIVE");
 
     EXPECT_CALL(*mockDb, buildInsertionQery(accountData))
         .WillOnce(testing::Return(true));
@@ -59,7 +75,7 @@ void AccountOperationsTestFixture::SetUp() {
 }
 
 void AccountOperationsTestFixture::TearDown() {
-    EXPECT_CALL(*mockDb, buildDeleteQuery(newAccNum, "Account", "Account_number"))
+    EXPECT_CALL(*mockDb, buildDeleteQuery(newAccNum, "Account", "Account_id"))
         .WillOnce(testing::Return(true));
     
     accOpt_ptr->deleteAccount(newAccNum);
@@ -73,7 +89,8 @@ TEST_F(AccountOperationsTestFixture, TestGetBalanceById) {
 }
 
 TEST_F(AccountOperationsTestFixture, TestGetAccountTransactionsById) {
-    std::vector<std::string> transResult = {jsonString1.dump()};
+    std::string hexTransactionString = createHexJson(jsonString1);
+    std::vector<std::string> transResult = {hexTransactionString};
     EXPECT_CALL(*mockDb, buildSelectionQuery("Account_transactions", newAccNum, "Account"))
         .WillOnce(testing::Return(transResult));
     auto transactions = accOpt_ptr->getAccountTransactionsById(newAccNum);
@@ -82,14 +99,14 @@ TEST_F(AccountOperationsTestFixture, TestGetAccountTransactionsById) {
 
 TEST_F(AccountOperationsTestFixture, TestGetAccountBranchById) {
     std::vector<std::string> branchResult = {"MYS001"};
-    EXPECT_CALL(*mockDb, buildSelectionQuery("Branch_id", newAccNum, "Account"))
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Account_branch", newAccNum, "Account"))
         .WillOnce(testing::Return(branchResult));
     ASSERT_EQ(accOpt_ptr->getAccountBranchById(newAccNum), "MYS001");
 }
 
 TEST_F(AccountOperationsTestFixture, TestIsActiveAccount) {
     std::vector<std::string> statusResult = {"ACTIVE"};
-    EXPECT_CALL(*mockDb, buildSelectionQuery("Account_status", newAccNum, "Account"))
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Account_active", newAccNum, "Account"))
         .WillOnce(testing::Return(statusResult));
     ASSERT_TRUE(accOpt_ptr->isActiveAccount(newAccNum));
 }
@@ -116,19 +133,22 @@ TEST_F(AccountOperationsTestFixture, TestSetAccountTransactionById) {
             }
         })"_json;
 
-    EXPECT_CALL(*mockDb, buildUpdateQuery("Account_transactions", newAccNum, transactionString.dump(), "Account"))
+    std::string hexTransactionString = createHexJson(transactionString);
+    EXPECT_CALL(*mockDb, buildUpdateQuery("Account_transactions", newAccNum, hexTransactionString, "Account"))
         .WillOnce(testing::Return(true));
-    ASSERT_NO_THROW(accOpt_ptr->setAccountTransactionById(newAccNum, transactionString));
+    // Need to make a copy since method expects non-const reference
+    nlohmann::json transactionCopy = transactionString;
+    ASSERT_NO_THROW(accOpt_ptr->setAccountTransactionById(newAccNum, transactionCopy));
 }
 
 TEST_F(AccountOperationsTestFixture, TestSetAccountBranchById) {
-    EXPECT_CALL(*mockDb, buildUpdateQuery("Branch_id", newAccNum, "MYS001", "Account"))
+    EXPECT_CALL(*mockDb, buildUpdateQuery("Account_branch", newAccNum, "MYS001", "Account"))
         .WillOnce(testing::Return(true));
     ASSERT_NO_THROW(accOpt_ptr->setAccountBranchById(newAccNum, "MYS001"));
 }
 
 TEST_F(AccountOperationsTestFixture, TestSetAccountStatusById) {
-    EXPECT_CALL(*mockDb, buildUpdateQuery("Account_status", newAccNum, "INACTIVE", "Account"))
+    EXPECT_CALL(*mockDb, buildUpdateQuery("Account_active", newAccNum, "NOTACTIVE", "Account"))
         .WillOnce(testing::Return(true));
     ASSERT_NO_THROW(accOpt_ptr->setAccountStatusById(newAccNum, false));
 }

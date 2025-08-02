@@ -115,7 +115,7 @@ TEST_F(EmployeeOperationTestFixture, SetAddressTest) {
 
 TEST_F(EmployeeOperationTestFixture, SetBranchTest) {
     // Test setEmployeeBranchById
-    EXPECT_CALL(*mockDb, buildUpdateQuery("Branch_id", empid, "MYS002", "EmployeeToBranch"))
+    EXPECT_CALL(*mockDb, buildUpdateQuery("Branch_id", empid, "MYS002", "EmployeeToBranch", "Employee_id"))
         .WillOnce(testing::Return(true));
     ASSERT_NO_THROW(EmployeeOpPtr->setEmployeeBranchById(empid, "MYS002"));
 
@@ -125,12 +125,22 @@ TEST_F(EmployeeOperationTestFixture, SetBranchTest) {
     ASSERT_EQ(EmployeeOpPtr->getEmployeeBranchById(empid), "MYS002");
 
     // Set back to original value
-    EXPECT_CALL(*mockDb, buildUpdateQuery("Branch_id", empid, "MYS001", "EmployeeToBranch"))
+    EXPECT_CALL(*mockDb, buildUpdateQuery("Branch_id", empid, "MYS001", "EmployeeToBranch", "Employee_id"))
         .WillOnce(testing::Return(true));
     ASSERT_NO_THROW(EmployeeOpPtr->setEmployeeBranchById(empid, "MYS001"));
 }
 
 TEST_F(EmployeeOperationTestFixture, SetDesignationTest) {
+    // Mock the getEmployeeBranchById call that happens inside setEmployeeDesignationById
+    std::vector<std::string> branchResult = {"MYS001"};
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Branch_id", empid, "EmployeeToBranch", "Employee_id"))
+        .WillOnce(testing::Return(branchResult));
+    
+    // Mock the check for existing managers in the branch (empty result means no manager)
+    std::vector<std::string> employeesInBranch = {};  // Empty result to avoid manager conflict
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Employee_id", "MYS001", "EmployeeToBranch", "Branch_id"))
+        .WillOnce(testing::Return(employeesInBranch));
+    
     // Test setEmployeeDesignationById
     EXPECT_CALL(*mockDb, buildUpdateQuery("Employee_designation", empid, "Manager", "Employee"))
         .WillOnce(testing::Return(true));
