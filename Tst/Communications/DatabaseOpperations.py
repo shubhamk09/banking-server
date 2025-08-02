@@ -13,11 +13,12 @@ def main():
         "ColumnName": "Account_balance",
         "Data": ["20230809MYS00101"]
     }
-
+    print("Sending request:", request)
     # Send the request as a JSON string
     socket.send_string(json.dumps(request))
 
     # Wait for the reply from the server
+    print("Waiting for reply...")
     reply = socket.recv_string()
     print("Received reply:", reply)
 

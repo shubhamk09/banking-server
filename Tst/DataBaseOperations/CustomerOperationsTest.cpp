@@ -1,8 +1,10 @@
 // FILE: src/DatabaseOperations/inc/test_CustomerOperations.hpp
 
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include "CustomerOperations.hpp"
 #include "Customer.hpp"
+#include "MockDatabaseOperations.hpp"
 
 namespace Banking {
 
@@ -10,24 +12,37 @@ class CustomerOperationsTest : public ::testing::Test {
 protected:
     void SetUp() override {
         Banking::Logger::Init();
-        // Banking::connection_shptr ptr{std::make_shared<Banking::Connection>()};
-        customerOps = std::make_unique<CustomerOperations>();
+        mockDb = std::make_shared<testing::StrictMock<Banking::Testing::MockDatabaseOperations>>();
+        customerOps = std::make_unique<CustomerOperations>(mockDb);
         customerId = "MYSC00102";
+        
+        // Setup mock expectations for addCustomer
+        EXPECT_CALL(*mockDb, buildInsertionQery(testing::_))
+            .WillOnce(testing::Return(true));
+            
         Customer newCustomer(customerId, "John Doe", "password123", "MYS001", "123 Main St", "20230914MYS00104");
         customerOps->addCustomer(std::move(newCustomer));
     }
 
     void TearDown() override {
+        // Setup mock expectation for deleteCustomer
+        EXPECT_CALL(*mockDb, buildDeleteQuery(customerId, "Customer", "Customer_id"))
+            .WillOnce(testing::Return(true));
+            
         customerOps->deleteCustomer(customerId);
     }
 
+    std::shared_ptr<testing::StrictMock<Banking::Testing::MockDatabaseOperations>> mockDb;
     std::unique_ptr<CustomerOperations> customerOps;
     std::string customerId;
 };
 
 TEST_F(CustomerOperationsTest, GetCustomerNameById) {
     std::string expectedName = "John Doe";
-    // Mock database response or set up the database state
+    
+    std::vector<std::string> mockResult = {expectedName};
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Customer_name", customerId, "Customer"))
+        .WillOnce(testing::Return(mockResult));
     ASSERT_EQ(customerOps->getCustomerNameById(customerId), expectedName);
 }
 

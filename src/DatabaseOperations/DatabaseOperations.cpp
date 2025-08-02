@@ -18,19 +18,18 @@
  * 
  * @param connPtr 
  */
-Banking::DatabaseOperations::DatabaseOperations()
+Banking::DatabaseOperations::DatabaseOperations() 
+    : zmqRequestor(ZMQRequest::getInstance("tcp://localhost:5501"))
 {
     Banking::Logger::Init();
 }
 
-/**
- * @brief 
- * 
- * @param colName 
- * @param searchVal 
- * @param tableName 
- * @return std::string 
- */
+Banking::DatabaseOperations::DatabaseOperations(ZMQRequest& requestor)
+    : zmqRequestor(requestor)
+{
+    Banking::Logger::Init();
+}
+
 std::vector<std::string> Banking::DatabaseOperations::buildSelectionQuery(const std::string &colName, const std::string &searchVal, const std::string &tableName){
     std::string searchById{tableName+"_id"};
     return buildSelectionQuery(colName, searchVal, tableName, searchById);
@@ -50,6 +49,7 @@ std::vector<std::string> Banking::DatabaseOperations::buildSelectionQuery(const 
     BANKING_LOGGER_INFO("Executing command {}", statement_string);
     std::vector<std::string> container;
     bool result = SendQuery(statement_string, &container);
+    (void)result;
     // TO DO: Result is unused as of now
     return container;
 }
@@ -137,12 +137,11 @@ bool Banking::DatabaseOperations::buildDeleteQuery(const std::string &searchVal,
 bool Banking::DatabaseOperations::SendQuery(const std::string &query, std::vector<std::string>* container)
 {
     BANKING_LOGGER_INFO("Executing command {}", query);
-    ZMQRequest& requestorSocket = Banking::ZMQRequest::getInstance("tcp://localhost:5501");
     std::istringstream iss(query);
     std::string operation;
     iss >> operation;
 
-    std::string reply = requestorSocket.request(query);
+    std::string reply = zmqRequestor.request(query);
     nlohmann::json result = nlohmann::json::parse(reply);
     std::string status = result["status"];
     if (status == "error")

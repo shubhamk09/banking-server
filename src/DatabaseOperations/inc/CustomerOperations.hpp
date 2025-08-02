@@ -17,12 +17,16 @@ namespace Banking
 
 class CustomerOperations : public IOperations
 {
+private:
+    std::shared_ptr<IDatabaseOperations> dbOps;
+
 public:
     CustomerOperations();
+    explicit CustomerOperations(std::shared_ptr<IDatabaseOperations> dbOperations);
     ~CustomerOperations() = default;
 
-    CustomerOperations(const CustomerOperations&) = default;
-    CustomerOperations& operator=(const CustomerOperations&) = default;
+    CustomerOperations(const CustomerOperations&) = delete;
+    CustomerOperations& operator=(const CustomerOperations&) = delete;
     CustomerOperations(CustomerOperations&&) = default;
     CustomerOperations& operator=(CustomerOperations&&) = default;
 public:

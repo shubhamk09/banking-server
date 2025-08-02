@@ -16,12 +16,16 @@ namespace Banking
 
 class BranchOperations : public IOperations
 {
+private:
+    std::shared_ptr<IDatabaseOperations> dbOps;
+
 public:
     BranchOperations();
+    explicit BranchOperations(std::shared_ptr<IDatabaseOperations> dbOperations);
     ~BranchOperations() = default;
 
-    BranchOperations(const BranchOperations&) = default;
-    BranchOperations& operator=(const BranchOperations&) = default;
+    BranchOperations(const BranchOperations&) = delete;
+    BranchOperations& operator=(const BranchOperations&) = delete;
     BranchOperations(BranchOperations&&) = default;
     BranchOperations& operator=(BranchOperations&&) = default;
 public:

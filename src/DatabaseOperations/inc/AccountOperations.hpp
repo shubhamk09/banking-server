@@ -19,12 +19,16 @@ namespace Banking
 
 class AccountOperations : public IOperations
 {
+private:
+    std::shared_ptr<IDatabaseOperations> dbOps;
+
 public:
     AccountOperations();
+    explicit AccountOperations(std::shared_ptr<IDatabaseOperations> dbOperations);
     ~AccountOperations() = default;
 
-    AccountOperations(const AccountOperations&) = default;
-    AccountOperations& operator=(const AccountOperations&) = default;
+    AccountOperations(const AccountOperations&) = delete;
+    AccountOperations& operator=(const AccountOperations&) = delete;
     AccountOperations(AccountOperations&&) = default;
     AccountOperations& operator=(AccountOperations&&) = default;
 public:

@@ -12,16 +12,19 @@
 #define ZMQRECEIVE_HPP
 
 #include "ZMQContextManager.hpp"
+#include "IZMQSocket.hpp"
 
 namespace Banking{
 
 class ZMQReceive
 {
 private:
-    zmq::socket_t replierSocket;
+    IZMQSocket* replierSocket;
+    bool ownsSocket;
     ZMQReceive(const std::string& bindAddress);
-    ~ZMQReceive();
 public:
+    ZMQReceive(IZMQSocket* socket);
+    ~ZMQReceive();
 
     // Delete copy constructor and assignment operator
     ZMQReceive(const ZMQReceive&) = delete;

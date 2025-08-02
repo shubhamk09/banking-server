@@ -15,7 +15,13 @@
  * 
  * @param connPtr 
  */
-Banking::BranchOperations::BranchOperations()
+Banking::BranchOperations::BranchOperations() 
+    : dbOps(std::make_shared<Banking::DatabaseOperations>())
+{
+}
+
+Banking::BranchOperations::BranchOperations(std::shared_ptr<IDatabaseOperations> dbOperations)
+    : dbOps(std::move(dbOperations))
 {
 }
 
@@ -26,7 +32,7 @@ Banking::BranchOperations::BranchOperations()
  * @return std::string 
  */
 std::string Banking::BranchOperations::getBranchNameById(const std::string &branchId){
-    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery("Branch_name", branchId, "Branch")};
+    std::vector<std::string> columnVals = dbOps->buildSelectionQuery("Branch_name", branchId, "Branch");
     return columnVals.at(0);
 }
 
@@ -37,7 +43,7 @@ std::string Banking::BranchOperations::getBranchNameById(const std::string &bran
  * @return std::string 
  */
 std::string Banking::BranchOperations::getBranchCityById(const std::string &branchId){
-    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery("Branch_city", branchId, "Branch")};
+    std::vector<std::string> columnVals = dbOps->buildSelectionQuery("Branch_city", branchId, "Branch");
     return columnVals.at(0);
 }
 
@@ -48,7 +54,7 @@ std::string Banking::BranchOperations::getBranchCityById(const std::string &bran
  * @return std::string 
  */
 std::string Banking::BranchOperations::getBranchAddressById(const std::string &branchId){
-    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery("Branch_address", branchId, "Branch")};
+    std::vector<std::string> columnVals = dbOps->buildSelectionQuery("Branch_address", branchId, "Branch");
     return columnVals.at(0);
 }
 
@@ -60,7 +66,7 @@ std::string Banking::BranchOperations::getBranchAddressById(const std::string &b
  */
 std::string Banking::BranchOperations::getBranchManagerById(const std::string &branchId){
     //To Do: return branch manager name instead of ID
-    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery("Branch_manager", branchId, "Branch")};
+    std::vector<std::string> columnVals = dbOps->buildSelectionQuery("Branch_manager", branchId, "Branch");
     return columnVals.at(0);
 }
 
@@ -72,7 +78,7 @@ std::string Banking::BranchOperations::getBranchManagerById(const std::string &b
  * @return false 
  */
 bool Banking::BranchOperations::isActiveBranch(const std::string &branchId){
-    std::vector<std::string> columnVals{Banking::DatabaseOperations::buildSelectionQuery("Branch_active", branchId, "Branch")};
+    std::vector<std::string> columnVals = dbOps->buildSelectionQuery("Branch_active", branchId, "Branch");
     if(columnVals.at(0) == "ACTIVE"){
         return true;
     }
@@ -86,7 +92,7 @@ bool Banking::BranchOperations::isActiveBranch(const std::string &branchId){
  * @param newName 
  */
 void Banking::BranchOperations::setBranchNameById(const std::string &branchId, const std::string &newName){
-    Banking::DatabaseOperations::buildUpdateQuery("Branch_name", branchId, newName, "Branch");
+    dbOps->buildUpdateQuery("Branch_name", branchId, newName, "Branch");
 }
 
 /**
@@ -96,7 +102,7 @@ void Banking::BranchOperations::setBranchNameById(const std::string &branchId, c
  * @param newCity 
  */
 void Banking::BranchOperations::setBranchCityById(const std::string &branchId, const std::string &newCity){
-    Banking::DatabaseOperations::buildUpdateQuery("Branch_city", branchId, newCity, "Branch");
+    dbOps->buildUpdateQuery("Branch_city", branchId, newCity, "Branch");
 }
 
 /**
@@ -106,7 +112,7 @@ void Banking::BranchOperations::setBranchCityById(const std::string &branchId, c
  * @param newAdd 
  */
 void Banking::BranchOperations::setBranchAddressById(const std::string &branchId, const std::string &newAdd){
-    Banking::DatabaseOperations::buildUpdateQuery("Branch_address", branchId, newAdd, "Branch");
+    dbOps->buildUpdateQuery("Branch_address", branchId, newAdd, "Branch");
 }
 
 /**
@@ -116,7 +122,7 @@ void Banking::BranchOperations::setBranchAddressById(const std::string &branchId
  * @param newBranchManagerId 
  */
 void Banking::BranchOperations::setBranchManagerById(const std::string &branchId, const std::string &newBranchManagerId){
-    Banking::DatabaseOperations::buildUpdateQuery("Branch_manager", branchId, newBranchManagerId, "Branch");
+    dbOps->buildUpdateQuery("Branch_manager", branchId, newBranchManagerId, "Branch");
 }
 
 /**
@@ -139,17 +145,16 @@ void Banking::BranchOperations::addBranch(const std::string &branchId, const std
     branchValues.emplace_back(newAdd);
     branchValues.emplace_back("ACTIVE");
     branchValues.emplace_back(newBranchManagerId);
-    Banking::DatabaseOperations::buildInsertionQery(BranchData);
+    dbOps->buildInsertionQery(BranchData);
 }
     
-
 /**
  * @brief 
  * 
  * @param branchId 
  */
 void Banking::BranchOperations::deleteBranch(const std::string &branchId){
-    Banking::DatabaseOperations::buildDeleteQuery(branchId, "Branch", "Branch_id");
+    dbOps->buildDeleteQuery(branchId, "Branch", "Branch_id");
 }
 
 nlohmann::json Banking::BranchOperations::processMessage(const nlohmann::json& message)
