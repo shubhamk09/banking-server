@@ -1,7 +1,7 @@
 /**
  * @file User.cpp
  * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
- * @brief 
+ * @brief Implementation of User base class for banking system
  * @version 0.1
  * @date 2023-07-21
  * 
@@ -13,35 +13,16 @@
 #include "Customer.hpp"
 #include "Employee.hpp"
 
-/**
- * @brief Construct a new Banking:: User:: User object
- * 
- * @param id 
- * @param name 
- * @param password 
- * @param branch 
- * @param address 
- */
 Banking::User::User(const std::string &id, const std::string &name, const std::string &password, const std::string &branch, const std::string &address):
 id{id}, name{name}, password{password}, branch{branch}, address{address}
 {
 }
 
-/**
- * @brief 
- * 
- * @return int 
- */
 std::string Banking::User::getId()
 {
     return this->id;
 }
 
-/**
- * @brief 
- * 
- * @param id 
- */
 void Banking::User::setId(const std::string &id)
 {
     this->id=id ;

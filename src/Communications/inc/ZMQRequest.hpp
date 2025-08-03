@@ -12,26 +12,27 @@
 #define ZMQREQUEST_HPP
 
 #include "ZMQContextManager.hpp"
+#include "IZMQSocket.hpp"
 
 namespace Banking {
 
     class ZMQRequest {
     private:
-        zmq::socket_t requestorSocket;
-    
+        IZMQSocket* requestorSocket;
+        bool ownsSocket;
         // Private constructor for Singleton
         ZMQRequest(const std::string &bindAddress);
-
     public:
+        // Constructor for dependency injection (testing)
+        ZMQRequest(IZMQSocket* socket);
         // Delete copy constructor and assignment operator
         ZMQRequest(const ZMQRequest&) = delete;
         ZMQRequest& operator=(const ZMQRequest&) = delete;
-    
         // Get the Singleton instance
         static ZMQRequest& getInstance(const std::string &bindAddress);
-    
         // Send a request and receive a reply
         std::string request(const std::string &requestMessage);
+        ~ZMQRequest();
     };
     
     } // namespace Banking

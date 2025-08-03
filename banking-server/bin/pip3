@@ -1,4 +1,4 @@
-#!/home/shubham/project/banking-server/banking-server/bin/python3
+#!/home/shubham/projects/banking-server/banking-server/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

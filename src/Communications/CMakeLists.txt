@@ -2,6 +2,8 @@ set(SOURCES
     ZMQContextManager.cpp
     ZMQRequest.cpp
     ZMQReceive.cpp
+    ZMQReqSocket.cpp
+    ZMQRepSocket.cpp
 )
 
 add_library(${ZMQ_COMMS_LIB} ${SOURCES})

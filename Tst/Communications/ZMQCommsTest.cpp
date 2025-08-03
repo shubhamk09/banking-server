@@ -4,10 +4,15 @@
 #include <zmq.hpp>
 #include "ZMQRequest.hpp"
 #include <thread>
+#include "../Mocks/MockZMQSocket.hpp"
+
+using ::testing::Return;
+using ::testing::_;
+using ::testing::DoAll;
 
 
-// Test fixture for ZMQReceive
-class ZMQCommsTest : public ::testing::Test {
+// Test fixture for ZMQRequest
+class ZMQRequestTest : public ::testing::Test {
 protected:
     Banking::ZMQContextManager* contextManagerPtr;
     zmq::socket_t* soocketPtr;
@@ -24,27 +29,23 @@ protected:
     }
 };
 
-TEST_F(ZMQCommsTest, TestReceiveReplyRequest) {
-    // // Arrange
-    // std::string bindAddress = "tcp://127.0.0.1:5555";
-    // std::string expectedMessage = "Test Message";
+TEST_F(ZMQRequestTest, RequestWithMockedRecv) {
+    // Arrange
+    Banking::Testing::MockZMQSocket mockSocket;
+    std::string expectedReply = "MockReply";
+    zmq::message_t fakeReply(expectedReply.data(), expectedReply.size());
 
-    // zmq::message_t mockMessage(expectedMessage.data(), expectedMessage.size());
-    // Banking::ZMQReceive zmqReceive(bindAddress);
-    // std::string response;
+    EXPECT_CALL(mockSocket, send(_, _)).WillOnce(Return(true));
+    EXPECT_CALL(mockSocket, recv(_, _))
+        .WillOnce(DoAll(
+            [](zmq::message_t& msg, zmq::recv_flags) {
+                msg = zmq::message_t("MockReply", 9);
+                return true;
+            },
+            Return(true)
+        ));
 
-    // // Act
-    // std::thread requestorThread([&bindAddress, &response]() {
-    //     Banking::ZMQRequest requestor(bindAddress);
-    //     std::string requestMessage = "Test Message";
-    //     response = requestor.request(requestMessage);
-    // });
-
-    // std::string receivedMessage = zmqReceive.receiveRequest();
-    // ASSERT_EQ(receivedMessage, expectedMessage);
-    // std::string replyMessage = "Reply Message";
-    // zmqReceive.reply(receivedMessage);
-    // requestorThread.join();
-    // // Assert
-    // ASSERT_EQ(response, expectedMessage);
+    Banking::ZMQRequest zmqRequest(&mockSocket);
+    std::string reply = zmqRequest.request("Hello, Server!");
+    EXPECT_EQ(reply, expectedReply);
 }

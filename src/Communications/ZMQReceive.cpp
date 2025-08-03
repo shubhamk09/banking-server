@@ -9,24 +9,32 @@
  * 
  */
 #include "ZMQReceive.hpp"
+#include "IZMQSocket.hpp"
+#include "ZMQRepSocket.hpp"
 #include <thread>
 #include <iostream>
 namespace Banking
 {
 
-Banking::ZMQReceive::ZMQReceive(const std::string &bindAddress):
-    replierSocket(ZMQContextManager::getInstance()->getContext(), zmq::socket_type::rep)
+ZMQReceive::ZMQReceive(const std::string &bindAddress):
+    replierSocket(new ZMQRepSocket(ZMQContextManager::getInstance()->getContext(), bindAddress)), ownsSocket(true)
 {
-    replierSocket.bind(bindAddress);
 }
 
-Banking::ZMQReceive::~ZMQReceive()
+ZMQReceive::ZMQReceive(IZMQSocket* socket):
+    replierSocket(socket), ownsSocket(false)
 {
-    replierSocket.close();
+}
+
+ZMQReceive::~ZMQReceive()
+{
+    if (ownsSocket && replierSocket) {
+        delete replierSocket;
+    }
 }
 
 // Get the Singleton instance
-ZMQReceive& Banking::ZMQReceive::getInstance(const std::string &bindAddress) {
+ZMQReceive& ZMQReceive::getInstance(const std::string &bindAddress) {
     static ZMQReceive instance(bindAddress);
     return instance;
 } 
@@ -34,29 +42,17 @@ ZMQReceive& Banking::ZMQReceive::getInstance(const std::string &bindAddress) {
 std::string ZMQReceive::receiveRequest()
 {
     zmq::message_t request;
-    zmq::recv_result_t ret = replierSocket.recv(request);
-    if (ret.has_value() && (EAGAIN == ret.value()))
-    {
-        // msocket had nothing to read and recv() timed out
-        std::cout << "No message received" << std::endl;
-        return std::string();
-    }
-    std::string requestStr(static_cast<char*>(request.data()), request.size());
-    
-    // Process the request and prepare a reply
-    std::cout << "Request recieved: " + requestStr << std::endl;
-
-    return requestStr;
+    replierSocket->recv(request, zmq::recv_flags::none);
+    return std::string(static_cast<char*>(request.data()), request.size());
 }
 
-std::string Banking::ZMQReceive::reply(const std::string &requestMessage)
+std::string ZMQReceive::reply(const std::string& requestMessage)
 {
     zmq::message_t reply(requestMessage.data(), requestMessage.size());
-    replierSocket.send(reply, zmq::send_flags::none);
-    
+    replierSocket->send(reply, zmq::send_flags::none);
     return requestMessage;
 }
-    
+
 } // namespace Banking
 
 

@@ -1,4 +1,3 @@
-
 /**
  * @file ZMQRequest.cpp
  * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
@@ -8,14 +7,27 @@
  * 
  * @copyright Copyright (c) 2025
  * 
- */#include "ZMQRequest.hpp"
+ */
+#include "ZMQRequest.hpp"
+#include "ZMQReqSocket.hpp"
 
 namespace Banking
 {
 ZMQRequest::ZMQRequest(const std::string &bindAddress)
-:   requestorSocket(ZMQContextManager::getInstance()->getContext(), zmq::socket_type::req)
+    : requestorSocket(new ZMQReqSocket(ZMQContextManager::getInstance()->getContext(), bindAddress)), ownsSocket(true)
 {
-    requestorSocket.connect(bindAddress);
+}
+
+ZMQRequest::ZMQRequest(IZMQSocket* socket)
+    : requestorSocket(socket), ownsSocket(false)
+{
+    // For testing, do not connect
+}
+
+ZMQRequest::~ZMQRequest() {
+    if (ownsSocket && requestorSocket) {
+        delete requestorSocket;
+    }
 }
 
 // Get the Singleton instance
@@ -27,10 +39,10 @@ ZMQRequest& ZMQRequest::getInstance(const std::string &bindAddress) {
 std::string ZMQRequest::request(const std::string &requestMessage)
 {
     zmq::message_t request(requestMessage.data(), requestMessage.size());
-    requestorSocket.send(request, zmq::send_flags::none);
+    requestorSocket->send(request, zmq::send_flags::none);
 
     zmq::message_t reply;
-    requestorSocket.recv(reply);
+    requestorSocket->recv(reply, zmq::recv_flags::none);
 
     return std::string(static_cast<char*>(reply.data()), reply.size());
 }

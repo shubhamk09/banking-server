@@ -17,12 +17,16 @@ namespace Banking
 
 class EmployeeOperations : public IOperations
 {
+private:
+    std::shared_ptr<IDatabaseOperations> dbOps;
+
 public:
     EmployeeOperations();
+    explicit EmployeeOperations(std::shared_ptr<IDatabaseOperations> dbOperations);
     ~EmployeeOperations() = default;
 
-    EmployeeOperations(const EmployeeOperations&) = default;
-    EmployeeOperations& operator=(const EmployeeOperations&) = default;
+    EmployeeOperations(const EmployeeOperations&) = delete;
+    EmployeeOperations& operator=(const EmployeeOperations&) = delete;
     EmployeeOperations(EmployeeOperations&&) = default;
     EmployeeOperations& operator=(EmployeeOperations&&) = default;
 public:
