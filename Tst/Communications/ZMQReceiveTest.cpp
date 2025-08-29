@@ -60,3 +60,45 @@ TEST_F(ZMQReceiveTest, ReceiveRequestReturnsExpectedMessage) {
     std::string result = zmqReceive.receiveRequest();
     EXPECT_EQ(result, "ReceivedRequest");
 }
+
+// ================= Real Implementation Tests =================
+
+TEST_F(ZMQReceiveTest, ConstructorWithMockSocketDoesNotCrash) {
+    MockReplierSocket mockSocket;
+    
+    EXPECT_NO_THROW({
+        Banking::ZMQReceive receiver(&mockSocket);
+    });
+}
+
+TEST_F(ZMQReceiveTest, DestructorHandlesSocketCorrectly) {
+    MockReplierSocket* mockSocket = new MockReplierSocket();
+    
+    EXPECT_NO_THROW({
+        Banking::ZMQReceive receiver(mockSocket);
+        // Destructor should not delete the socket since ownsSocket is false
+    });
+    
+    delete mockSocket; // Clean up manually
+}
+
+TEST_F(ZMQReceiveTest, ReplyMethodWithVariousMessages) {
+    MockReplierSocket mockSocket;
+    
+    // Test with empty message
+    EXPECT_CALL(mockSocket, send(_, _)).WillOnce(Return(true));
+    Banking::ZMQReceive receiver(&mockSocket);
+    std::string result1 = receiver.reply("");
+    EXPECT_EQ(result1, "");
+    
+    // Test with normal message
+    EXPECT_CALL(mockSocket, send(_, _)).WillOnce(Return(true));
+    std::string result2 = receiver.reply("Test Message");
+    EXPECT_EQ(result2, "Test Message");
+    
+    // Test with special characters
+    EXPECT_CALL(mockSocket, send(_, _)).WillOnce(Return(true));
+    std::string specialMsg = "Special chars: !@#$%^&*()";
+    std::string result3 = receiver.reply(specialMsg);
+    EXPECT_EQ(result3, specialMsg);
+}

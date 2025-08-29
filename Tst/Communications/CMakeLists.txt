@@ -1,5 +1,5 @@
 set(ZMQCOMMS_TEST zmqcomms_test)
-add_executable(${ZMQCOMMS_TEST} ZMQCommsTest.cpp ZMQReceiveTest.cpp)
+add_executable(${ZMQCOMMS_TEST} ZMQCommsTest.cpp ZMQReceiveTest.cpp ZMQSocketTest.cpp)
 target_link_libraries(${ZMQCOMMS_TEST} ${ZMQ_COMMS_LIB} gtest gmock gtest_main pthread MockZMQSocket)
 
 add_test(NAME ${ZMQCOMMS_TEST} COMMAND ${ZMQCOMMS_TEST})

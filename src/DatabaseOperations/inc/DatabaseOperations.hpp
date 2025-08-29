@@ -15,6 +15,7 @@
 #include <memory>
 #include "Logger.hpp"
 #include "ZMQRequest.hpp"
+#include "IZMQRequest.hpp"
 #include <nlohmann/json.hpp>
 
 namespace Banking
@@ -36,11 +37,11 @@ public:
 class DatabaseOperations : public IDatabaseOperations
 {
 private:
-    ZMQRequest& zmqRequestor;
+    IZMQRequest& zmqRequestor;
 
 public:
     DatabaseOperations();
-    explicit DatabaseOperations(ZMQRequest& requestor);
+    explicit DatabaseOperations(IZMQRequest& requestor);
     virtual ~DatabaseOperations() = default;
     
     DatabaseOperations(const DatabaseOperations&) = delete;

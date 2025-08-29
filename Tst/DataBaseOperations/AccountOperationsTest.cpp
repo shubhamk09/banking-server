@@ -152,3 +152,175 @@ TEST_F(AccountOperationsTestFixture, TestSetAccountStatusById) {
         .WillOnce(testing::Return(true));
     ASSERT_NO_THROW(accOpt_ptr->setAccountStatusById(newAccNum, false));
 }
+
+// ================= processMessage Tests =================
+
+TEST_F(AccountOperationsTestFixture, ProcessMessage_GetAccountBalance) {
+    nlohmann::json message = {
+        {"OperationType", "get"},
+        {"ColumnName", "Account_balance"},
+        {"Data", {newAccNum}}
+    };
+    
+    std::vector<std::string> mockResult = {"5000"};
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Account_balance", newAccNum, "Account"))
+        .WillOnce(testing::Return(mockResult));
+    
+    nlohmann::json result = accOpt_ptr->processMessage(message);
+    EXPECT_EQ(result, "5000");
+}
+
+TEST_F(AccountOperationsTestFixture, ProcessMessage_GetAccountTransactions) {
+    nlohmann::json message = {
+        {"OperationType", "get"},
+        {"ColumnName", "Account_transactions"},
+        {"Data", {newAccNum}}
+    };
+    
+    std::string hexTransaction = createHexJson(jsonString1);
+    std::vector<std::string> mockResult = {hexTransaction};
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Account_transactions", newAccNum, "Account"))
+        .WillOnce(testing::Return(mockResult));
+    
+    nlohmann::json result = accOpt_ptr->processMessage(message);
+    // Result should be the JSON dump of the transaction
+    EXPECT_TRUE(result.is_string());
+}
+
+TEST_F(AccountOperationsTestFixture, ProcessMessage_GetAccountBranch) {
+    nlohmann::json message = {
+        {"OperationType", "get"},
+        {"ColumnName", "Account_branch"},
+        {"Data", {newAccNum}}
+    };
+    
+    std::vector<std::string> mockResult = {"MYS001"};
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Account_branch", newAccNum, "Account"))
+        .WillOnce(testing::Return(mockResult));
+    
+    nlohmann::json result = accOpt_ptr->processMessage(message);
+    EXPECT_EQ(result, "MYS001");
+}
+
+TEST_F(AccountOperationsTestFixture, ProcessMessage_GetAccountActive) {
+    nlohmann::json message = {
+        {"OperationType", "get"},
+        {"ColumnName", "Account_active"},
+        {"Data", {newAccNum}}
+    };
+    
+    std::vector<std::string> mockResult = {"ACTIVE"};
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Account_active", newAccNum, "Account"))
+        .WillOnce(testing::Return(mockResult));
+    
+    nlohmann::json result = accOpt_ptr->processMessage(message);
+    EXPECT_EQ(result, "ACTIVE");
+}
+
+TEST_F(AccountOperationsTestFixture, ProcessMessage_SetAccountBalance) {
+    nlohmann::json message = {
+        {"OperationType", "set"},
+        {"ColumnName", "Account_balance"},
+        {"Data", {newAccNum, "7500"}}
+    };
+    
+    EXPECT_CALL(*mockDb, buildUpdateQuery("Account_balance", newAccNum, "7500", "Account"))
+        .WillOnce(testing::Return(true));
+    
+    nlohmann::json result = accOpt_ptr->processMessage(message);
+    EXPECT_EQ(result, "Operation was not successful");
+}
+
+TEST_F(AccountOperationsTestFixture, ProcessMessage_SetAccountTransactions) {
+    nlohmann::json message = {
+        {"OperationType", "set"},
+        {"ColumnName", "Account_transactions"},
+        {"Data", {newAccNum, jsonString1}}
+    };
+    
+    std::string hexTransaction = createHexJson(jsonString1);
+    EXPECT_CALL(*mockDb, buildUpdateQuery("Account_transactions", newAccNum, hexTransaction, "Account"))
+        .WillOnce(testing::Return(true));
+    
+    nlohmann::json result = accOpt_ptr->processMessage(message);
+    EXPECT_EQ(result, "Operation was not successful");
+}
+
+TEST_F(AccountOperationsTestFixture, ProcessMessage_SetAccountBranch) {
+    nlohmann::json message = {
+        {"OperationType", "set"},
+        {"ColumnName", "Account_branch"},
+        {"Data", {newAccNum, "MYS002"}}
+    };
+    
+    EXPECT_CALL(*mockDb, buildUpdateQuery("Account_branch", newAccNum, "MYS002", "Account"))
+        .WillOnce(testing::Return(true));
+    
+    nlohmann::json result = accOpt_ptr->processMessage(message);
+    EXPECT_EQ(result, "Operation was not successful");
+}
+
+TEST_F(AccountOperationsTestFixture, ProcessMessage_SetAccountActive) {
+    nlohmann::json message = {
+        {"OperationType", "set"},
+        {"ColumnName", "Account_active"},
+        {"Data", {newAccNum, "ACTIVE"}}
+    };
+    
+    EXPECT_CALL(*mockDb, buildUpdateQuery("Account_active", newAccNum, "ACTIVE", "Account"))
+        .WillOnce(testing::Return(true));
+    
+    nlohmann::json result = accOpt_ptr->processMessage(message);
+    EXPECT_EQ(result, "Operation was not successful");
+}
+
+TEST_F(AccountOperationsTestFixture, ProcessMessage_AddAccount) {
+    nlohmann::json message = {
+        {"OperationType", "add"},
+        {"ColumnName", "Account"},
+        {"Data", {"ACC123456", "5000", jsonString1, "MYS001", "ACTIVE"}}
+    };
+    
+    std::string hexTransaction = createHexJson(jsonString1);
+    EXPECT_CALL(*mockDb, buildInsertionQery(testing::_))
+        .WillOnce(testing::Return(true));
+    
+    nlohmann::json result = accOpt_ptr->processMessage(message);
+    EXPECT_EQ(result, "Operation was not successful");
+}
+
+TEST_F(AccountOperationsTestFixture, ProcessMessage_DeleteAccount) {
+    nlohmann::json message = {
+        {"OperationType", "delete"},
+        {"ColumnName", "Account"},
+        {"Data", {"ACC999999"}}
+    };
+    
+    EXPECT_CALL(*mockDb, buildDeleteQuery("ACC999999", "Account", "Account_id"))
+        .WillOnce(testing::Return(true));
+    
+    nlohmann::json result = accOpt_ptr->processMessage(message);
+    EXPECT_EQ(result, "Operation was not successful");
+}
+
+TEST_F(AccountOperationsTestFixture, ProcessMessage_InvalidOperation) {
+    nlohmann::json message = {
+        {"OperationType", "invalid"},
+        {"ColumnName", "Account_balance"},
+        {"Data", {newAccNum}}
+    };
+    
+    nlohmann::json result = accOpt_ptr->processMessage(message);
+    EXPECT_EQ(result, "Operation was not successful");
+}
+
+TEST_F(AccountOperationsTestFixture, ProcessMessage_InvalidColumnName) {
+    nlohmann::json message = {
+        {"OperationType", "get"},
+        {"ColumnName", "Invalid_column"},
+        {"Data", {newAccNum}}
+    };
+    
+    nlohmann::json result = accOpt_ptr->processMessage(message);
+    EXPECT_EQ(result, "Operation was not successful");
+}

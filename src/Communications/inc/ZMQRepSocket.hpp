@@ -28,7 +28,7 @@ public:
      * @brief Construct a new ZMQRepSocket object
      * 
      * @param context Reference to the ZMQ context
-     * @param bindAddress Address to bind the socket to (e.g., "tcp://*:5555")
+     * @param bindAddress Address to bind the socket to (e.g., "tcp://localhost:5555")
      */
     ZMQRepSocket(zmq::context_t& context, const std::string& bindAddress);
     
