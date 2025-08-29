@@ -9,3 +9,9 @@ target_link_libraries(MockDatabaseOperations
     INTERFACE 
     ${DATABASE_OPERATIONS_LIB}
     gmock)
+
+# Add MockZMQRequest as a header-only library
+add_library(MockZMQRequest INTERFACE)
+target_link_libraries(MockZMQRequest 
+    INTERFACE 
+    gmock)

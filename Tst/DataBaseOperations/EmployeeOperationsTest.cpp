@@ -156,3 +156,185 @@ TEST_F(EmployeeOperationTestFixture, SetDesignationTest) {
         .WillOnce(testing::Return(true));
     ASSERT_NO_THROW(EmployeeOpPtr->setEmployeeDesignationById(empid, "Cashier"));
 }
+
+// ================= processMessage Tests =================
+
+TEST_F(EmployeeOperationTestFixture, ProcessMessage_GetEmployeeName) {
+    nlohmann::json message = {
+        {"OperationType", "get"},
+        {"ColumnName", "Employee_name"},
+        {"Data", {empid}}
+    };
+    
+    std::vector<std::string> mockResult = {"Shubham Kalihari"};
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Employee_name", empid, "Employee"))
+        .WillOnce(testing::Return(mockResult));
+    
+    nlohmann::json result = EmployeeOpPtr->processMessage(message);
+    EXPECT_EQ(result, "Shubham Kalihari");
+}
+
+TEST_F(EmployeeOperationTestFixture, ProcessMessage_GetEmployeePassword) {
+    nlohmann::json message = {
+        {"OperationType", "get"},
+        {"ColumnName", "Employee_password"},
+        {"Data", {empid}}
+    };
+    
+    std::vector<std::string> mockResult = {"Shannu"};
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Employee_password", empid, "Employee"))
+        .WillOnce(testing::Return(mockResult));
+    
+    nlohmann::json result = EmployeeOpPtr->processMessage(message);
+    EXPECT_EQ(result, "Shannu");
+}
+
+TEST_F(EmployeeOperationTestFixture, ProcessMessage_GetEmployeeDesignation) {
+    nlohmann::json message = {
+        {"OperationType", "get"},
+        {"ColumnName", "Employee_designation"},
+        {"Data", {empid}}
+    };
+    
+    std::vector<std::string> mockResult = {"Cashier"};
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Employee_designation", empid, "Employee"))
+        .WillOnce(testing::Return(mockResult));
+    
+    nlohmann::json result = EmployeeOpPtr->processMessage(message);
+    EXPECT_EQ(result, "Cashier");
+}
+
+TEST_F(EmployeeOperationTestFixture, ProcessMessage_GetEmployeeAddress) {
+    nlohmann::json message = {
+        {"OperationType", "get"},
+        {"ColumnName", "Employee_address"},
+        {"Data", {empid}}
+    };
+    
+    std::vector<std::string> mockResult = {"Shivmoga"};
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Employee_address", empid, "Employee"))
+        .WillOnce(testing::Return(mockResult));
+    
+    nlohmann::json result = EmployeeOpPtr->processMessage(message);
+    EXPECT_EQ(result, "Shivmoga");
+}
+
+TEST_F(EmployeeOperationTestFixture, ProcessMessage_GetEmployeeBranch) {
+    nlohmann::json message = {
+        {"OperationType", "get"},
+        {"ColumnName", "Branch_id"},
+        {"Data", {empid}}
+    };
+    
+    std::vector<std::string> mockResult = {"MYS001"};
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Branch_id", empid, "EmployeeToBranch", "Employee_id"))
+        .WillOnce(testing::Return(mockResult));
+    
+    nlohmann::json result = EmployeeOpPtr->processMessage(message);
+    EXPECT_EQ(result, "MYS001");
+}
+
+TEST_F(EmployeeOperationTestFixture, ProcessMessage_SetEmployeeName) {
+    nlohmann::json message = {
+        {"OperationType", "set"},
+        {"ColumnName", "Employee_name"},
+        {"Data", {empid, "John Smith"}}
+    };
+    
+    EXPECT_CALL(*mockDb, buildUpdateQuery("Employee_name", empid, "John Smith", "Employee"))
+        .WillOnce(testing::Return(true));
+    
+    nlohmann::json result = EmployeeOpPtr->processMessage(message);
+    EXPECT_EQ(result, "Operation was not successful");
+}
+
+TEST_F(EmployeeOperationTestFixture, ProcessMessage_SetEmployeePassword) {
+    nlohmann::json message = {
+        {"OperationType", "set"},
+        {"ColumnName", "Employee_password"},
+        {"Data", {empid, "newpassword"}}
+    };
+    
+    EXPECT_CALL(*mockDb, buildUpdateQuery("Employee_password", empid, "newpassword", "Employee"))
+        .WillOnce(testing::Return(true));
+    
+    nlohmann::json result = EmployeeOpPtr->processMessage(message);
+    EXPECT_EQ(result, "Operation was not successful");
+}
+
+TEST_F(EmployeeOperationTestFixture, ProcessMessage_SetEmployeeDesignation) {
+    nlohmann::json message = {
+        {"OperationType", "set"},
+        {"ColumnName", "Employee_designation"},
+        {"Data", {empid, "Manager"}}
+    };
+    
+    // First, mock getEmployeeBranchById call inside setEmployeeDesignationById
+    std::vector<std::string> branchResult = {"MYS001"};
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Branch_id", empid, "EmployeeToBranch", "Employee_id"))
+        .WillOnce(testing::Return(branchResult));
+    
+    // Mock check for existing employees in the branch (empty result means no conflict)
+    std::vector<std::string> employeesInBranch = {};
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Employee_id", "MYS001", "EmployeeToBranch", "Branch_id"))
+        .WillOnce(testing::Return(employeesInBranch));
+    
+    EXPECT_CALL(*mockDb, buildUpdateQuery("Employee_designation", empid, "Manager", "Employee"))
+        .WillOnce(testing::Return(true));
+    
+    nlohmann::json result = EmployeeOpPtr->processMessage(message);
+    EXPECT_EQ(result, "Operation was not successful");
+}
+
+TEST_F(EmployeeOperationTestFixture, ProcessMessage_AddEmployee) {
+    nlohmann::json message = {
+        {"OperationType", "add"},
+        {"ColumnName", "Employee"},
+        {"Data", {"MYSE00106", "New Employee", "newpass", "Branch001", "New Address", "Teller"}}
+    };
+    
+    EXPECT_CALL(*mockDb, buildInsertionQery(testing::_))
+        .Times(2)  // Employee table and EmployeeToBranch table
+        .WillRepeatedly(testing::Return(true));
+    
+    nlohmann::json result = EmployeeOpPtr->processMessage(message);
+    EXPECT_EQ(result, "Employee added successfully");
+}
+
+TEST_F(EmployeeOperationTestFixture, ProcessMessage_DeleteEmployee) {
+    nlohmann::json message = {
+        {"OperationType", "delete"},
+        {"ColumnName", "Employee"},
+        {"Data", {"MYSE00999"}}  // Different ID to avoid conflict with test fixture
+    };
+    
+    EXPECT_CALL(*mockDb, buildDeleteQuery("MYSE00999", "Employee", "Employee_id"))
+        .WillOnce(testing::Return(true));
+    EXPECT_CALL(*mockDb, buildDeleteQuery("MYSE00999", "EmployeeToBranch", "Employee_id"))
+        .WillOnce(testing::Return(true));
+    
+    nlohmann::json result = EmployeeOpPtr->processMessage(message);
+    EXPECT_EQ(result, "Employee deleted successfully");
+}
+
+TEST_F(EmployeeOperationTestFixture, ProcessMessage_InvalidOperation) {
+    nlohmann::json message = {
+        {"OperationType", "invalid"},
+        {"ColumnName", "Employee_name"},
+        {"Data", {empid}}
+    };
+    
+    nlohmann::json result = EmployeeOpPtr->processMessage(message);
+    EXPECT_EQ(result, "Operation was not successful");
+}
+
+TEST_F(EmployeeOperationTestFixture, ProcessMessage_InvalidColumnName) {
+    nlohmann::json message = {
+        {"OperationType", "get"},
+        {"ColumnName", "Invalid_column"},
+        {"Data", {empid}}
+    };
+    
+    nlohmann::json result = EmployeeOpPtr->processMessage(message);
+    EXPECT_EQ(result, "Operation was not successful");
+}

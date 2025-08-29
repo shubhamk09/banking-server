@@ -1,4 +1,5 @@
 #include "Customer.hpp"
+#include "Employee.hpp"
 #include <gtest/gtest.h>
 
 class CustomerTestFixture: public testing::Test
@@ -72,4 +73,42 @@ TEST_F(CustomerTestFixture, TestSetAccNumber){
 TEST(UserTest, InvalidUserTest){
     std::shared_ptr<Banking::User> newUser = {Banking::User::createUser("MYSD00123", "name", "password", "address", "branch", "123456789")};
     ASSERT_TRUE(newUser == nullptr);
+}
+
+// Test User factory method with valid Customer ID
+TEST(UserTest, ValidCustomerCreationTest) {
+    std::shared_ptr<Banking::User> newUser = Banking::User::createUser("MYSC00123", "John", "pass123", "123 Main St", "NYC Branch", "ACC123456");
+    ASSERT_NE(newUser, nullptr);
+    
+    // Test polymorphic behavior
+    std::shared_ptr<Banking::Customer> customer = std::dynamic_pointer_cast<Banking::Customer>(newUser);
+    ASSERT_NE(customer, nullptr);
+    ASSERT_EQ(customer->getAccountNumber(), "ACC123456");
+}
+
+// Test User factory method with valid Employee ID  
+TEST(UserTest, ValidEmployeeCreationTest) {
+    std::shared_ptr<Banking::User> newUser = Banking::User::createUser("MYSE00123", "Jane", "pass456", "456 Oak St", "LA Branch", "Manager");
+    ASSERT_NE(newUser, nullptr);
+    
+    // Test polymorphic behavior
+    std::shared_ptr<Banking::Employee> employee = std::dynamic_pointer_cast<Banking::Employee>(newUser);
+    ASSERT_NE(employee, nullptr);
+    ASSERT_EQ(employee->getDesignation(), "Manager");
+}
+
+// Test edge cases for User creation
+TEST(UserTest, EdgeCaseTests) {
+    // Test with empty strings
+    std::shared_ptr<Banking::User> emptyUser = Banking::User::createUser("MYSC00123", "", "", "", "", "");
+    ASSERT_NE(emptyUser, nullptr); // Should still create user even with empty fields
+    
+    // Test with very long strings
+    std::string longString(1000, 'A');
+    std::shared_ptr<Banking::User> longStringUser = Banking::User::createUser("MYSC00123", longString, longString, longString, longString, longString);
+    ASSERT_NE(longStringUser, nullptr);
+    
+    // Test with special characters
+    std::shared_ptr<Banking::User> specialCharUser = Banking::User::createUser("MYSC00123", "John@#$%", "pass!@#", "123 Main St.", "NYC-Branch", "ACC-123456");
+    ASSERT_NE(specialCharUser, nullptr);
 }
