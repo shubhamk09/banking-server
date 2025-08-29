@@ -302,6 +302,48 @@ TEST_F(CustomerOperationsTest, ProcessMessage_SetCustomerPassword) {
     EXPECT_EQ(result, "Operation was not successful"); // Default return value
 }
 
+TEST_F(CustomerOperationsTest, ProcessMessage_SetCustomerAccount) {
+    nlohmann::json message = {
+        {"OperationType", "set"},
+        {"ColumnName", "Customer_account"},
+        {"Data", {customerId, "ACC99999"}}
+    };
+    
+    EXPECT_CALL(*mockDb, buildUpdateQuery("Customer_account", customerId, "ACC99999", "Customer"))
+        .WillOnce(testing::Return(true));
+    
+    nlohmann::json result = customerOps->processMessage(message);
+    EXPECT_EQ(result, "Operation was not successful"); // Default return value
+}
+
+TEST_F(CustomerOperationsTest, ProcessMessage_SetCustomerAddress) {
+    nlohmann::json message = {
+        {"OperationType", "set"},
+        {"ColumnName", "Customer_address"},
+        {"Data", {customerId, "New Address Street 123"}}
+    };
+    
+    EXPECT_CALL(*mockDb, buildUpdateQuery("Customer_address", customerId, "New Address Street 123", "Customer"))
+        .WillOnce(testing::Return(true));
+    
+    nlohmann::json result = customerOps->processMessage(message);
+    EXPECT_EQ(result, "Operation was not successful"); // Default return value
+}
+
+TEST_F(CustomerOperationsTest, ProcessMessage_SetCustomerBranch) {
+    nlohmann::json message = {
+        {"OperationType", "set"},
+        {"ColumnName", "Customer_branch"},
+        {"Data", {customerId, "MYS002"}}
+    };
+    
+    EXPECT_CALL(*mockDb, buildUpdateQuery("Customer_branch", customerId, "MYS002", "Customer"))
+        .WillOnce(testing::Return(true));
+    
+    nlohmann::json result = customerOps->processMessage(message);
+    EXPECT_EQ(result, "Operation was not successful"); // Default return value
+}
+
 TEST_F(CustomerOperationsTest, ProcessMessage_AddCustomer) {
     nlohmann::json message = {
         {"OperationType", "add"},
