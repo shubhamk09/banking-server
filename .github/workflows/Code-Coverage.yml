@@ -30,4 +30,5 @@ jobs:
               src/Connection/Main.cpp
               src/DatabaseOperations/Main.cpp
               driver.cpp
+              build
             
