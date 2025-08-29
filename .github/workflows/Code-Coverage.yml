@@ -26,9 +26,10 @@ jobs:
             github-token: ${{ secrets.GITHUB_TOKEN }}
             excludes: |
               src/Ext/*
-              Tst/googletest
+              Tst
               src/Connection/Main.cpp
               src/DatabaseOperations/Main.cpp
+              src/DatabaseOperations/dispatcher.cpp
               driver.cpp
               build
             

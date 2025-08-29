@@ -3,8 +3,9 @@ add_executable(${DATABASE_OPERATIONS_TEST}
                 EmployeeOperationsTest.cpp 
                 AccountOperationsTest.cpp
                 BranchOperationsTest.cpp 
-                CustomerOperationsTest.cpp)
-target_link_libraries(${DATABASE_OPERATIONS_TEST} ${DATABASE_OPERATIONS_LIB} gtest gmock gtest_main MockDatabaseOperations pthread)
+                CustomerOperationsTest.cpp
+                DatabaseOperationsTest.cpp)
+target_link_libraries(${DATABASE_OPERATIONS_TEST} ${DATABASE_OPERATIONS_LIB} gtest gmock gtest_main MockDatabaseOperations MockZMQRequest pthread)
 
 target_include_directories(${DATABASE_OPERATIONS_TEST} PRIVATE
                          ${CMAKE_SOURCE_DIR}/Tst/Mocks)

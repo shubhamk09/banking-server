@@ -13,10 +13,11 @@
 
 #include "ZMQContextManager.hpp"
 #include "IZMQSocket.hpp"
+#include "IZMQRequest.hpp"
 
 namespace Banking {
 
-    class ZMQRequest {
+    class ZMQRequest : public IZMQRequest {
     private:
         IZMQSocket* requestorSocket;
         bool ownsSocket;
@@ -31,7 +32,7 @@ namespace Banking {
         // Get the Singleton instance
         static ZMQRequest& getInstance(const std::string &bindAddress);
         // Send a request and receive a reply
-        std::string request(const std::string &requestMessage);
+        std::string request(const std::string &requestMessage) override;
         ~ZMQRequest();
     };
     

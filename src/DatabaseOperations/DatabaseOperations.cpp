@@ -11,6 +11,7 @@
 #include "DatabaseOperations.hpp"
 #include "IOperations.hpp"
 #include "ZMQRequest.hpp"
+#include "IZMQRequest.hpp"
 #include <nlohmann/json.hpp>
 
 /**
@@ -24,7 +25,7 @@ Banking::DatabaseOperations::DatabaseOperations()
     Banking::Logger::Init();
 }
 
-Banking::DatabaseOperations::DatabaseOperations(ZMQRequest& requestor)
+Banking::DatabaseOperations::DatabaseOperations(IZMQRequest& requestor)
     : zmqRequestor(requestor)
 {
     Banking::Logger::Init();
