@@ -152,4 +152,49 @@ TEST_F(CustomerOperationsTest, SetCustomerBranchById) {
     ASSERT_EQ(customerOps->getCustomerBranchById(customerId), newBranch);
 }
 
+// Test error handling scenarios
+TEST_F(CustomerOperationsTest, GetCustomerNameByIdWithEmptyResult) {
+    std::vector<std::string> emptyResult = {};
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Customer_name", customerId, "Customer"))
+        .WillOnce(testing::Return(emptyResult));
+    
+    EXPECT_THROW({
+        customerOps->getCustomerNameById(customerId);
+    }, std::out_of_range);
+}
+
+TEST_F(CustomerOperationsTest, DatabaseOperationFailure) {
+    // Mock database update failure
+    EXPECT_CALL(*mockDb, buildUpdateQuery("Customer_name", customerId, "New Name", "Customer"))
+        .WillOnce(testing::Return(false));
+    
+    // Should handle database failure gracefully
+    EXPECT_NO_THROW({
+        customerOps->setCustomerNameById(customerId, "New Name");
+    });
+}
+
+TEST_F(CustomerOperationsTest, InvalidCustomerId) {
+    std::string invalidId = "";
+    std::vector<std::string> emptyResult = {};
+    
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Customer_name", invalidId, "Customer"))
+        .WillOnce(testing::Return(emptyResult));
+    
+    EXPECT_THROW({
+        customerOps->getCustomerNameById(invalidId);
+    }, std::out_of_range);
+}
+
+TEST_F(CustomerOperationsTest, MultipleCustomersFound) {
+    // Test scenario where multiple results are returned (should use first one)
+    std::vector<std::string> multipleResults = {"John Doe", "Jane Doe"};
+    
+    EXPECT_CALL(*mockDb, buildSelectionQuery("Customer_name", customerId, "Customer"))
+        .WillOnce(testing::Return(multipleResults));
+        
+    std::string result = customerOps->getCustomerNameById(customerId);
+    EXPECT_EQ(result, "John Doe"); // Should return first result
+}
+
 } // namespace Banking
