@@ -1,4 +1,16 @@
+/**
+ * @file TcpSocket.cpp
+ * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
+ * @brief Implementation of TCP Socket class
+ * @version 0.1
+ * @date 2023-08-17
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
+
 #include "TcpSocket.hpp"
+#include "Logger.hpp"
 #include <stdexcept>
 
 namespace Communications {
@@ -28,9 +40,11 @@ TcpSocket::~TcpSocket() {
 
 void TcpSocket::connect(const std::string& host, uint16_t port) {
     if (isServer_) {
+        BANKING_LOGGER_ERROR("Cannot connect a server socket");
         throw std::runtime_error("Cannot connect a server socket");
     }
 
+    BANKING_LOGGER_INFO("Resolving host {}:{}", host, port);
     asio::ip::tcp::resolver resolver(ioContext_);
     auto endpoints = resolver.resolve(host, std::to_string(port));
 
@@ -38,16 +52,23 @@ void TcpSocket::connect(const std::string& host, uint16_t port) {
     asio::connect(socket_, endpoints, ec);
 
     if (ec) {
+        BANKING_LOGGER_ERROR("Connection failed: {}", ec.message());
         throw std::runtime_error("Failed to connect: " + ec.message());
     }
 
     connected_ = true;
+    BANKING_LOGGER_INFO("Connected to {}:{}", host, port);
 }
 
 void TcpSocket::disconnect() {
     if (socket_.is_open()) {
         asio::error_code ec;
         socket_.close(ec);
+        if (ec) {
+            BANKING_LOGGER_ERROR("Error during socket close: {}", ec.message());
+        } else {
+            BANKING_LOGGER_INFO("Socket closed successfully");
+        }
     }
     connected_ = false;
 }
@@ -95,7 +116,11 @@ void TcpSocket::bind(uint16_t port) {
 
     asio::ip::tcp::endpoint endpoint(asio::ip::tcp::v4(), port);
     acceptor_.open(endpoint.protocol());
+    
+    // Set socket options
     acceptor_.set_option(asio::ip::tcp::acceptor::reuse_address(true));
+    acceptor_.set_option(asio::socket_base::linger(true, 0));
+    
     acceptor_.bind(endpoint);
     
     isServer_ = true;

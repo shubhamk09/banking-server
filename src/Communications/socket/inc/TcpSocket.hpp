@@ -1,3 +1,14 @@
+/**
+ * @file TcpSocket.hpp
+ * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
+ * @brief TCP Socket base class implementation
+ * @version 0.1
+ * @date 2023-08-17
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
+
 #pragma once
 
 #include "ISocket.hpp"

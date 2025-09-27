@@ -1,3 +1,14 @@
+/**
+ * @file ISocket.hpp
+ * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
+ * @brief Socket Interface for the banking system
+ * @version 0.1
+ * @date 2023-08-17
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
+
 #pragma once
 
 #include <string>

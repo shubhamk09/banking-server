@@ -1,3 +1,14 @@
+/**
+ * @file TcpClient.hpp
+ * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
+ * @brief TCP Client interface for banking system
+ * @version 0.1
+ * @date 2023-08-17
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
+
 #pragma once
 
 #include "TcpSocket.hpp"
