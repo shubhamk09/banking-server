@@ -42,6 +42,13 @@ namespace Banking{
 
     private:
         static std::shared_ptr<spdlog::logger> s_Logger; ///< Static logger instance
+        
+        /**
+         * @brief Get the platform-appropriate log directory
+         * 
+         * @return std::string Path to the log directory
+         */
+        static std::string GetLogDirectory();
     };
 
 }

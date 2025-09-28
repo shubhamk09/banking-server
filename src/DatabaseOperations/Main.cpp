@@ -59,13 +59,35 @@ int main() {
         // Receive a request from the client
         std::string request = zmqReceiver.receiveRequest();
 
-        // Here you can process the request and generate a response
-        nlohmann::json requestJson = nlohmann::json::parse(request);
-        std::string operation = requestJson["Operation"];
-        std::string response = dispatcher.dispatch(operation, requestJson);
+        try {
+            // Here you can process the request and generate a response
+            nlohmann::json requestJson = nlohmann::json::parse(request);
+            std::string operation = requestJson["Operation"];
+            std::string response = dispatcher.dispatch(operation, requestJson);
 
-        // Send the reply back to the client
-        zmqReceiver.reply(response);
+            // Send the reply back to the client
+            zmqReceiver.reply(response);
+        } catch (const nlohmann::json::parse_error& e) {
+            // Handle JSON parse errors gracefully
+            nlohmann::json errorResponse;
+            errorResponse["error"] = "Invalid JSON format";
+            errorResponse["message"] = e.what();
+            errorResponse["received"] = request;
+            
+            std::cout << "JSON Parse Error: " << e.what() << std::endl;
+            std::cout << "Received message: '" << request << "'" << std::endl;
+            
+            zmqReceiver.reply(errorResponse.dump());
+        } catch (const std::exception& e) {
+            // Handle other errors gracefully
+            nlohmann::json errorResponse;
+            errorResponse["error"] = "Processing error";
+            errorResponse["message"] = e.what();
+            
+            std::cout << "Processing Error: " << e.what() << std::endl;
+            
+            zmqReceiver.reply(errorResponse.dump());
+        }
     }
 
     return 0;
