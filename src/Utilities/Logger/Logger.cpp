@@ -38,7 +38,6 @@ std::string Banking::Logger::GetLogDirectory() {
 }
 
 void Banking::Logger::Init() {
-    spdlog::set_pattern("[%^%L%$] %v");
     if (!s_Logger)
     {
         try {
@@ -49,11 +48,17 @@ void Banking::Logger::Init() {
             // Create logs directory if it doesn't exist (with proper permissions)
             std::filesystem::create_directories(logs_dir);
             
-            s_Logger = spdlog::basic_logger_mt("banking_logger", log_path, true);
+            // Use process ID in logger name to avoid conflicts between processes
+            std::string logger_name = "banking_system_" + std::to_string(getpid());
+            
+            s_Logger = spdlog::basic_logger_mt(logger_name, log_path, true);
             s_Logger->set_level(spdlog::level::debug);
-            s_Logger->flush_on(spdlog::level::debug); // Force flush on all messages
-            s_Logger->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%n] [%^%l%$] [PID:%P] [TID:%t] %v");
-            s_Logger->info("Banking system logger initialized - centralized logging to {}", log_path);
+            s_Logger->flush_on(spdlog::level::trace); // Flush immediately for multi-process safety
+            
+            // Consistent pattern across all services and processes
+            s_Logger->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [BANKING] [%^%l%$] [PID:%P] [TID:%t] %v");
+            
+            s_Logger->info("Banking system logger initialized - PID:{} logging to {}", getpid(), log_path);
             s_Logger->info("Log directory: {}", logs_dir);
         } catch (const std::exception& e) {
             // Fallback to console logger if file logger fails

@@ -103,6 +103,12 @@ std::string TcpSocket::receive(size_t maxLength) {
     size_t length = socket_.read_some(asio::buffer(buffer), ec);
 
     if (ec) {
+        // Check if this is a normal client disconnect (EOF)
+        if (ec == asio::error::eof) {
+            BANKING_LOGGER_INFO("Client disconnected normally (EOF)");
+            throw std::runtime_error("Client disconnected");
+        }
+        // For other errors, throw with the original message
         throw std::runtime_error("Failed to receive data: " + ec.message());
     }
 

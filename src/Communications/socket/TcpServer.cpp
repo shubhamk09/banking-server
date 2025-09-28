@@ -76,7 +76,12 @@ void TcpServer::handleConnections() {
                         }
                     }
                 } catch (const std::exception& e) {
-                    BANKING_LOGGER_ERROR("Client connection error: {}", e.what());
+                    std::string error_msg = e.what();
+                    if (error_msg.find("Client disconnected") != std::string::npos) {
+                        BANKING_LOGGER_INFO("Client disconnected normally");
+                    } else {
+                        BANKING_LOGGER_ERROR("Client connection error: {}", error_msg);
+                    }
                 }
             }).detach();
             
