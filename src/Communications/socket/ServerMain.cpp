@@ -23,7 +23,7 @@ void handleClientMessage(const std::string& message, std::shared_ptr<ISocket> cl
     std::cout << "Client says: " << message << std::endl;
 
     // Send ZMQ request
-    auto& zmqRequestor = ZMQRequest::getInstance("tcp://*:5502");
+    auto& zmqRequestor = ZMQRequest::getInstance("tcp://localhost:5502");
     std::string zmqResponse = zmqRequestor.request(message);
     BANKING_LOGGER_INFO("Received ZMQ response: {}", zmqResponse);
     // Echo back to client

@@ -32,18 +32,23 @@ class TcpClient:
 
     def disconnect(self):
         self.running = False
+        
+        # Wait for receive thread to finish first
+        if self.receive_thread and self.receive_thread.is_alive():
+            self.receive_thread.join(timeout=2.0)
+        
         if self.sock:
             try:
-                # Send a closing message to server
-                self.sock.send("CLOSE".encode('utf-8'))
                 # Shutdown the socket properly
                 self.sock.shutdown(socket.SHUT_RDWR)
+            except Exception as e:
+                # Socket might already be closed, ignore this error
+                pass
+            try:
                 self.sock.close()
             except Exception as e:
-                print(f"Error during disconnect: {e}")
+                print(f"Error during socket close: {e}")
         
-        if self.receive_thread and self.receive_thread.is_alive():
-            self.receive_thread.join(timeout=1.0)  # Wait up to 1 second for thread to finish
         print("Disconnected from server")
 
     def send_message(self, message):
