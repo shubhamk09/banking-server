@@ -5,6 +5,7 @@ import sys
 import threading
 import time
 import argparse
+import json
 
 class TcpClient:
     def __init__(self, host='localhost', port=8080):
@@ -84,13 +85,19 @@ def main():
                       help='Interval between messages in seconds')
     args = parser.parse_args()
 
+    request = {
+        "Operation": "Account",
+        "OperationType": "get",
+        "ColumnName": "Account_balance",
+        "Data": ["20230809MYS00101"]
+    }
     # Sample messages to send
     test_messages = [
-        "Hello from Python client!",
-        "Testing automated message 1",
-        "Testing automated message 2",
-        "This is a longer message to test buffer handling",
-        "Final test message"
+        json.dumps(request),
+        # json.dumps({"message": "Testing automated message 1"}),
+        # json.dumps({"message": "Testing automated message 2"}),
+        # json.dumps({"message": "This is a longer message to test buffer handling"}),
+        # json.dumps({"message": "Final test message"})
     ]
 
     client = TcpClient(args.host, args.port)

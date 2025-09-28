@@ -13,6 +13,7 @@
 #include "Logger.hpp"
 #include <iostream>
 #include <asio.hpp>
+#include "ZMQRequest.hpp"
 
 using namespace Communications::Socket;
 using namespace Banking;
@@ -20,8 +21,13 @@ using namespace Banking;
 void handleClientMessage(const std::string& message, std::shared_ptr<ISocket> client) {
     BANKING_LOGGER_INFO("Received client message: {}", message);
     std::cout << "Client says: " << message << std::endl;
+
+    // Send ZMQ request
+    auto& zmqRequestor = ZMQRequest::getInstance("tcp://*:5502");
+    std::string zmqResponse = zmqRequestor.request(message);
+    BANKING_LOGGER_INFO("Received ZMQ response: {}", zmqResponse);
     // Echo back to client
-    client->send("Server received: " + message);
+    client->send(zmqResponse);
 }
 
 int main() {
