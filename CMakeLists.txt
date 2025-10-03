@@ -6,23 +6,48 @@ cmake_minimum_required(VERSION 3.1...3.26)
 
 # Set C++ standard to C++ 17
 set(CMAKE_CXX_STANDARD 17)
-
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# This is your project statement. You should always list languages;
-# Listing the version is nice here since it sets lots of useful variables
+# This is your project statement
 project(
   ModernCMakeExample
   VERSION 1.0
-  LANGUAGES CXX)
+  LANGUAGES CXX
+)
 
-  
 set(CTEST_BINARY_DIRECTORY build)
 
 # Enable coverage flags for GCC and Clang
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     add_compile_options(--coverage)
     add_link_options(--coverage)
+endif()
+
+# Detect Windows (MinGW or MSVC) vs. Linux
+if (WIN32)
+    message(STATUS "Detected Windows")
+    add_definitions(-D_WIN32)
+    
+    if (MINGW)
+        message(STATUS "Using MinGW")
+        add_definitions(-DUSING_MINGW)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -static-libgcc -static-libstdc++")
+    elseif (MSVC)
+        message(STATUS "Using MSVC")
+        add_definitions(-DUSING_MSVC)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /EHsc")
+    endif()
+    
+    # Windows-specific libraries
+    set(PLATFORM_LIBS ws2_32)
+
+elseif (UNIX)
+    message(STATUS "Detected Linux")
+    add_definitions(-DUSING_LINUX)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -Wextra")
+    
+    # Linux-specific libraries
+    set(PLATFORM_LIBS pthread)
 endif()
 
 # If you set any CMAKE_ variables, that can go here.
@@ -33,11 +58,25 @@ endif()
 include(CTest)
 include(CTestCoverageCollectGCOV)
 include(${CMAKE_CURRENT_SOURCE_DIR}/Cmake/LibList.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/Cmake/ExeList.cmake)
+
 # You should usually split this into folders, but this is a simple example
 add_subdirectory(src)
 
 if(BUILD_TESTING)
   add_subdirectory(Tst)
+
+  # Define a list of all test targets
+  # set(TEST_TARGETS
+  # ${ZMQCOMMS_TEST}
+  # ${DATABASE_OPERATIONS_TEST}
+  # ${USERS_TEST}
+  # )
+    # Apply the UNIT_TEST definition to all test targets
+  # foreach(TEST_TARGET ${TEST_TARGETS})
+  #   target_compile_definitions(${TEST_TARGET} PRIVATE UNIT_TEST)
+  # endforeach()
+
 endif()
 # This is a "default" library, and will match the *** variable setting.
 # Other common choices are STATIC, SHARED, and MODULE
@@ -58,24 +97,22 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
         COMMENT "Generating code coverage report")
 endif()
 
-
 include(CMakePrintHelpers)
 cmake_print_variables(PROJECT_SOURCE_DIR)
 cmake_print_variables(CMAKE_BINARY_DIR)
 cmake_print_variables(CMAKE_SOURCE_DIR)
 
-
 # Adding something we can run - Output name matches target name
-add_executable(BankingServer driver.cpp)
+# add_executable(BankingServer driver.cpp)
 
 # Make sure you link your targets with this command. It can also link libraries and
 # even flags, so linking a target that does not exist will not give a configure-time error.
-target_link_libraries(BankingServer PRIVATE ${USERS_LIB} ${CONNECTION_LIB} ${DATABASE_OPERATIONS_LIB} ${LOGGER_LIB} spdlog nlohmann_json::nlohmann_json)
+# target_link_libraries(BankingServer PRIVATE ${USERS_LIB} ${CONNECTION_SERVICE} ${DATABASE_OPERATIONS_LIB} ${LOGGER_LIB} spdlog nlohmann_json::nlohmann_json libzmq ${PLATFORM_LIBS})
 
 # Run lcov
 # lcov --capture --directory . --output-file coverage.info
 # genhtml coverage.info --output-directory out
-# Exclude a unwanted folder
+# Exclude an unwanted folder
 # lcov --remove coverage.info '/usr/*' --output-file coverage_filtered.info
-# combined coverage
+# Combined coverage
 # lcov -a coverage1.info -a coverage2.info -o combined_coverage.info

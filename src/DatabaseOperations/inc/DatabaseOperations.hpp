@@ -11,36 +11,51 @@
 #ifndef BANKING_DATABASEOPERATION_HPP
 #define BANKING_DATABASEOPERATION_HPP
 
-#include <sqlite3.h>
 #include <vector>
-#include "Connection.hpp"
+#include <memory>
 #include "Logger.hpp"
+#include "ZMQRequest.hpp"
+#include "IZMQRequest.hpp"
 #include <nlohmann/json.hpp>
 
 namespace Banking
 {
 
-class DatabaseOperations
-{
-protected: 
-    connection_shptr connPtr;
+class IDatabaseOperations {
 public:
-    DatabaseOperations(connection_shptr &connPtr);
+    virtual ~IDatabaseOperations() = default;
+    
+    virtual std::vector<std::string> buildSelectionQuery(const std::string &colName, const std::string &searchVal, const std::string &tableName) = 0;
+    virtual std::vector<std::string> buildSelectionQuery(const std::string &colName, const std::string &searchVal, const std::string &tableName, const std::string &searchOn) = 0;
+    virtual bool buildUpdateQuery(const std::string &colName, const std::string &searchVal, const std::string &updateVal, const std::string &tableName) = 0;
+    virtual bool buildUpdateQuery(const std::string &colName, const std::string &searchVal, const std::string &updateVal, const std::string &tableName, const std::string &searchOn) = 0;
+    virtual bool buildInsertionQery(const nlohmann::json &data) = 0;
+    virtual bool buildDeleteQuery(const std::string &searchVal, const std::string &tableName, const std::string &searchOn) = 0;
+    virtual bool SendQuery(const std::string &query, std::vector<std::string>* container = nullptr) = 0;
+};
+
+class DatabaseOperations : public IDatabaseOperations
+{
+private:
+    IZMQRequest& zmqRequestor;
+
+public:
+    DatabaseOperations();
+    explicit DatabaseOperations(IZMQRequest& requestor);
     virtual ~DatabaseOperations() = default;
-        
-    DatabaseOperations(const DatabaseOperations&) = default;
-    DatabaseOperations& operator=(const DatabaseOperations&) = default;
+    
+    DatabaseOperations(const DatabaseOperations&) = delete;
+    DatabaseOperations& operator=(const DatabaseOperations&) = delete;
     DatabaseOperations(DatabaseOperations&&) = default;
     DatabaseOperations& operator=(DatabaseOperations&&) = default;
-public:
 
-    std::vector<std::string> buildSelectionQuery(const std::string &colName, const std::string &searchVal, const std::string &tableName);
-    std::vector<std::string> buildSelectionQuery(const std::string &colName, const std::string &searchVal, const std::string &tableName, const std::string &seearchOn);
-    void buildUpdateQuery(const std::string &colName, const std::string &searchVal, const std::string &updateVal, const std::string &tableName);
-    void buildUpdateQuery(const std::string &colName, const std::string &searchVal, const std::string &updateVal, const std::string &tableName, const std::string &seearchOn);
-    void buildInsertionQery(const nlohmann::json &data);
-    void buildDeleteQuery(const std::string &searchVal, const std::string &tableName, const std::string &seearchOn);
-    static int callbackName(void* data, int column_count, char** column_values, char** column_names);
+    std::vector<std::string> buildSelectionQuery(const std::string &colName, const std::string &searchVal, const std::string &tableName) override;
+    std::vector<std::string> buildSelectionQuery(const std::string &colName, const std::string &searchVal, const std::string &tableName, const std::string &searchOn) override;
+    bool buildUpdateQuery(const std::string &colName, const std::string &searchVal, const std::string &updateVal, const std::string &tableName) override;
+    bool buildUpdateQuery(const std::string &colName, const std::string &searchVal, const std::string &updateVal, const std::string &tableName, const std::string &searchOn) override;
+    bool buildInsertionQery(const nlohmann::json &data) override;
+    bool buildDeleteQuery(const std::string &searchVal, const std::string &tableName, const std::string &searchOn) override;
+    bool SendQuery(const std::string &query, std::vector<std::string>* container = nullptr) override;
 };
 
 using dbOperation_shptr = std::shared_ptr<DatabaseOperations>;

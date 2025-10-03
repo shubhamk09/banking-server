@@ -1,7 +1,7 @@
 /**
  * @file Connection.hpp
  * @author Shubham Kalihari (shubhamkalihari09@gmail.com)
- * @brief 
+ * @brief Header for Connection classs
  * @version 0.1
  * @date 2023-07-16
  * 
@@ -17,6 +17,8 @@
 #include <fstream>
 #include <regex>
 #include <memory>
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
 extern std::string osVariable;
 
@@ -34,10 +36,10 @@ private:
 public:
     Connection();
     ~Connection();
+    std::string executeQuery(const std::string& query);
+    static int callbackName(void* data, int column_count, char** column_values, char** column_names);
 public:
     sqlite3* DB;
-    void getAllEmployee();
-    std::string getEmploeeByname();
 };
 
 using connection_shptr = std::shared_ptr<Connection>;

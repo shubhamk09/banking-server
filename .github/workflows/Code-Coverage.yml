@@ -14,16 +14,22 @@ jobs:
         run: |
           cmake . -B build
           cmake --build build --config Debug --target all
-          ctest --test-dir build
+          # Run unit tests
+          ctest --test-dir build --exclude-regex ".*ext.*|.*Ext.*|.*zmq.*|.*json.*|.*spdlog.*|.*sqlite.*|.*gtest.*|.*googletest.*"
 
       - name: Generate a code coverage report
         uses: threeal/gcovr-action@v1.0.0
         with:
-            fail-under-line: 60
+            fail-under-line: 70
             coveralls-out: coverage.json
             coveralls-send: true
             github-token: ${{ secrets.GITHUB_TOKEN }}
             excludes: |
               src/Ext/*
-              Tst/googletest
+              Tst
+              src/Connection/Main.cpp
+              src/DatabaseOperations/Main.cpp
+              src/DatabaseOperations/Dispatcher.cpp
+              driver.cpp
+              build
             

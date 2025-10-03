@@ -9,19 +9,24 @@
  * 
  */
 #include "DatabaseOperations.hpp"
+#include "IOperations.hpp"
 #include "Employee.hpp"
 
 namespace Banking
 {
 
-class EmployeeOperations : public DatabaseOperations
+class EmployeeOperations : public IOperations
 {
+private:
+    std::shared_ptr<IDatabaseOperations> dbOps;
+
 public:
-    EmployeeOperations(connection_shptr &connPtr);
+    EmployeeOperations();
+    explicit EmployeeOperations(std::shared_ptr<IDatabaseOperations> dbOperations);
     ~EmployeeOperations() = default;
 
-    EmployeeOperations(const EmployeeOperations&) = default;
-    EmployeeOperations& operator=(const EmployeeOperations&) = default;
+    EmployeeOperations(const EmployeeOperations&) = delete;
+    EmployeeOperations& operator=(const EmployeeOperations&) = delete;
     EmployeeOperations(EmployeeOperations&&) = default;
     EmployeeOperations& operator=(EmployeeOperations&&) = default;
 public:
@@ -37,6 +42,7 @@ public:
     void setEmployeeBranchById(const std::string &empId, const std::string &branchId);
     void addEmployee(Banking::Employee &&empl);
     void deleteEmployee(const std::string &empId);
+    nlohmann::json processMessage(const nlohmann::json& message) override;
     
 };  
 
