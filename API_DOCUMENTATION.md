@@ -36,10 +36,11 @@ All requests follow this basic structure:
 }
 ```
 
+
 Common Operation Types:
 - `get`: Retrieve information
-- `update`: Modify existing records
-- `insert`: Create new records
+- `set`: Modify existing records
+- `add`: Create new records
 - `delete`: Remove records
 
 ---
@@ -78,13 +79,14 @@ Common Operation Types:
 }
 ```
 
+
 ### 2. Update Account Balance
 
 **Format:**
 ```json
 {
     "Operation": "Account",
-    "OperationType": "update",
+    "OperationType": "set",
     "ColumnName": "Account_balance",
     "Data": ["<account_id>", "<new_balance>"]
 }
@@ -94,11 +96,12 @@ Common Operation Types:
 ```json
 {
     "Operation": "Account",
-    "OperationType": "update",
+    "OperationType": "set",
     "ColumnName": "Account_balance",
     "Data": ["20230809MYS00101", "6000.00"]
 }
 ```
+
 
 ### 3. Create New Account
 
@@ -106,17 +109,14 @@ Common Operation Types:
 ```json
 {
     "Operation": "Account",
-    "OperationType": "insert",
-    "Data": {
-        "table": "Account",
-        "values": [
-            "<account_id>",
-            "<account_type>",
-            "<initial_balance>",
-            "<customer_id>",
-            "<branch_id>"
-        ]
-    }
+    "OperationType": "add",
+    "Data": [
+        "<account_id>",
+        "<account_type>",
+        "<initial_balance>",
+        "<customer_id>",
+        "<branch_id>"
+    ]
 }
 ```
 
@@ -124,19 +124,17 @@ Common Operation Types:
 ```json
 {
     "Operation": "Account",
-    "OperationType": "insert",
-    "Data": {
-        "table": "Account",
-        "values": [
-            "20230809MYS00102",
-            "Savings",
-            "1000.00",
-            "CUS001",
-            "BR001"
-        ]
-    }
+    "OperationType": "add",
+    "Data": [
+        "20230809MYS00102",
+        "Savings",
+        "1000.00",
+        "CUS001",
+        "BR001"
+    ]
 }
 ```
+
 
 ### 4. Delete Account
 
@@ -184,24 +182,22 @@ Common Operation Types:
 }
 ```
 
+
 ### 2. Create New Customer
 
 **Format:**
 ```json
 {
     "Operation": "Customer",
-    "OperationType": "insert",
-    "Data": {
-        "table": "Customer",
-        "values": [
-            "<customer_id>",
-            "<name>",
-            "<address>",
-            "<phone>",
-            "<email>",
-            "<date_of_birth>"
-        ]
-    }
+    "OperationType": "add",
+    "Data": [
+        "<customer_id>",
+        "<name>",
+        "<password>",
+        "<account_number>",
+        "<address>",
+        "<branch_id>"
+    ]
 }
 ```
 
@@ -209,20 +205,18 @@ Common Operation Types:
 ```json
 {
     "Operation": "Customer",
-    "OperationType": "insert",
-    "Data": {
-        "table": "Customer",
-        "values": [
-            "CUS002",
-            "John Doe",
-            "123 Main St, City",
-            "+1234567890",
-            "john.doe@email.com",
-            "1990-01-01"
-        ]
-    }
+    "OperationType": "add",
+    "Data": [
+        "CUS002",
+        "John Doe",
+        "pass456",
+        "ACC123",
+        "123 Main St, City",
+        "BR002"
+    ]
 }
 ```
+
 
 ### 3. Update Customer Information
 
@@ -230,7 +224,7 @@ Common Operation Types:
 ```json
 {
     "Operation": "Customer",
-    "OperationType": "update",
+    "OperationType": "set",
     "ColumnName": "<field_to_update>",
     "Data": ["<customer_id>", "<new_value>"]
 }
@@ -240,9 +234,9 @@ Common Operation Types:
 ```json
 {
     "Operation": "Customer",
-    "OperationType": "update",
-    "ColumnName": "Customer_phone",
-    "Data": ["CUS001", "+1987654321"]
+    "OperationType": "set",
+    "ColumnName": "Customer_address",
+    "Data": ["CUS001", "888 New Address"]
 }
 ```
 
@@ -272,24 +266,22 @@ Common Operation Types:
 }
 ```
 
+
 ### 2. Create New Employee
 
 **Format:**
 ```json
 {
     "Operation": "Employee",
-    "OperationType": "insert",
-    "Data": {
-        "table": "Employee",
-        "values": [
-            "<employee_id>",
-            "<name>",
-            "<role>",
-            "<branch_id>",
-            "<salary>",
-            "<join_date>"
-        ]
-    }
+    "OperationType": "add",
+    "Data": [
+        "<employee_id>",
+        "<name>",
+        "<password>",
+        "<designation>",
+        "<address>",
+        "<branch_id>"
+    ]
 }
 ```
 
@@ -297,18 +289,15 @@ Common Operation Types:
 ```json
 {
     "Operation": "Employee",
-    "OperationType": "insert",
-    "Data": {
-        "table": "Employee",
-        "values": [
-            "EMP002",
-            "Jane Smith",
-            "Teller",
-            "BR001",
-            "50000.00",
-            "2025-01-15"
-        ]
-    }
+    "OperationType": "add",
+    "Data": [
+        "EMP002",
+        "Jane Smith",
+        "pass789",
+        "Teller",
+        "456 Main St",
+        "BR001"
+    ]
 }
 ```
 
@@ -338,23 +327,22 @@ Common Operation Types:
 }
 ```
 
+
 ### 2. Create New Branch
 
 **Format:**
 ```json
 {
     "Operation": "Branch",
-    "OperationType": "insert",
-    "Data": {
-        "table": "Branch",
-        "values": [
-            "<branch_id>",
-            "<name>",
-            "<address>",
-            "<manager_id>",
-            "<contact_number>"
-        ]
-    }
+    "OperationType": "add",
+    "Data": [
+        "<branch_id>",
+        "<name>",
+        "<city>",
+        "<address>",
+        "ACTIVE",
+        "<manager_id>"
+    ]
 }
 ```
 
@@ -362,17 +350,15 @@ Common Operation Types:
 ```json
 {
     "Operation": "Branch",
-    "OperationType": "insert",
-    "Data": {
-        "table": "Branch",
-        "values": [
-            "BR002",
-            "Downtown Branch",
-            "456 Main St, City",
-            "EMP001",
-            "+1234567890"
-        ]
-    }
+    "OperationType": "add",
+    "Data": [
+        "BR002",
+        "Downtown Branch",
+        "Metropolis",
+        "456 Main St, City",
+        "ACTIVE",
+        "EMP001"
+    ]
 }
 ```
 

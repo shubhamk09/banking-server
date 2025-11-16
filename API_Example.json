@@ -1,0 +1,125 @@
+{
+  "Employee": {
+    "get": {
+      "Operation": "Employee",
+      "OperationType": "get",
+      "ColumnName": "Employee_name",
+      "Data": ["EMP001"]
+    },
+    "add": {
+      "Operation": "Employee",
+      "OperationType": "add",
+      "Data": [
+        "EMP001",
+        "John Doe",
+        "password123",
+        "Manager",
+        "123 Main St",
+        "BR001"
+      ]
+    },
+    "update": {
+      "Operation": "Employee",
+      "OperationType": "set",
+      "ColumnName": "Employee_address",
+      "Data": ["EMP001", "999 New Address"]
+    },
+    "delete": {
+      "Operation": "Employee",
+      "OperationType": "delete",
+      "Data": ["EMP001"]
+    }
+  },
+  "Customer": {
+    "get": {
+      "Operation": "Customer",
+      "OperationType": "get",
+      "ColumnName": "Customer_name",
+      "Data": ["CUST001"]
+    },
+    "add": {
+      "Operation": "Customer",
+      "OperationType": "add",
+      "Data": [
+        "CUST001",
+        "Jane Smith",
+        "pass456",
+        "ACC123",
+        "456 Elm St",
+        "BR002"
+      ]
+    },
+    "update": {
+      "Operation": "Customer",
+      "OperationType": "set",
+      "ColumnName": "Customer_address",
+      "Data": ["CUST001", "888 New Address"]
+    },
+    "delete": {
+      "Operation": "Customer",
+      "OperationType": "delete",
+      "Data": ["CUST001"]
+    }
+  },
+  "Branch": {
+    "get": {
+      "Operation": "Branch",
+      "OperationType": "get",
+      "ColumnName": "Branch_address",
+      "Data": ["BR001"]
+    },
+    "add": {
+      "Operation": "Branch",
+      "OperationType": "add",
+      "Data": [
+        "BR001",
+        "Downtown",
+        "Metropolis",
+        "789 Oak St",
+        "ACTIVE",
+        "EMP001"
+      ]
+    },
+    "update": {
+      "Operation": "Branch",
+      "OperationType": "set",
+      "ColumnName": "Branch_address",
+      "Data": ["BR001", "777 New Address"]
+    },
+    "delete": {
+      "Operation": "Branch",
+      "OperationType": "delete",
+      "Data": ["BR001"]
+    }
+  },
+  "Account": {
+    "get": {
+      "Operation": "Account",
+      "OperationType": "get",
+      "ColumnName": "Account_balance",
+      "Data": ["20230809MYS00101"]
+    },
+    "add": {
+      "Operation": "Account",
+      "OperationType": "add",
+      "Data": [
+        "20230809MYS00102",
+        "Savings",
+        "1000.00",
+        "CUS001",
+        "BR001"
+      ]
+    },
+    "update": {
+      "Operation": "Account",
+      "OperationType": "set",
+      "ColumnName": "Account_balance",
+      "Data": ["20230809MYS00101", "6000.00"]
+    },
+    "delete": {
+      "Operation": "Account",
+      "OperationType": "delete",
+      "Data": ["20230809MYS00101"]
+    }
+  }
+}
