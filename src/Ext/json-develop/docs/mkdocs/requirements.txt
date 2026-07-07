@@ -46,4 +46,4 @@ tornado==6.5.7
 tqdm==4.66.3
 urllib3==2.7.0
 watchdog==2.2.0
-zipp==3.11.0
+zipp==3.19.1
