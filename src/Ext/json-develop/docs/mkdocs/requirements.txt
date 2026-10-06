@@ -44,6 +44,6 @@ six==1.16.0
 smmap==5.0.0
 tornado==6.5.8
 tqdm==4.66.3
-urllib3==2.7.0
+urllib3==2.8.0
 watchdog==2.2.0
 zipp==3.19.1
